@@ -1,14 +1,14 @@
 // App.jsx
-// Without Demo code
-
+// use functions, primitive and complex types as data in components.
+// use arrow functions
 
 /**
    * Get the grand parents of daughter Hannah.
    */
-function getGrandParents() {
+const getGrandParents = () => (
   // It would be more generic to save the parents of each parent separately.
   // We may search better solutions later.
-  return {
+  {
     parentsOfMother: {
       father: "Manfred",
       mother: "Ursula"
@@ -18,11 +18,11 @@ function getGrandParents() {
       mother: "Ulla"
     }
   }
-}
+)
 
 const hannahsInterests = ["playing", "reading", "drawing"];
 
-function App() {
+const App = () => {
   const daughter_name = "Hannah";
   const daughter_age = 7;
 
@@ -44,7 +44,7 @@ function App() {
 
       <h2>Your grand parents</h2>
       <p>The grand parents you know are {getGrandParents().parentsOfMother.father},&nbsp;
-        {getGrandParents().parentsOfMother.mother} and {fathersParents.mother}. 
+        {getGrandParents().parentsOfMother.mother} and {fathersParents.mother}.
         Unfortunately, you never got the chance to meet Hans.</p>
 
       <h1>Page purpose</h1>

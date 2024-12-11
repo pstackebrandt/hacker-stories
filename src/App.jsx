@@ -1,14 +1,23 @@
 // App.jsx
-const title = "Hackers";
+const welcomeData = {
+  greeting: "Hello",
+  title: "Hackers",
+  description: "Example of using a simple data object in a component."
+}
 
 const App = () => {
   return (
     <div>
-      <h1>Hello {title}</h1>
+      <header>
+        <h1>{welcomeData.greeting} {welcomeData.title}</h1>
+        <p>{welcomeData.description}</p>
+      </header>
 
-      {/* Search input field */}
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <section>
+        {/* Search input field */}
+        <label htmlFor="search">Search: </label>
+        <input id="search" type="text" />
+      </section>
     </div>
   )
 }

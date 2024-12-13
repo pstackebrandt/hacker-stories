@@ -50,14 +50,20 @@ const Search = () => {
     console.log(event); // prints information about this event instance
 
     // value of target
-    console.log('handleOnChange of ' + event.target + ' called with ' + event.target.value);
+    console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
+  }
+
+  const handleOnBlur = (event) => {
+    console.log(event);
+
+    console.log(`handleOnBlur: called by ${event.target}, called with value: ${event.target.value}`);
   }
 
   return (
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleOnChange} />
+      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur}  />
     </>
   )
 }

@@ -44,6 +44,24 @@ const pageDescription = () => ({
   content: ["Use of listed objects as component input", "Create JSX from lists by map()"]
 })
 
+const Search = () => {
+  const handleOnChange = (event) => {
+    // synthetic event
+    console.log(event); // prints information about this event instance
+
+    // value of target
+    console.log('handleOnChange of ' + event.target + ' called with ' + event.target.value);
+  }
+
+  return (
+    <>
+      {/* Search input field */}
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={handleOnChange} />
+    </>
+  )
+}
+
 const App = () => {
   return (
     <div>
@@ -52,9 +70,7 @@ const App = () => {
       </header>
 
       <section>
-        {/* Search input field */}
-        <label htmlFor="search">Search: </label>
-        <input id="search" type="text" />
+        <Search />
       </section>
 
       <section>

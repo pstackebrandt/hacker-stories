@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 // App.jsx
 const welcomeData = {
@@ -47,7 +48,12 @@ const pageDescription = () => ({
 })
 
 const Search = () => {
+
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleOnChange = (event) => {
+    setSearchTerm(event.target.value);
+
     // synthetic event
     console.log(event); // prints information about this event instance
 
@@ -66,6 +72,10 @@ const Search = () => {
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur} />
+
+      <p>
+        Searching for <strong>{searchTerm}</strong>.
+      </p>
     </>
   )
 }

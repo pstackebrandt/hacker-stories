@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 // App.jsx
 const welcomeData = {
   greeting: "Hello",
@@ -63,12 +65,39 @@ const Search = () => {
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur}  />
+      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur} />
     </>
   )
 }
 
+const ListFrameworksAndLibs = (props) => {
+  return (
+    <ul>
+      {props.tools.map((tool) =>
+        <li key={tool.objectID}>
+          <label htmlFor={tool.title + "Link"}>{tool.title}: </label>
+          <a id={tool.title + "Link"} href={tool.url}>{tool.url}</a>
+        </li>
+      )}
+    </ul>
+  )
+}
+
+ListFrameworksAndLibs.propTypes = {
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      num_comments: PropTypes.number.isRequired,
+      points: PropTypes.number.isRequired,
+      objectID: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
+
 const App = () => {
+
   return (
     <div>
       <header>
@@ -82,14 +111,8 @@ const App = () => {
       <section>
         <hr />
         <h2>Frameworks and Libraries</h2>
-        <ul>
-          {frameworksAndLibs.map((tool) =>
-            <li key={tool.objectID}>
-              <label htmlFor={tool.title + "Link"}>{tool.title}: </label>
-              <a id={tool.title + "Link"} href={tool.url}>{tool.url}</a>
-            </li>
-          )}
-        </ul>
+        <ListFrameworksAndLibs tools={frameworksAndLibs} />
+
       </section>
 
       <aside>

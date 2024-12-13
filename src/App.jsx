@@ -74,14 +74,34 @@ const ListFrameworksAndLibs = (props) => {
   return (
     <ul>
       {props.tools.map((tool) =>
-        <li key={tool.objectID}>
-          <label htmlFor={tool.title + "Link"}>{tool.title}: </label>
-          <a id={tool.title + "Link"} href={tool.url}>{tool.url}</a>
-        </li>
+        <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
       )}
     </ul>
   )
 }
+
+const ToolItem = (props) => {
+  const tool = props.tool;
+
+  return (
+      <li>
+        {/* 'key' attribute of 'li' will be set by the user of the item. */}
+        <label htmlFor={`linkOfToolItem${tool.objectID}`}>{tool.title}: </label>
+        <a id={`linkOfToolItem${tool.objectID}`} href={tool.url}>{tool.url}</a>
+      </li>
+  );
+}
+
+ToolItem.propTypes = {
+  tool: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    num_comments: PropTypes.number.isRequired,
+    points: PropTypes.number.isRequired,
+    objectID: PropTypes.number.isRequired,
+  }).isRequired,
+};
 
 ListFrameworksAndLibs.propTypes = {
   tools: PropTypes.arrayOf(

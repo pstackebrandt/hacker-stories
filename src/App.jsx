@@ -47,15 +47,13 @@ const pageDescription = () => ({
   content: ["Use of listed objects as component input", "Create JSX from lists by map()"]
 })
 
-const Search = () => {
+const Search = (props) => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleOnChange = (event) => {
     setSearchTerm(event.target.value);
-
-    // synthetic event
-    console.log(event); // prints information about this event instance
+    props.onSearch(event); // Start search
 
     // value of target
     console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
@@ -79,6 +77,10 @@ const Search = () => {
     </>
   )
 }
+
+Search.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+};
 
 const ListFrameworksAndLibs = (props) => {
   return (
@@ -127,6 +129,9 @@ ListFrameworksAndLibs.propTypes = {
 };
 
 const App = () => {
+  const handleSearch = (event) => {
+    console.log(`Search could be started with with value ${event.target.value}`);
+  }
 
   return (
     <div>
@@ -135,7 +140,7 @@ const App = () => {
       </header>
 
       <section>
-        <Search />
+        <Search onSearch={handleSearch} />
       </section>
 
       <section>

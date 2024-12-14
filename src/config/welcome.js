@@ -1,4 +1,6 @@
-export const welcomeData = {
-    greeting: "Hello",
-    title: "Hackers",
-  };
+
+
+export const welcomeData = Object.freeze({
+  greeting: "Hello",
+  title: "Hackers",
+});

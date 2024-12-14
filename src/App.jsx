@@ -1,11 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-// App.jsx
-const welcomeData = {
-  greeting: "Hello",
-  title: "Hackers",
-}
+// Import config data
+import { welcomeData } from './config/welcome';
 
 const frameworksAndLibs = [
   {

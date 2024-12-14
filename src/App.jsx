@@ -7,11 +7,14 @@ import { welcomeData } from './config/welcome';
 // Import data
 import { frameworksAndLibs } from './data/frameworks';
 
+// Description of this page
 const pageDescription = () => ({
   purpose: "Examples of using listed objects as input for a component.",
   content: ["Use of listed objects as component input", "Create JSX from lists by map()"]
 })
 
+// Search component allows users to filter frameworks/libraries 
+//by entering search terms
 const Search = (props) => {
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,6 +50,7 @@ Search.propTypes = {
   onSearch: PropTypes.func.isRequired,
 };
 
+// Displays a list of frameworks/libraries
 const ListFrameworksAndLibs = (props) => {
   return (
     <ul>
@@ -57,15 +61,16 @@ const ListFrameworksAndLibs = (props) => {
   )
 }
 
+// Displays a single framework/library
 const ToolItem = (props) => {
   const tool = props.tool;
 
   return (
-      <li>
-        {/* 'key' attribute of 'li' will be set by the user of the item. */}
-        <label htmlFor={`linkOfToolItem${tool.objectID}`}>{tool.title}: </label>
-        <a id={`linkOfToolItem${tool.objectID}`} href={tool.url}>{tool.url}</a>
-      </li>
+    <li>
+      {/* 'key' attribute of 'li' will be set by the user of the item. */}
+      <label htmlFor={`linkOfToolItem${tool.objectID}`}>{tool.title}: </label>
+      <a id={`linkOfToolItem${tool.objectID}`} href={tool.url}>{tool.url}</a>
+    </li>
   );
 }
 
@@ -93,6 +98,7 @@ ListFrameworksAndLibs.propTypes = {
   ).isRequired,
 };
 
+// Main component 
 const App = () => {
   const handleSearch = (event) => {
     console.log(`Search could be started with with value ${event.target.value}`);

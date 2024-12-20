@@ -7,6 +7,9 @@ import { welcomeData } from './config/welcome';
 // Import data
 import { frameworksAndLibs } from './data/frameworks';
 
+// Import styles
+import './App.css';
+
 // Description of this page
 const pageDescription = () => ({
   purpose: "Examples of using listed objects as input for a component.",
@@ -67,9 +70,26 @@ const ToolItem = (props) => {
 
   return (
     <li>
-      {/* 'key' attribute of 'li' will be set by the user of the item. */}
-      <label htmlFor={`linkOfToolItem${tool.objectID}`}>{tool.title}: </label>
-      <a id={`linkOfToolItem${tool.objectID}`} href={tool.url}>{tool.url}</a>
+      <h3 className="tool-title">{tool.title}</h3>
+      {/* Link and autors*/}
+      <div>
+        <span>
+          <a href={tool.url}>{tool.url}</a>
+        </span>
+        &nbsp;by&nbsp;
+        <span>
+          {tool.author}
+        </span>
+        <div>
+          <span>
+            {tool.num_comments} comments
+          </span>
+          &nbsp;
+          <span>
+            {tool.points} points
+          </span>
+        </div>
+      </div>
     </li>
   );
 }

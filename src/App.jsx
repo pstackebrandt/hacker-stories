@@ -71,7 +71,11 @@ const ListFrameworksAndLibs = ({ tools }) => {
   )
 }
 
-// Displays a single framework/library
+/**
+ * Displays a single framework/library.
+ * 
+ * Current functionality matches page 32 of the book with minor improvements.
+ */
 const ToolItem = ({ tool }) => // Example of using props with destructuring.
   <li>
     <h3 className="tool-title">{tool.title}</h3>

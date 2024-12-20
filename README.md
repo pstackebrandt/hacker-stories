@@ -1,5 +1,40 @@
-# React + Vite
+# Hacker Stories
 
+## Getting Started
+
+To start the app for development, follow these steps:
+
+1. **Install dependencies**: Make sure you have [Node.js](https://nodejs.org/) installed. Then, run the following command in your terminal:
+
+    ```bash
+    npm install
+    ```
+
+1. **Start the development server**: Run the following command to start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+1. **Open the app**: Open your browser and go to `http://localhost:5173/` to see your app in action.
+
+1. **Build for production**: When you're ready to deploy, run:
+
+    ```bash
+    npm run build
+    ```
+
+1. **Preview the production build**: To preview the production build locally, run:
+
+    ```bash
+    npm run preview
+    ```
+
+These steps will help you set up and run the app in a development environment using Vite and React.
+
+## Used project template React + Vite
+
+Original template information:
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

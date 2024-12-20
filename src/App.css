@@ -3,9 +3,19 @@
     margin-top: 0.4rem;
 }
 
+.comment-container {
+    display: flex;
+    align-items: center; /* Vertically centers the content */
+}
+
 .star-level {
     font-size: 1.5rem;
     color: orange;
     font-weight: bold;
     margin-left: 1rem;
+    margin-top: 0.4rem;
 }
+
+.by-label {
+    margin: 0 0.5rem;
+}   

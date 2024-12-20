@@ -80,16 +80,15 @@ const ToolItem = ({ tool }) => // Example of using props with destructuring.
       <span>
         <a href={tool.url}>{tool.url}</a>
       </span>
-      &nbsp;by&nbsp;
+      <span className="by-label">by</span>
       <span>
         {tool.author}
       </span>
       {/* Number of comments and star level */}
-      <div>
+      <div className="comment-container">
         <span>
           {tool.num_comments} comments
         </span>
-        &nbsp;
         <span className="star-level">
           {'*'.repeat(tool.points)}
         </span>

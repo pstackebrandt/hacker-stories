@@ -1,3 +1,12 @@
+/**
+ * Main component for the application.
+ * 
+ * This component displays a header, a search component, a list of frameworks/libraries,
+ * and an aside with page purpose and content.
+ * 
+ * Development status: todo Live state from Search component to App component.
+ */
+
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -74,7 +83,7 @@ const Search = ({ onSearch }) => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleOnChange = (event) => {
+  const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
     onSearch(event); // Start search
 
@@ -92,7 +101,7 @@ const Search = ({ onSearch }) => {
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur} />
+      <input id="search" type="text" onChange={handleSearchTermChange} onBlur={handleOnBlur} />
 
       <p>
         Searching for <strong>{searchTerm}</strong>.
@@ -168,6 +177,5 @@ ToolItem.propTypes = {
     objectID: PropTypes.number.isRequired,
   }).isRequired,
 };
-
 
 export default App;

@@ -23,107 +23,6 @@ const pageDescription = () => ({
   ]
 })
 
-// Search component allows users to filter frameworks/libraries 
-//by entering search terms
-const Search = ({ onSearch }) => {
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleOnChange = (event) => {
-    setSearchTerm(event.target.value);
-    onSearch(event); // Start search
-
-    // value of target
-    console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
-  }
-
-  const handleOnBlur = (event) => {
-    console.log(event);
-
-    console.log(`handleOnBlur: called by ${event.target}, called with value: ${event.target.value}`);
-  }
-
-  return (
-    <>
-      {/* Search input field */}
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur} />
-
-      <p>
-        Searching for <strong>{searchTerm}</strong>.
-      </p>
-    </>
-  )
-}
-
-Search.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-};
-
-// Displays a list of frameworks/libraries
-const ListFrameworksAndLibs = ({ tools }) => {
-  return (
-    <ul>
-      {tools.map((tool) =>
-        <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
-      )}
-    </ul>
-  )
-}
-
-/**
- * Displays a single framework/library.
- * 
- * Current functionality matches page 32 of the book with minor improvements.
- */
-const ToolItem = ({ tool }) => // Example of using props with destructuring.
-  <li>
-    <h3 className="tool-title">{tool.title}</h3>
-    {/* Link and autors*/}
-    <div>
-      <span>
-        <a href={tool.url}>{tool.url}</a>
-      </span>
-      <span className="by-label">by</span>
-      <span>
-        {tool.author}
-      </span>
-      {/* Number of comments and star level */}
-      <div className="comment-container">
-        <span>
-          {tool.num_comments} comments
-        </span>
-        <span className="star-level">
-          {'*'.repeat(tool.points)}
-        </span>
-      </div>
-    </div>
-  </li>
-
-ToolItem.propTypes = {
-  tool: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    num_comments: PropTypes.number.isRequired,
-    points: PropTypes.number.isRequired,
-    objectID: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-ListFrameworksAndLibs.propTypes = {
-  tools: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      num_comments: PropTypes.number.isRequired,
-      points: PropTypes.number.isRequired,
-      objectID: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-};
-
 // Main component 
 const App = () => {
   /**
@@ -166,5 +65,111 @@ const App = () => {
     </div>
   )
 }
+
+/** 
+ * Search component allows users to filter frameworks/libraries 
+ * by entering search terms  
+*/
+const Search = ({ onSearch }) => {
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleOnChange = (event) => {
+    setSearchTerm(event.target.value);
+    onSearch(event); // Start search
+
+    // value of target
+    console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
+  }
+
+  const handleOnBlur = (event) => {
+    console.log(event);
+
+    console.log(`handleOnBlur: called by ${event.target}, called with value: ${event.target.value}`);
+  }
+
+  return (
+    <>
+      {/* Search input field */}
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={handleOnChange} onBlur={handleOnBlur} />
+
+      <p>
+        Searching for <strong>{searchTerm}</strong>.
+      </p>
+    </>
+  )
+}
+
+Search.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+};
+
+/** 
+ * Displays a list of frameworks/libraries
+ *  */
+const ListFrameworksAndLibs = ({ tools }) => {
+  return (
+    <ul>
+      {tools.map((tool) =>
+        <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
+      )}
+    </ul>
+  )
+}
+
+ListFrameworksAndLibs.propTypes = {
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      num_comments: PropTypes.number.isRequired,
+      points: PropTypes.number.isRequired,
+      objectID: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
+
+/**
+ * Displays a single framework/library.
+ * 
+ * Current functionality matches page 32 of the book with minor improvements.
+ */
+const ToolItem = ({ tool }) => // Example of using props with destructuring.
+  <li>
+    <h3 className="tool-title">{tool.title}</h3>
+    {/* Link and autors*/}
+    <div>
+      <span>
+        <a href={tool.url}>{tool.url}</a>
+      </span>
+      <span className="by-label">by</span>
+      <span>
+        {tool.author}
+      </span>
+      {/* Number of comments and star level */}
+      <div className="comment-container">
+        <span>
+          {tool.num_comments} comments
+        </span>
+        <span className="star-level">
+          {'*'.repeat(tool.points)}
+        </span>
+      </div>
+    </div>
+  </li>
+
+ToolItem.propTypes = {
+  tool: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    num_comments: PropTypes.number.isRequired,
+    points: PropTypes.number.isRequired,
+    objectID: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
 
 export default App;

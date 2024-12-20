@@ -65,8 +65,8 @@ const ListFrameworksAndLibs = (props) => {
 }
 
 // Displays a single framework/library
-const ToolItem = (props) => {
-  const tool = props.tool;
+const ToolItem = (props) => { // Example of using props without destructuring.
+  const tool = props.tool; // We need a additional variable to access the tool and a function block.
 
   return (
     <li>
@@ -80,6 +80,7 @@ const ToolItem = (props) => {
         <span>
           {tool.author}
         </span>
+        {/* Number of comments and star level */}
         <div>
           <span>
             {tool.num_comments} comments

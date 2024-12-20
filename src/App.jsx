@@ -12,19 +12,26 @@ import './App.css';
 
 // Description of this page
 const pageDescription = () => ({
-  purpose: "Examples of using listed objects as input for a component.",
-  content: ["Use of listed objects as component input", "Create JSX from lists by map()"]
+  purpose: "Examples of using function components, event handlers, props, useState.",
+  content: [
+    "Use of listed objects as component input",
+    "Create JSX from lists by map()",
+    "Use props to pass data and callback functions to a component",
+    "Use state to manage data",
+    "Use event handlers to handle user interactions",
+    "Destructure props",
+  ]
 })
 
 // Search component allows users to filter frameworks/libraries 
 //by entering search terms
-const Search = (props) => {
+const Search = ({ onSearch }) => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleOnChange = (event) => {
     setSearchTerm(event.target.value);
-    props.onSearch(event); // Start search
+    onSearch(event); // Start search
 
     // value of target
     console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
@@ -54,10 +61,10 @@ Search.propTypes = {
 };
 
 // Displays a list of frameworks/libraries
-const ListFrameworksAndLibs = (props) => {
+const ListFrameworksAndLibs = ({ tools }) => {
   return (
     <ul>
-      {props.tools.map((tool) =>
+      {tools.map((tool) =>
         <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
       )}
     </ul>
@@ -121,23 +128,30 @@ ListFrameworksAndLibs.propTypes = {
 
 // Main component 
 const App = () => {
+  /**
+   * Handle new search term.
+   * @param {Event} event - The event object
+   */
   const handleSearch = (event) => {
-    console.log(`Search could be started with with value ${event.target.value}`);
+    console.log(`Search could be started with new value ${event.target.value}`);
   }
 
   return (
     <div>
       <header>
+        {/* Example of using config data from a separate file */}
         <h1>{welcomeData.greeting} {welcomeData.title}</h1>
       </header>
 
       <section>
+        {/* Example of adding a callback function as a prop */}
         <Search onSearch={handleSearch} />
       </section>
 
       <section>
         <hr />
         <h2>Frameworks and Libraries</h2>
+        {/* Example of adding a list of data objects as a prop */}
         <ListFrameworksAndLibs tools={frameworksAndLibs} />
 
       </section>

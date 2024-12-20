@@ -72,35 +72,30 @@ const ListFrameworksAndLibs = ({ tools }) => {
 }
 
 // Displays a single framework/library
-const ToolItem = (props) => { // Example of using props without destructuring.
-  const tool = props.tool; // We need a additional variable to access the tool and a function block.
-
-  return (
-    <li>
-      <h3 className="tool-title">{tool.title}</h3>
-      {/* Link and autors*/}
+const ToolItem = ({ tool }) => // Example of using props with destructuring.
+  <li>
+    <h3 className="tool-title">{tool.title}</h3>
+    {/* Link and autors*/}
+    <div>
+      <span>
+        <a href={tool.url}>{tool.url}</a>
+      </span>
+      &nbsp;by&nbsp;
+      <span>
+        {tool.author}
+      </span>
+      {/* Number of comments and star level */}
       <div>
         <span>
-          <a href={tool.url}>{tool.url}</a>
+          {tool.num_comments} comments
         </span>
-        &nbsp;by&nbsp;
-        <span>
-          {tool.author}
+        &nbsp;
+        <span className="star-level">
+          {'*'.repeat(tool.points)}
         </span>
-        {/* Number of comments and star level */}
-        <div>
-          <span>
-            {tool.num_comments} comments
-          </span>
-          &nbsp;
-          <span>
-            {tool.points} points
-          </span>
-        </div>
       </div>
-    </li>
-  );
-}
+    </div>
+  </li>
 
 ToolItem.propTypes = {
   tool: PropTypes.shape({

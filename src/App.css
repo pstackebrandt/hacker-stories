@@ -2,3 +2,10 @@
     margin-bottom: 0.3rem;
     margin-top: 0.4rem;
 }
+
+.star-level {
+    font-size: 1.5rem;
+    color: orange;
+    font-weight: bold;
+    margin-left: 1rem;
+}

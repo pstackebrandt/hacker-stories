@@ -105,18 +105,16 @@ Search.propTypes = {
   onSearch: PropTypes.func.isRequired,
 };
 
-/** 
+/**
  * Displays a list of frameworks/libraries
- *  */
-const ListFrameworksAndLibs = ({ tools }) => {
-  return (
-    <ul>
-      {tools.map((tool) =>
-        <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
-      )}
-    </ul>
-  )
-}
+ */
+const ListFrameworksAndLibs = ({ tools }) =>
+  <ul>
+    {tools.map((tool) =>
+      <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
+    )}
+  </ul>
+
 
 ListFrameworksAndLibs.propTypes = {
   tools: PropTypes.arrayOf(

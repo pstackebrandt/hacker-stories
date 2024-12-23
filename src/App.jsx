@@ -38,7 +38,8 @@ const pageDescription = () => ({
 // Main component 
 const App = () => {
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // Load search term from localStorage or use default value
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
 
   /**
    * Handle new search term.
@@ -46,10 +47,25 @@ const App = () => {
    */
   const handleSearchTermChange = (event) => {
     console.log(`handleSearchTermChange() called by ${event.target} with value ${event.target.value}.`);
+    saveSearchTerm(event.target.value);
+  }
 
-    // Set new search term
-    console.log(`handleSearchTermChange() sets new searchTerm. old ${searchTerm}, new: ${event.target.value}.`);
-    setSearchTerm(event.target.value);
+  /**
+   * Save search term to state if it is newer than current search term.
+   * @param {string} newSearchTerm - The new search term
+   */
+  const saveSearchTerm = (newSearchTerm) => {
+    console.log(`saveSearchTerm() called with value ${newSearchTerm}.`);
+
+    if (newSearchTerm !== searchTerm) { // We don't want to ignore the case.
+      // Set new search term
+      console.log(`handleSearchTermChange() sets new searchTerm. old ${searchTerm}, new: ${newSearchTerm}.`);
+      setSearchTerm(newSearchTerm);
+
+      localStorage.setItem('searchTerm', newSearchTerm);
+    } else {
+      console.log(`saveSearchTerm(): "new" value (${newSearchTerm}) was not saved because it is equal to current value (${searchTerm}).`);
+    }
   }
 
   /**
@@ -57,8 +73,8 @@ const App = () => {
    * @returns {Array} - Array of filtered tools
    */
   const searchedTools = frameworksAndLibs.filter(
-      tool => tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  
+    tool => tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
   /**
    * Handle new search term.
    * @param {Event} event - The event object

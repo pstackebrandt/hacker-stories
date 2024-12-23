@@ -56,11 +56,9 @@ const App = () => {
    * Get filtered tools based on search term.
    * @returns {Array} - Array of filtered tools
    */
-  const getFilteredTools = () => {
-    return frameworksAndLibs.filter(
+  const searchedTools = frameworksAndLibs.filter(
       tool => tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-
+  
   /**
    * Handle new search term.
    * @param {Event} event - The event object
@@ -82,7 +80,7 @@ const App = () => {
         <hr />
         <h2>Frameworks and Libraries</h2>
         {/* Example of adding a list of data objects as a prop */}
-        <ListFrameworksAndLibs tools={getFilteredTools()} />
+        <ListFrameworksAndLibs tools={searchedTools} />
       </section>
 
       <aside>

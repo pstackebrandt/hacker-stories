@@ -24,11 +24,14 @@ const pageDescription = () => ({
   purpose: "Examples of using function components, event handlers, props, useState.",
   content: [
     "Use of listed objects as component input",
-    "Create JSX from lists by map()",
-    "Use props to pass data and callback functions to a component",
+    "Create JSX from lists using map()",
+    "Use props to pass data and callback functions to components",
     "Use state to manage data",
     "Use event handlers to handle user interactions",
     "Destructure props",
+    "Filter data based on search term",
+    "Lift state up to manage shared state",
+    "Encapsulate logic in functions for cleaner JSX"
   ]
 })
 
@@ -37,13 +40,25 @@ const App = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
+  /**
+   * Handle new search term.
+   * @param {Event} event - The event object
+   */
   const handleSearchTermChange = (event) => {
     console.log(`handleSearchTermChange() called by ${event.target} with value ${event.target.value}.`);
-    
+
+    // Set new search term
     console.log(`handleSearchTermChange() sets new searchTerm. old ${searchTerm}, new: ${event.target.value}.`);
     setSearchTerm(event.target.value);
-    // value of target
-    console.log(`Search could be started with new value ${event.target.value}`);
+  }
+
+  /**
+   * Get filtered tools based on search term.
+   * @returns {Array} - Array of filtered tools
+   */
+  const getFilteredTools = () => {
+    return frameworksAndLibs.filter(
+      tool => tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
   /**
@@ -60,15 +75,14 @@ const App = () => {
 
       <section>
         {/* Example of adding a callback function as a prop */}
-        <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange}/>
+        <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
       </section>
 
       <section>
         <hr />
         <h2>Frameworks and Libraries</h2>
         {/* Example of adding a list of data objects as a prop */}
-        <ListFrameworksAndLibs tools={frameworksAndLibs} />
-
+        <ListFrameworksAndLibs tools={getFilteredTools()} />
       </section>
 
       <aside>
@@ -88,13 +102,13 @@ const App = () => {
  * Search component allows users to entering a search term.
  * This will be used by another component to filter frameworks/libraries.
 */
-const Search = ({searchTerm, handleSearchTermChange}) => {
+const Search = ({ searchTerm, handleSearchTermChange }) => {
 
   return (
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleSearchTermChange}/>
+      <input id="search" type="text" onChange={handleSearchTermChange} />
 
       <p>
         Searching for <strong>{searchTerm}</strong>.

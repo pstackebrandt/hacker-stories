@@ -34,13 +34,22 @@ const pageDescription = () => ({
 
 // Main component 
 const App = () => {
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchTermChange = (event) => {
+    console.log(`handleSearchTermChange() called by ${event.target} with value ${event.target.value}.`);
+    
+    console.log(`handleSearchTermChange() sets new searchTerm. old ${searchTerm}, new: ${event.target.value}.`);
+    setSearchTerm(event.target.value);
+    // value of target
+    console.log(`Search could be started with new value ${event.target.value}`);
+  }
+
   /**
    * Handle new search term.
    * @param {Event} event - The event object
    */
-  const handleSearch = (event) => {
-    console.log(`Search could be started with new value ${event.target.value}`);
-  }
 
   return (
     <div>
@@ -51,7 +60,7 @@ const App = () => {
 
       <section>
         {/* Example of adding a callback function as a prop */}
-        <Search onSearch={handleSearch} />
+        <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange}/>
       </section>
 
       <section>
@@ -76,32 +85,16 @@ const App = () => {
 }
 
 /** 
- * Search component allows users to filter frameworks/libraries 
- * by entering search terms  
+ * Search component allows users to entering a search term.
+ * This will be used by another component to filter frameworks/libraries.
 */
-const Search = ({ onSearch }) => {
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-    onSearch(event); // Start search
-
-    // value of target
-    console.log(`handleOnChange of ${event.target} called with ${event.target.value}`);
-  }
-
-  const handleOnBlur = (event) => {
-    console.log(event);
-
-    console.log(`handleOnBlur: called by ${event.target}, called with value: ${event.target.value}`);
-  }
+const Search = ({searchTerm, handleSearchTermChange}) => {
 
   return (
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleSearchTermChange} onBlur={handleOnBlur} />
+      <input id="search" type="text" onChange={handleSearchTermChange}/>
 
       <p>
         Searching for <strong>{searchTerm}</strong>.
@@ -111,7 +104,8 @@ const Search = ({ onSearch }) => {
 }
 
 Search.propTypes = {
-  onSearch: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  handleSearchTermChange: PropTypes.func.isRequired
 };
 
 /**
@@ -123,7 +117,6 @@ const ListFrameworksAndLibs = ({ tools }) =>
       <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
     )}
   </ul>
-
 
 ListFrameworksAndLibs.propTypes = {
   tools: PropTypes.arrayOf(

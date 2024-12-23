@@ -122,7 +122,12 @@ const Search = ({ searchTerm, handleSearchTermChange }) => {
     <>
       {/* Search input field */}
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleSearchTermChange} />
+
+      <input
+        id="search"
+        type="text"
+        value={searchTerm}
+        onChange={handleSearchTermChange} />
 
       <p>
         Searching for <strong>{searchTerm}</strong>.

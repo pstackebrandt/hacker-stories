@@ -46,11 +46,22 @@ const App = () => {
    */
   const useSearchTermState = () => {
     // Load search term, use default value if saved value found
-    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+    const [searchTerm, setSearchTerm] = useState(() => {
+      try {
+        return localStorage.getItem('searchTerm') || '';
+      } catch (error) {
+        console.error(`Error reading search term from localStorage: ${error}`);
+        return '';
+      }
+    });
 
     // Save search term to localStorage automatically when search term changed
     useEffect(() => {
-      localStorage.setItem('searchTerm', searchTerm);
+      try {
+        localStorage.setItem('searchTerm', searchTerm);
+      } catch (error) {
+        console.error(`Error saving search term to localStorage: ${error}`);
+      } 
     }, [searchTerm]);
 
     return [searchTerm, setSearchTerm];

@@ -61,7 +61,7 @@ const App = () => {
         localStorage.setItem('searchTerm', searchTerm);
       } catch (error) {
         console.error(`Error saving search term to localStorage: ${error}`);
-      } 
+      }
     }, [searchTerm]);
 
     return [searchTerm, setSearchTerm];
@@ -71,7 +71,6 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useSearchTermState();
 
   /**
-   * Handle new search term.
    * @param {Event} event - The event object
    */
   const handleSearchTermChange = (event) => {
@@ -81,20 +80,19 @@ const App = () => {
   }
 
   /**
-   * Save @param newSearchTerm2 to state if it's newer than active search term.
-   * @param {string} newSearchTerm2 - Candidate for search term value.
+   * Save @param newSearchTerm to state if it's newer than active search term.
+   * @param {string} newSearchTerm - Candidate for search term value.
    * @returns {void}
    */
-  const saveNewSearchTerm = (newSearchTerm2) => {
-    console.log(`saveNewSearchTerm() called with value ${newSearchTerm2}.`);
+  const saveNewSearchTerm = (newSearchTerm) => {
 
-    if (newSearchTerm2 !== searchTerm) { // Shall not ignore the case.
+    if (newSearchTerm !== searchTerm) { // Shall not ignore the case.
       // Set new search term
       console.log(`handleSearchTermChange() sets new searchTerm. old \n
-        ${searchTerm}, new: ${newSearchTerm2}.`);
-      setSearchTerm(newSearchTerm2);
+        ${searchTerm}, new: ${newSearchTerm}.`);
+      setSearchTerm(newSearchTerm);
     } else {
-      console.log(`saveSearchTerm(): "new" value (${newSearchTerm2}
+      console.log(`saveSearchTerm(): "new" value (${newSearchTerm}
         ) was not saved because it is equal to current value (${searchTerm}).`);
     }
   }

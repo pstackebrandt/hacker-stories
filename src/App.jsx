@@ -8,7 +8,7 @@
  */
 
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Import config data
 import { welcomeData } from './config/welcome';
@@ -38,33 +38,53 @@ const pageDescription = () => ({
 // Main component 
 const App = () => {
 
-  // Load search term from localStorage or use default value
-  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+  /** 
+   * @summary Custom hook for search term state management.
+   * @description Gets search term from localStorage or uses default value.
+   * Saves changed search term to localStorage automatically. 
+   * @returns {[searchTerm, setSearchTerm]} - Array with search term and setSearchTerm function.
+   */
+  const useSearchTermState = () => {
+    // Load search term, use default value if saved value found
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+
+    // Save search term to localStorage automatically when search term changed
+    useEffect(() => {
+      localStorage.setItem('searchTerm', searchTerm);
+    }, [searchTerm]);
+
+    return [searchTerm, setSearchTerm];
+  }
+
+  // use useSearchTermState
+  const [searchTerm, setSearchTerm] = useSearchTermState();
 
   /**
    * Handle new search term.
    * @param {Event} event - The event object
    */
   const handleSearchTermChange = (event) => {
-    console.log(`handleSearchTermChange() called by ${event.target} with value ${event.target.value}.`);
-    saveSearchTerm(event.target.value);
+    console.log(`handleSearchTermChange() called by ${event.target}
+       with value ${event.target.value}.`);
+    saveNewSearchTerm(event.target.value);
   }
 
   /**
-   * Save search term to state if it is newer than current search term.
-   * @param {string} newSearchTerm - The new search term
+   * Save @param newSearchTerm2 to state if it's newer than active search term.
+   * @param {string} newSearchTerm2 - Candidate for search term value.
+   * @returns {void}
    */
-  const saveSearchTerm = (newSearchTerm) => {
-    console.log(`saveSearchTerm() called with value ${newSearchTerm}.`);
+  const saveNewSearchTerm = (newSearchTerm2) => {
+    console.log(`saveNewSearchTerm() called with value ${newSearchTerm2}.`);
 
-    if (newSearchTerm !== searchTerm) { // We don't want to ignore the case.
+    if (newSearchTerm2 !== searchTerm) { // Shall not ignore the case.
       // Set new search term
-      console.log(`handleSearchTermChange() sets new searchTerm. old ${searchTerm}, new: ${newSearchTerm}.`);
-      setSearchTerm(newSearchTerm);
-
-      localStorage.setItem('searchTerm', newSearchTerm);
+      console.log(`handleSearchTermChange() sets new searchTerm. old \n
+        ${searchTerm}, new: ${newSearchTerm2}.`);
+      setSearchTerm(newSearchTerm2);
     } else {
-      console.log(`saveSearchTerm(): "new" value (${newSearchTerm}) was not saved because it is equal to current value (${searchTerm}).`);
+      console.log(`saveSearchTerm(): "new" value (${newSearchTerm2}
+        ) was not saved because it is equal to current value (${searchTerm}).`);
     }
   }
 

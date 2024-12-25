@@ -31,7 +31,9 @@ const pageDescription = () => ({
     "Destructure props",
     "Filter data based on search term",
     "Lift state up to manage shared state",
-    "Encapsulate logic in functions for cleaner JSX"
+    "Encapsulate logic in functions for cleaner JSX",
+    "Implement custom hooks for state management",
+    "Handle side effects with useEffect"
   ]
 })
 
@@ -39,36 +41,38 @@ const pageDescription = () => ({
 const App = () => {
 
   /** 
-   * @summary Custom hook for search term state management.
-   * @description Gets search term from localStorage or uses default value.
-   * Saves changed search term to localStorage automatically. 
-   * @returns {[searchTerm, setSearchTerm]} - Array with search term and setSearchTerm function.
+   * @summary Custom hook for management of the state of a date (a data unit).
+   * Gets the dates value from localStorage if it exists or uses a given default value.
+   * Saves current value to localStorage automatically.
+   * @param {string} stateName
+   * @param {string} initialValue - Default value for the data unit. (optional)
+   * @returns {[value, setValue]} - Array with search term and setSearchTerm function.
    */
-  const useSearchTermState = () => {
+  const useStoredState = (stateName, initialValue) => {
     // Load search term, use default value if saved value found
-    const [searchTerm, setSearchTerm] = useState(() => {
+
+    const [state, setState] = useState(() => {
       try {
-        return localStorage.getItem('searchTerm') || '';
+        return localStorage.getItem(stateName) || initialValue;
       } catch (error) {
-        console.error(`Error reading search term from localStorage: ${error}`);
-        return '';
+        console.error(`Error reading ${stateName} from localStorage: ${error.message}`);
+        return initialValue;
       }
     });
 
     // Save search term to localStorage automatically when search term changed
     useEffect(() => {
       try {
-        localStorage.setItem('searchTerm', searchTerm);
+        localStorage.setItem(stateName, state);
       } catch (error) {
-        console.error(`Error saving search term to localStorage: ${error}`);
+        console.error(`Error saving ${stateName} with value ${state} to localStorage: ${error.message}`);
       }
-    }, [searchTerm]);
+    }, [stateName, state]);
 
-    return [searchTerm, setSearchTerm];
-  }
+    return [state, setState];
+  };
 
-  // use useSearchTermState
-  const [searchTerm, setSearchTerm] = useSearchTermState();
+  const [searchTerm, setSearchTerm] = useStoredState('searchTerm', '');
 
   /**
    * @param {Event} event - The event object
@@ -102,7 +106,8 @@ const App = () => {
    * @returns {Array} - Array of filtered tools
    */
   const searchedTools = frameworksAndLibs.filter(
-    tool => tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    tool => searchTerm &&
+      tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   /**
    * Handle new search term.

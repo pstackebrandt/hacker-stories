@@ -21,7 +21,7 @@ import './App.css';
 
 // Description of this page
 const pageDescription = () => ({
-  purpose: "Examples of using function components, event handlers, props, useState.",
+  purpose: "Demonstrates the use of function components, event handlers, props, useState, and custom hooks in a React application.",
   content: [
     "Use of listed objects as component input",
     "Create JSX from lists using map()",

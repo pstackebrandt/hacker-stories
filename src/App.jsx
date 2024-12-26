@@ -217,7 +217,8 @@ const Search = ({ searchTerm, handleSearchTermChange }) => {
       </InputWithLabel>
 
       <p>
-        Searching for <strong>{searchTerm}</strong>.
+        Searching for {searchTerm ? <strong>{searchTerm}</strong>
+          : "no specific value"}.
       </p>
     </>
   )

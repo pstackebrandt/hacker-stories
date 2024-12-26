@@ -33,7 +33,8 @@ const pageDescription = () => ({
     "Lift state up to manage shared state",
     "Encapsulate logic in functions for cleaner JSX",
     "Implement custom hooks for state management",
-    "Handle side effects with useEffect"
+    "Handle side effects with useEffect",
+    "Use of PropTypes for type checking",
   ]
 })
 
@@ -162,6 +163,7 @@ const InputWithLabel = ({
   id = 'test',
   value = '',
   inputType = 'text',
+  isFocused = true,
   onInputChange,
   children
 }) => {
@@ -186,6 +188,7 @@ const InputWithLabel = ({
         id={finalId}
         value={value}
         type={inputType}
+        autoFocus={isFocused}
         onChange={onInputChange}>
       </input>
     </>
@@ -196,6 +199,7 @@ InputWithLabel.propTypes = {
   id: PropTypes.string,
   value: PropTypes.string,
   inputType: PropTypes.string,
+  isFocused: PropTypes.bool,
   onInputChange: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired
 };
@@ -213,7 +217,7 @@ const Search = ({ searchTerm, handleSearchTermChange }) => {
         id="searchTermInput"
         value={searchTerm}
         onInputChange={handleSearchTermChange}>
-        <span><strong>Search: </strong></span>
+        <strong>Search: </strong>
       </InputWithLabel>
 
       <p>

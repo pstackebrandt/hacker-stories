@@ -151,9 +151,9 @@ const App = () => {
  * InputWithLabel component renders a label and an input field.
  * 
  * @param {Object} props - The properties object.
- * @param {string} [props.id=''] - The id for the input element.  * If not provided, a unique id will be generated.
- * @param {string} [props.value=''] - The (initial) value of the input element.
- * @param {string} [props.inputType='text'] - The type of the input element.
+ * @param {string} props.id- The id for the input element.  * If not provided, a unique id will be generated.
+ * @param {string} props.inputType - The (initial) value of the input element.
+ * @param {string} props.value- The type of the input element.
  * @param {function} props.onInputChange - The function to call when the input value changes.
  * @param {React.ReactNode} props.children - The content to be displayed inside the label.
  * 
@@ -161,8 +161,8 @@ const App = () => {
  */
 const InputWithLabel = ({
   id = 'test',
-  value = '',
   inputType = 'text',
+  value = '',
   isFocused = true,
   onInputChange,
   children

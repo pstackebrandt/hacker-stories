@@ -45,7 +45,7 @@ const App = () => {
    * @summary Custom hook for management of the state of a date (a data unit).
    * Gets the dates value from localStorage if it exists or uses a given default value.
    * Saves current value to localStorage automatically.
-   * @param {string} stateName
+   * @param {string} stateName - Name of the data unit. Used as key in localStorage.
    * @param {string} initialValue - Default value for the data unit. (optional)
    * @returns {[value, setValue]} - Array with search term and setSearchTerm function.
    */

@@ -102,8 +102,20 @@ const App = () => {
     }
   }
 
-  // State for frameworks and libraries
+  /** State for projects (frameworks and libraries) */
   const [frameworksAndLibs, setProjects] = useState(initialProjects);
+
+  /** 
+   * Remove a project from the projects list. 
+   * Save the updated list to state.
+  */
+  const handleRemoveProject = (projectItem) => {
+    const newProjects = frameworksAndLibs.filter(
+      project => project.objectID !== projectItem.objectID
+    );
+
+    setProjects(newProjects);
+  }
 
   /**
    * Get filtered tools based on search term.
@@ -134,7 +146,7 @@ const App = () => {
         <hr />
         <h2>Frameworks and Libraries</h2>
         {/* Example of adding a list of data objects as a prop */}
-        <ListFrameworksAndLibs tools={searchedTools} />
+        <ListFrameworksAndLibs tools={searchedTools} onRemoveProject={handleRemoveProject} />
       </section>
 
       <aside>
@@ -237,12 +249,15 @@ Search.propTypes = {
 };
 
 /**
- * Displays a list of frameworks/libraries
+ * Displays a list of frameworks/libraries with the ability to remove a project.
  */
-const ListFrameworksAndLibs = ({ tools }) =>
+const ListFrameworksAndLibs = ({ tools, onRemoveProject }) =>
   <ul>
     {tools.map((tool) =>
-      <ToolItem key={"toolItem" + tool.objectID} tool={tool} />
+      <ToolItem
+        key={"toolItem" + tool.objectID}
+        tool={tool}
+        onRemoveProject={onRemoveProject} />
     )}
   </ul>
 
@@ -257,6 +272,7 @@ ListFrameworksAndLibs.propTypes = {
       objectID: PropTypes.number.isRequired,
     })
   ).isRequired,
+  onRemoveProject: PropTypes.func.isRequired
 };
 
 /**
@@ -264,8 +280,8 @@ ListFrameworksAndLibs.propTypes = {
  * 
  * Current functionality matches page 32 of the book with minor improvements.
  */
-const ToolItem = ({ tool }) => // Example of using props with destructuring.
-  <li>
+const ToolItem = ({ tool, onRemoveProject }) => // Example of using props with destructuring.
+  <li className='project-item'> 
     <h3 className="tool-title">{tool.title}</h3>
     {/* Link and autors*/}
     <div>
@@ -285,6 +301,14 @@ const ToolItem = ({ tool }) => // Example of using props with destructuring.
           {'*'.repeat(tool.points)}
         </span>
       </div>
+      <div>
+        <button
+          type="button"
+          onClick={() => onRemoveProject(tool)}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   </li>
 
@@ -297,6 +321,7 @@ ToolItem.propTypes = {
     points: PropTypes.number.isRequired,
     objectID: PropTypes.number.isRequired,
   }).isRequired,
+  onRemoveProject: PropTypes.func.isRequired
 };
 
 export default App;

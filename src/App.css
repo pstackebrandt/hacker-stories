@@ -1,3 +1,11 @@
+/* Project item
+todo Project item has currently different names.
+ deprecated: tool-item, new: project-item
+*/
+.project-item {
+    margin-bottom: 1rem;
+}
+
 .tool-title {
     margin-bottom: 0.3rem;
     margin-top: 0.4rem;
@@ -5,7 +13,8 @@
 
 .comment-container {
     display: flex;
-    align-items: center; /* Vertically centers the content */
+    align-items: center;
+    /* Vertically centers the content */
 }
 
 .star-level {
@@ -18,4 +27,4 @@
 
 .by-label {
     margin: 0 0.5rem;
-}   
+}

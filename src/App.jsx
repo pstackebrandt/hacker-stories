@@ -8,7 +8,6 @@
  */
 
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 // Import config data
 import { welcomeData } from './config/welcome';
@@ -17,7 +16,7 @@ import { welcomeData } from './config/welcome';
 import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
 import SearchTermInput from './components/SearchTermInput';
-import ProjectItem from './components/ProjectItem';
+import ProjectsList from './components/ProjectsList';
 
 // Import styles
 import './App.css';
@@ -155,7 +154,7 @@ const App = () => {
         <hr />
         <h2>Frameworks and Libraries</h2>
         {/* Example of adding a list of data objects as a prop */}
-        <ListFrameworksAndLibs projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+        <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
       </section>
 
       <aside>
@@ -170,33 +169,5 @@ const App = () => {
     </div>
   )
 }
-
-
-/**
- * Displays a list of projects (frameworks/libraries) with the ability to remove a project.
- */
-const ListFrameworksAndLibs = ({ projects, onRemoveProject }) =>
-  <ul>
-    {projects.map((project) =>
-      <ProjectItem
-        key={"projectItem" + project.objectID}
-        project={project}
-        onRemoveProject={onRemoveProject} />
-    )}
-  </ul>
-
-ListFrameworksAndLibs.propTypes = {
-  projects: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      num_comments: PropTypes.number.isRequired,
-      points: PropTypes.number.isRequired,
-      objectID: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  onRemoveProject: PropTypes.func.isRequired
-};
 
 export default App;

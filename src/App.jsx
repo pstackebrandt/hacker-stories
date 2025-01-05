@@ -171,7 +171,7 @@ const App = () => {
 }
 
 /** 
- * Search component allows users to entering a search term.
+ * Search component allows users to enter a search term.
  * This will be used by another component to filter frameworks/libraries.
 */
 const Search = ({ searchTerm, handleSearchTermChange }) => {
@@ -200,14 +200,14 @@ Search.propTypes = {
 };
 
 /**
- * Displays a list of frameworks/libraries with the ability to remove a project.
+ * Displays a list of projects (frameworks/libraries) with the ability to remove a project.
  */
 const ListFrameworksAndLibs = ({ tools, onRemoveProject }) =>
   <ul>
-    {tools.map((tool) =>
-      <ToolItem
-        key={"toolItem" + tool.objectID}
-        tool={tool}
+    {tools.map((project) =>
+      <ProjectItem
+        key={"projectItem" + project.objectID}
+        project={project}
         onRemoveProject={onRemoveProject} />
     )}
   </ul>
@@ -231,31 +231,31 @@ ListFrameworksAndLibs.propTypes = {
  * 
  * Current functionality matches page 32 of the book with minor improvements.
  */
-const ToolItem = ({ tool, onRemoveProject }) => // Example of using props with destructuring.
+const ProjectItem = ({ project, onRemoveProject }) => // Example of using props with destructuring.
   <li className='project-item'> 
-    <h3 className="tool-title">{tool.title}</h3>
-    {/* Link and autors*/}
+    <h3 className="project-item-title">{project.title}</h3>
+    {/* Link and authors */}
     <div>
       <span>
-        <a href={tool.url}>{tool.url}</a>
+        <a href={project.url}>{project.url}</a>
       </span>
       <span className="by-label">by</span>
       <span>
-        {tool.author}
+        {project.author}
       </span>
       {/* Number of comments and star level */}
       <div className="comment-container">
         <span>
-          {tool.num_comments} comments
+          {project.num_comments} comments
         </span>
         <span className="star-level">
-          {'*'.repeat(tool.points)}
+          {'*'.repeat(project.points)}
         </span>
       </div>
       <div>
         <button
           type="button"
-          onClick={() => onRemoveProject(tool)}
+          onClick={() => onRemoveProject(project)}
         >
           Remove
         </button>
@@ -263,8 +263,8 @@ const ToolItem = ({ tool, onRemoveProject }) => // Example of using props with d
     </div>
   </li>
 
-ToolItem.propTypes = {
-  tool: PropTypes.shape({
+ProjectItem.propTypes = {
+  project: PropTypes.shape({
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,

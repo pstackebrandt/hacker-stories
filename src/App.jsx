@@ -13,8 +13,8 @@ import PropTypes from 'prop-types';
 // Import config data
 import { welcomeData } from './config/welcome';
 
-// Import data
-import { frameworksAndLibs } from './data/frameworks';
+// Import base data
+import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
 // Import styles
 import './App.css';
@@ -101,6 +101,9 @@ const App = () => {
         ) was not saved because it is equal to current value (${searchTerm}).`);
     }
   }
+
+  // State for frameworks and libraries
+  const [frameworksAndLibs, setProjects] = useState(initialProjects);
 
   /**
    * Get filtered tools based on search term.

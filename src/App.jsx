@@ -16,7 +16,7 @@ import { welcomeData } from './config/welcome';
 // Import base data
 import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
-import InputWithLabel from './components/InputWithLabel';
+import SearchTermInput from './components/SearchTermInput';
 import ProjectItem from './components/ProjectItem';
 
 // Import styles
@@ -148,7 +148,7 @@ const App = () => {
 
       <section>
         {/* Example of adding a callback function as a prop */}
-        <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+        <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
       </section>
 
       <section>
@@ -171,34 +171,6 @@ const App = () => {
   )
 }
 
-/** 
- * Search component allows users to enter a search term.
- * This will be used by another component to filter frameworks/libraries.
-*/
-const Search = ({ searchTerm, handleSearchTermChange }) => {
-
-  return (
-    <>
-      {/* Search term input field */}
-      <InputWithLabel
-        id="searchTermInput"
-        value={searchTerm}
-        onInputChange={handleSearchTermChange}>
-        <strong>Search: </strong>
-      </InputWithLabel>
-
-      <p>
-        Searching for {searchTerm ? <strong>{searchTerm}</strong>
-          : "no specific value"}.
-      </p>
-    </>
-  )
-}
-
-Search.propTypes = {
-  searchTerm: PropTypes.string.isRequired,
-  handleSearchTermChange: PropTypes.func.isRequired
-};
 
 /**
  * Displays a list of projects (frameworks/libraries) with the ability to remove a project.

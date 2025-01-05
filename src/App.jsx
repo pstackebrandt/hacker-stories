@@ -112,14 +112,14 @@ const App = () => {
   }
 
   /** State for projects (frameworks and libraries) */
-  const [frameworksAndLibs, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState(initialProjects);
 
   /** 
    * Remove a project from the projects list. 
    * Save the updated list to state.
   */
   const handleRemoveProject = (projectItem) => {
-    const newProjects = frameworksAndLibs.filter(
+    const newProjects = projects.filter(
       project => project.objectID !== projectItem.objectID
     );
 
@@ -130,7 +130,7 @@ const App = () => {
    * Get filtered projects based on search term.
    * @returns {Array} - Array of filtered projects
    */
-  const searchedProjects = frameworksAndLibs.filter(
+  const searchedProjects = projects.filter(
     project => searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 

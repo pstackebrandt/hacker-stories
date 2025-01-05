@@ -81,6 +81,7 @@ const App = () => {
     return [state, setState];
   };
 
+  /** State for search term */
   const [searchTerm, setSearchTerm] = useStoredState('searchTerm', '');
 
   /**
@@ -133,10 +134,6 @@ const App = () => {
     project => searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  /**
-   * Handle new search term.
-   * @param {Event} event - The event object
-   */
 
   return (
     <div>

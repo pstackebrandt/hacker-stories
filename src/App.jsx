@@ -127,12 +127,12 @@ const App = () => {
   }
 
   /**
-   * Get filtered tools based on search term.
-   * @returns {Array} - Array of filtered tools
+   * Get filtered projects based on search term.
+   * @returns {Array} - Array of filtered projects
    */
-  const searchedTools = frameworksAndLibs.filter(
-    tool => searchTerm &&
-      tool.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const searchedProjects = frameworksAndLibs.filter(
+    project => searchTerm &&
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   /**
    * Handle new search term.
@@ -155,7 +155,7 @@ const App = () => {
         <hr />
         <h2>Frameworks and Libraries</h2>
         {/* Example of adding a list of data objects as a prop */}
-        <ListFrameworksAndLibs tools={searchedTools} onRemoveProject={handleRemoveProject} />
+        <ListFrameworksAndLibs projects={searchedProjects} onRemoveProject={handleRemoveProject} />
       </section>
 
       <aside>
@@ -175,9 +175,9 @@ const App = () => {
 /**
  * Displays a list of projects (frameworks/libraries) with the ability to remove a project.
  */
-const ListFrameworksAndLibs = ({ tools, onRemoveProject }) =>
+const ListFrameworksAndLibs = ({ projects, onRemoveProject }) =>
   <ul>
-    {tools.map((project) =>
+    {projects.map((project) =>
       <ProjectItem
         key={"projectItem" + project.objectID}
         project={project}
@@ -186,7 +186,7 @@ const ListFrameworksAndLibs = ({ tools, onRemoveProject }) =>
   </ul>
 
 ListFrameworksAndLibs.propTypes = {
-  tools: PropTypes.arrayOf(
+  projects: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,

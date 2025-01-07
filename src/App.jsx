@@ -59,6 +59,7 @@ const App = () => {
    */
   const useStoredState = (stateName, initialValue) => {
     // Load search term, use default value if saved value found
+    // TODO: Rename to useLocalStorageState
 
     const [state, setState] = useState(() => {
       try {
@@ -82,7 +83,7 @@ const App = () => {
   };
 
   /** State for search term */
-  const [searchTerm, setSearchTerm] = useStoredState('searchTerm', '');
+  const [searchTerm, setSearchTerm] = useStoredState('searchTerm', 'Re');
 
   /**
    * @param {Event} event - The event object
@@ -111,8 +112,32 @@ const App = () => {
     }
   }
 
-  /** State for projects (frameworks and libraries) */
-  const [projects, setProjects] = useState(initialProjects);
+  /** All projects */
+  const [projects, setProjects] = useState([]);
+
+  /**
+   * Gets projects from the data source asynchronously.
+   * @returns {Promise} - Promise that resolves to an object with projects.
+   */
+  // This is a intermediate solution. Current data source is static.
+  const getAsyncProjects = () =>
+    new Promise((resolve) => {
+      setTimeout( // Simulate delay of async operation
+        () => {
+          resolve({ data: { projects: initialProjects } });
+        }, 2000
+      );
+    });
+
+  /**
+   * Load projects from the data source.
+   */
+  useEffect(() => {
+    getAsyncProjects().then(result => {
+      setProjects(result.data.projects);
+    });
+  }, []);
+
 
   /** 
    * Remove a project from the projects list. 

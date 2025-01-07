@@ -184,19 +184,22 @@ const App = () => {
         <h1>{welcomeData.greeting} {welcomeData.title}</h1>
       </header>
 
-      <section>
-        {/* Example of adding a callback function as a prop */}
-        <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
-      </section>
+      <main>
+        <section>
+          {/* Example of adding a callback function as a prop */}
+          <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+        </section>
 
-      <section>
-        <hr />
-        <h2>Frameworks and Libraries</h2>
+        <section>
+          <hr />
+          <h2>Frameworks and Libraries for JavaScript</h2>
 
-        <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
-        {isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
-        {isDataLoadError && <p className='data-load-error-view'>Error loading data.</p>}
-      </section>
+          <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+          {/* Using conditional rendering to display loading and error messages */}
+          {isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
+          {isDataLoadError && <p className='data-load-error-view'>Error loading data.</p>}
+        </section>
+      </main>
 
       <aside>
         <hr />

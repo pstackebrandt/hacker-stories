@@ -7,7 +7,7 @@
  * Development status: todo Live state from Search component to App component.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 
 // Import config data
 import { welcomeData } from './config/welcome';
@@ -114,8 +114,29 @@ const App = () => {
     }
   }
 
+  /**
+   * Reducer for projects state.
+   * @param {Array} state - Current state of projects.
+   * @param {Object} action - Action object with type and payload.
+   * @returns {Array} - New state of projects.
+   */
+  const projectsReducer = (state, action) => {
+    switch (action.type) {
+      case 'SET_PROJECTS':
+        return action.payload;
+
+      case 'REMOVE_PROJECT':
+        return state.filter(
+          project => project.objectID !== action.payload.objectID
+        );
+
+      default:
+        throw new Error(`Unknown action type: ${action.type}`);
+    }
+  }
+
   /** All projects */
-  const [projects, setProjects] = useState([]);
+  const [projects, dispatchProjects] = useReducer(projectsReducer, []);
 
   const [isLoadingData, setIsLoadingData] = useState(false);
 
@@ -137,35 +158,39 @@ const App = () => {
       );
     });
   }
+  
 
   /**
    * Load projects from the data source.
    */
   useEffect(() => {
-    getAsyncProjects().then(result => {
-      setIsLoadingData(true);
-      setProjects(result.data.projects);
-    }).catch(error => {
-      console.error(`Error loading projects: ${error.message}`);
-      setIsDataLoadError(true);
-    }).finally(
-      () => {
+    setIsLoadingData(true);
+
+    getAsyncProjects()
+      .then(result => {
+        dispatchProjects({
+          type: 'SET_PROJECTS',
+          payload: result.data.projects
+        });
         setIsLoadingData(false);
-      }
-    );
+      })
+      .catch(error => {
+        console.error(`Error loading projects: ${error.message}`);
+        setIsDataLoadError(true);
+        setIsLoadingData(false);
+        // We dont want to remove the projects list data, so we dont empty it.
+      })
   }, []);
 
 
   /** 
    * Remove a project from the projects list. 
-   * Save the updated list to state.
   */
   const handleRemoveProject = (projectItem) => {
-    const newProjects = projects.filter(
-      project => project.objectID !== projectItem.objectID
-    );
-
-    setProjects(newProjects);
+    dispatchProjects({
+      type: 'REMOVE_PROJECT',
+      payload: projectItem
+    });
   }
 
   /**
@@ -175,7 +200,6 @@ const App = () => {
   const searchedProjects = projects.filter(
     project => searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
-
 
   return (
     <div>

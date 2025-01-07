@@ -28,3 +28,20 @@ todo Project item has currently different names.
 .by-label {
     margin: 0 0.5rem;
 }
+
+.data-loading-view {
+    color: blue;
+    border: 1px solid blue;
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0.5rem;
+}
+
+.data-load-error-view {
+    border: 1px solid red;
+    color: red;
+    padding: 4px 8px;
+    margin: 0;
+    display: inline-block;
+    margin: 0.5rem;
+}

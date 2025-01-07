@@ -43,6 +43,8 @@ const pageDescription = () => ({
     "Persist state in localStorage",
     "Use of conditional rendering",
     "Use of callback functions to handle events",
+    "Handle loading states with useState",
+    "Handle error states with useState",
   ]
 })
 
@@ -115,27 +117,42 @@ const App = () => {
   /** All projects */
   const [projects, setProjects] = useState([]);
 
+  const [isLoadingData, setIsLoadingData] = useState(false);
+
+  const [isDataLoadError, setIsDataLoadError] = useState(false);
+
   /**
    * Gets projects from the data source asynchronously.
    * @returns {Promise} - Promise that resolves to an object with projects.
    */
   // This is a intermediate solution. Current data source is static.
-  const getAsyncProjects = () =>
-    new Promise((resolve) => {
+  const getAsyncProjects = () => {
+    setIsLoadingData(true);
+
+    return new Promise((resolve) => {
       setTimeout( // Simulate delay of async operation
         () => {
           resolve({ data: { projects: initialProjects } });
         }, 2000
       );
     });
+  }
 
   /**
    * Load projects from the data source.
    */
   useEffect(() => {
     getAsyncProjects().then(result => {
+      setIsLoadingData(true);
       setProjects(result.data.projects);
-    });
+    }).catch(error => {
+      console.error(`Error loading projects: ${error.message}`);
+      setIsDataLoadError(true);
+    }).finally(
+      () => {
+        setIsLoadingData(false);
+      }
+    );
   }, []);
 
 
@@ -175,8 +192,10 @@ const App = () => {
       <section>
         <hr />
         <h2>Frameworks and Libraries</h2>
-        {/* Example of adding a list of data objects as a prop */}
+
         <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+        {isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
+        {isDataLoadError && <p className='data-load-error-view'>Error loading data.</p>}
       </section>
 
       <aside>

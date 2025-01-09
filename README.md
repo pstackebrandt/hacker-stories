@@ -1,5 +1,13 @@
 # Hacker Stories
 
+## Deployed on GitHub Pages
+
+From time to time I will deploy a current version of this project to GitHub Pages.
+
+see [https://pstackebrandt.github.io/hacker-stories](https://pstackebrandt.github.io/hacker-stories)
+
+(For now it won't be a nice UI, but it's a start ;-)
+
 ## Getting Started
 
 To start the app for development, follow these steps:

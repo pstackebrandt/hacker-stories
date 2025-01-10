@@ -48,6 +48,44 @@ const pageDescription = () => ({
   ]
 })
 
+/**
+   * Gets projects from the data source asynchronously.
+   * @returns {Promise} - Promise that resolves to an object with projects.
+   */
+// This is a intermediate solution. Current data source is static.
+const getAsyncProjects = () => {
+
+  return new Promise((resolve) => {
+    setTimeout( // Simulate delay of async operation
+      () => {
+        resolve({ data: { projects: initialProjects } });
+      }, 2000
+    );
+  });
+}
+
+
+/**
+   * Reducer for projects state.
+   * @param {Array} state - Current state of projects.
+   * @param {Object} action - Action object with type and payload.
+   * @returns {Array} - New state of projects.
+   */
+const projectsReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_PROJECTS':
+      return action.payload;
+
+    case 'REMOVE_PROJECT':
+      return state.filter(
+        project => project.objectID !== action.payload.objectID
+      );
+
+    default:
+      throw new Error(`Unknown action type: ${action.type}`);
+  }
+}
+
 // Main component 
 const App = () => {
 
@@ -114,26 +152,6 @@ const App = () => {
     }
   }
 
-  /**
-   * Reducer for projects state.
-   * @param {Array} state - Current state of projects.
-   * @param {Object} action - Action object with type and payload.
-   * @returns {Array} - New state of projects.
-   */
-  const projectsReducer = (state, action) => {
-    switch (action.type) {
-      case 'SET_PROJECTS':
-        return action.payload;
-
-      case 'REMOVE_PROJECT':
-        return state.filter(
-          project => project.objectID !== action.payload.objectID
-        );
-
-      default:
-        throw new Error(`Unknown action type: ${action.type}`);
-    }
-  }
 
   /** All projects */
   const [projects, dispatchProjects] = useReducer(projectsReducer, []);
@@ -142,23 +160,6 @@ const App = () => {
 
   const [isDataLoadError, setIsDataLoadError] = useState(false);
 
-  /**
-   * Gets projects from the data source asynchronously.
-   * @returns {Promise} - Promise that resolves to an object with projects.
-   */
-  // This is a intermediate solution. Current data source is static.
-  const getAsyncProjects = () => {
-    setIsLoadingData(true);
-
-    return new Promise((resolve) => {
-      setTimeout( // Simulate delay of async operation
-        () => {
-          resolve({ data: { projects: initialProjects } });
-        }, 2000
-      );
-    });
-  }
-  
 
   /**
    * Load projects from the data source.

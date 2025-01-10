@@ -22,6 +22,18 @@ import ProjectsList from './components/ProjectsList';
 import './App.css';
 
 /**
+ * Action types for the projects reducer
+ * @readonly
+ * @enum {string}
+ */
+const ProjectsActionTypes = Object.freeze({
+  INIT_LOADING: 'INIT_LOADING',
+  SET_PROJECTS: 'SET_PROJECTS',
+  LOAD_ERROR: 'LOAD_ERROR',
+  REMOVE_PROJECT: 'REMOVE_PROJECT'
+});
+
+/**
  * @typedef {Object} Project
  * @property {string} title - The title of the project
  * @property {string} url - The URL of the project
@@ -40,8 +52,8 @@ import './App.css';
 
 /**
  * @typedef {Object} ProjectsAction
- * @property {string} type - The action type
- * @property {*} [payload] - The action payload
+ * @property {keyof typeof ProjectsActionTypes} type - The action type
+ * @property {Project | Project[] | undefined} [payload] - The action payload
  */
 
 /**
@@ -104,14 +116,14 @@ const projectsReducer = (state, action) => {
 
   switch (action.type) {
 
-    case 'INIT_LOADING':
+    case ProjectsActionTypes.INIT_LOADING:
       return {
         ...state,
         isLoading: true,
         isLoadError: false
       };
 
-    case 'SET_PROJECTS':
+    case ProjectsActionTypes.SET_PROJECTS:
       return {
         ...state,
         data: action.payload,
@@ -119,7 +131,7 @@ const projectsReducer = (state, action) => {
         isLoadError: false
       }
 
-    case 'LOAD_ERROR':
+    case ProjectsActionTypes.LOAD_ERROR:
       return {
         ...state,
         // We dont want change the projects list.
@@ -127,7 +139,7 @@ const projectsReducer = (state, action) => {
         isLoadError: true,
       }
 
-    case 'REMOVE_PROJECT':
+    case ProjectsActionTypes.REMOVE_PROJECT:
       return {
         ...state,
         data: state.data.filter(
@@ -224,20 +236,20 @@ const App = () => {
    */
   useEffect(() => {
     dispatchProjects({
-      type: 'INIT_LOADING',
+      type: ProjectsActionTypes.INIT_LOADING,
     });
 
     getAsyncProjects()
       .then(result => {
         dispatchProjects({
-          type: 'SET_PROJECTS',
+          type: ProjectsActionTypes.SET_PROJECTS,
           payload: result.data.projects
         });
       })
       .catch(error => {
         console.error(`Error loading projects: ${error.message}`);
         dispatchProjects({
-          type: 'LOAD_ERROR',
+          type: ProjectsActionTypes.LOAD_ERROR,
         });
       })
   }, []);
@@ -248,7 +260,7 @@ const App = () => {
   */
   const handleRemoveProject = (projectItem) => {
     dispatchProjects({
-      type: 'REMOVE_PROJECT',
+      type: ProjectsActionTypes.REMOVE_PROJECT,
       payload: projectItem
     });
   }

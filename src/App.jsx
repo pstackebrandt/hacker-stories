@@ -22,8 +22,37 @@ import ProjectsList from './components/ProjectsList';
 import './App.css';
 
 /**
- * @summary Describes the React training purpose of this page. Tells what is demonstrated.
- * @returns {Object} - Object with page purpose and content.
+ * @typedef {Object} Project
+ * @property {string} title - The title of the project
+ * @property {string} url - The URL of the project
+ * @property {string} author - The author of the project
+ * @property {number} num_comments - Number of comments
+ * @property {number} points - Number of points
+ * @property {number} objectID - Unique identifier
+ */
+
+/**
+ * @typedef {Object} ProjectsState
+ * @property {Project[]} data - Array of projects
+ * @property {boolean} isLoadingData - Loading state flag
+ * @property {boolean} isLoadError - Error state flag
+ */
+
+/**
+ * @typedef {Object} ProjectsAction
+ * @property {string} type - The action type
+ * @property {*} [payload] - The action payload
+ */
+
+/**
+ * @typedef {Object} PageDescription
+ * @property {string} purpose - The purpose of the page
+ * @property {string[]} content - Array of content descriptions
+ */
+
+/**
+ * Describes the React training purpose of this page.
+ * @returns {PageDescription} - Object with page purpose and content.
  */
 const pageDescription = () => ({
   purpose: "Demonstrates the use of function components, event handlers, props, useState, and custom hooks in a React application.",
@@ -50,7 +79,7 @@ const pageDescription = () => ({
 
 /**
    * Gets projects from the data source asynchronously.
-   * @returns {Promise} - Promise that resolves to an object with projects.
+   * @returns {Promise<{data: {projects: Project[]}}>} - Promise that resolves to an object with projects.
    */
 // This is a intermediate solution. Current data source is static.
 const getAsyncProjects = () => {
@@ -67,35 +96,66 @@ const getAsyncProjects = () => {
 
 /**
    * Reducer for projects state.
-   * @param {Array} state - Current state of projects.
-   * @param {Object} action - Action object with type and payload.
-   * @returns {Array} - New state of projects.
+   * @param {ProjectsState} state - Current state of projects.
+   * @param {ProjectsAction} action - Action object with type and payload.
+   * @returns {ProjectsState} - New state of projects.
    */
 const projectsReducer = (state, action) => {
+
   switch (action.type) {
+
+    case 'INIT_LOADING':
+      return {
+        ...state,
+        isLoading: true,
+        isLoadError: false
+      };
+
     case 'SET_PROJECTS':
-      return action.payload;
+      return {
+        ...state,
+        data: action.payload,
+        isLoading: false,
+        isLoadError: false
+      }
+
+    case 'LOAD_ERROR':
+      return {
+        ...state,
+        // We dont want change the projects list.
+        isLoading: false,
+        isLoadError: true,
+      }
 
     case 'REMOVE_PROJECT':
-      return state.filter(
-        project => project.objectID !== action.payload.objectID
-      );
-
+      return {
+        ...state,
+        data: state.data.filter(
+          project => project.objectID !== action.payload.objectID
+        ),
+        isLoadingData: false,
+        isLoadError: false
+      }
+      
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
 }
 
-// Main component 
+/**
+ * Main App component.
+ * @returns {JSX.Element} The rendered component
+ */
 const App = () => {
 
   /** 
    * @summary Custom hook for management of the state of a date (a data unit).
    * Gets the dates value from localStorage if it exists or uses a given default value.
    * Saves current value to localStorage automatically.
+   * @template T
    * @param {string} stateName - Name of the data unit. Used as key in localStorage.
-   * @param {string} initialValue - Default value for the data unit. (optional)
-   * @returns {[value, setValue]} - Array with search term and setSearchTerm function.
+   * @param {T} initialValue - Default value for the data unit.
+   * @returns {[T, (value: T) => void]} - Array with state value and setter function.
    */
   const useStoredState = (stateName, initialValue) => {
     // Load search term, use default value if saved value found
@@ -154,18 +214,18 @@ const App = () => {
 
 
   /** All projects */
-  const [projects, dispatchProjects] = useReducer(projectsReducer, []);
-
-  const [isLoadingData, setIsLoadingData] = useState(false);
-
-  const [isDataLoadError, setIsDataLoadError] = useState(false);
+  const [projects, dispatchProjects] = useReducer(projectsReducer,
+    { data: [], isLoadingData: false, isLoadError: false }
+  );
 
 
   /**
    * Load projects from the data source.
    */
   useEffect(() => {
-    setIsLoadingData(true);
+    dispatchProjects({
+      type: 'INIT_LOADING',
+    });
 
     getAsyncProjects()
       .then(result => {
@@ -173,13 +233,12 @@ const App = () => {
           type: 'SET_PROJECTS',
           payload: result.data.projects
         });
-        setIsLoadingData(false);
       })
       .catch(error => {
         console.error(`Error loading projects: ${error.message}`);
-        setIsDataLoadError(true);
-        setIsLoadingData(false);
-        // We dont want to remove the projects list data, so we dont empty it.
+        dispatchProjects({
+          type: 'LOAD_ERROR',
+        });
       })
   }, []);
 
@@ -194,11 +253,12 @@ const App = () => {
     });
   }
 
+
   /**
    * Get filtered projects based on search term.
    * @returns {Array} - Array of filtered projects
    */
-  const searchedProjects = projects.filter(
+  const searchedProjects = projects.data.filter(
     project => searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -221,8 +281,8 @@ const App = () => {
 
           <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
           {/* Using conditional rendering to display loading and error messages */}
-          {isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
-          {isDataLoadError && <p className='data-load-error-view'>Error loading data.</p>}
+          {projects.isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
+          {projects.isLoadError && <p className='data-load-error-view'>Error loading data.</p>}
         </section>
       </main>
 

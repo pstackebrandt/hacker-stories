@@ -1,11 +1,18 @@
-// List of javascript frameworks and libraries
-// Each framework/library has:
-// - title: Name of the framework/library
-// - url: Official website URL
-// - author: Creator(s) of the framework/library
-// - num_comments: Number of comments
-// - points: Rating points
-// - objectID: Unique identifier
+/**
+ * @typedef {Object} Framework
+ * @property {string} title - Name of the framework/library
+ * @property {string} url - Official website URL
+ * @property {string} author - Creator(s) of the framework/library
+ * @property {number} num_comments - Number of comments
+ * @property {number} points - Rating points
+ * @property {number} objectID - Unique identifier
+ */
+
+/**
+ * List of JavaScript frameworks and libraries.
+ * The list is frozen to prevent modifications.
+ * @type {Framework[]}
+ */
 export const frameworksAndLibs = Object.freeze([
   {
     title: 'React',

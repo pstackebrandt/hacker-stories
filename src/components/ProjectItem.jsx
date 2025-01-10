@@ -3,9 +3,12 @@
 import PropTypes from 'prop-types';
 
 /**
- * Displays a single framework/library.
+ * Displays a single framework/library item with its details and a remove button.
  * 
- * Current functionality matches page 32 of the book with minor improvements.
+ * @param {Object} props - Component props
+ * @param {import('../data/frameworks').Framework} props.project - The project to display
+ * @param {(project: import('../data/frameworks').Framework) => void} props.onRemoveProject - Callback to remove the project
+ * @returns {JSX.Element} Rendered project item
  */
 const ProjectItem = ({ project, onRemoveProject }) => // Example of using props with destructuring.
     <li className='project-item'>

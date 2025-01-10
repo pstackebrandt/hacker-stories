@@ -5,6 +5,11 @@ import ProjectItem from './ProjectItem';
 
 /**
  * Displays a list of projects (frameworks/libraries) with the ability to remove a project.
+ * 
+ * @param {Object} props - Component props
+ * @param {import('../data/frameworks').Framework[]} props.projects - Array of projects to display
+ * @param {(project: import('../data/frameworks').Framework) => void} props.onRemoveProject - Callback to remove a project
+ * @returns {JSX.Element} Rendered list of projects
  */
 const ProjectsList = ({ projects, onRemoveProject }) =>
     <ul>

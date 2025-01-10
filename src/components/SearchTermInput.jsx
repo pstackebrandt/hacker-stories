@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import InputWithLabel from './InputWithLabel';
 
 /** 
- * Search component allows users to enter a search term.
- * This will be used by another component to filter frameworks/libraries.
+ * Search component that allows users to enter a search term.
+ * Displays the current search term and provides an input field for updating it.
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.searchTerm - The current search term
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} props.handleSearchTermChange - Callback when search term changes
+ * @returns {JSX.Element} Rendered search input with label and current term display
 */
 const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
 

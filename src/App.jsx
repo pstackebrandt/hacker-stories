@@ -26,10 +26,10 @@ import './App.css';
  * @readonly
  * @enum {string}
  */
-const ProjectsActionTypes = Object.freeze({
-  INIT_LOADING: 'INIT_LOADING',
-  SET_PROJECTS: 'SET_PROJECTS',
-  LOAD_ERROR: 'LOAD_ERROR',
+const ProjectsActions = Object.freeze({
+  FETCH_INIT: 'FETCH_INIT',
+  FETCH_SUCCESS: 'FETCH_SUCCESS',
+  FETCH_FAILURE: 'FETCH_FAILURE',
   REMOVE_PROJECT: 'REMOVE_PROJECT'
 });
 
@@ -52,7 +52,7 @@ const ProjectsActionTypes = Object.freeze({
 
 /**
  * @typedef {Object} ProjectsAction
- * @property {keyof typeof ProjectsActionTypes} type - The action type
+ * @property {keyof typeof ProjectsActions} type - The action type
  * @property {Project | Project[] | undefined} [payload] - The action payload
  */
 
@@ -116,14 +116,14 @@ const projectsReducer = (state, action) => {
 
   switch (action.type) {
 
-    case ProjectsActionTypes.INIT_LOADING:
+    case ProjectsActions.FETCH_INIT:
       return {
         ...state,
         isLoading: true,
         isLoadError: false
       };
 
-    case ProjectsActionTypes.SET_PROJECTS:
+    case ProjectsActions.FETCH_SUCCESS:
       return {
         ...state,
         data: action.payload,
@@ -131,7 +131,7 @@ const projectsReducer = (state, action) => {
         isLoadError: false
       }
 
-    case ProjectsActionTypes.LOAD_ERROR:
+    case ProjectsActions.FETCH_FAILURE:
       return {
         ...state,
         // We dont want change the projects list.
@@ -139,7 +139,7 @@ const projectsReducer = (state, action) => {
         isLoadError: true,
       }
 
-    case ProjectsActionTypes.REMOVE_PROJECT:
+    case ProjectsActions.REMOVE_PROJECT:
       return {
         ...state,
         data: state.data.filter(
@@ -236,20 +236,20 @@ const App = () => {
    */
   useEffect(() => {
     dispatchProjects({
-      type: ProjectsActionTypes.INIT_LOADING,
+      type: ProjectsActions.FETCH_INIT,
     });
 
     getAsyncProjects()
       .then(result => {
         dispatchProjects({
-          type: ProjectsActionTypes.SET_PROJECTS,
+          type: ProjectsActions.FETCH_SUCCESS,
           payload: result.data.projects
         });
       })
       .catch(error => {
         console.error(`Error loading projects: ${error.message}`);
         dispatchProjects({
-          type: ProjectsActionTypes.LOAD_ERROR,
+          type: ProjectsActions.FETCH_FAILURE,
         });
       })
   }, []);
@@ -260,7 +260,7 @@ const App = () => {
   */
   const handleRemoveProject = (projectItem) => {
     dispatchProjects({
-      type: ProjectsActionTypes.REMOVE_PROJECT,
+      type: ProjectsActions.REMOVE_PROJECT,
       payload: projectItem
     });
   }

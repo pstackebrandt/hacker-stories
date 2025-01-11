@@ -41,6 +41,7 @@ const ProjectsActions = Object.freeze({
  * @property {string} title - The title of the project
  * @property {string} url - The URL of the project
  * @property {string} author - The author of the project
+ * // eslint-disable-next-line camelcase
  * @property {number} num_comments - Number of comments
  * @property {number} points - Number of points
  * @property {(string | number)} objectID - Unique identifier
@@ -177,15 +178,6 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useStoredState('searchTerm', 'Re');
 
   /**
-   * @param {Event} event - The event object
-   */
-  const handleSearchTermChange = (event) => {
-    console.log(`handleSearchTermChange() called by ${event.target}
-       with value ${event.target.value}.`);
-    saveNewSearchTerm(event.target.value);
-  }
-
-  /**
    * Save @param newSearchTerm to state if it's newer than active search term.
    * @param {string} newSearchTerm - Candidate for search term value.
    * @returns {void}
@@ -203,6 +195,16 @@ const App = () => {
     }
   }
 
+  /**
+   * Handle search term change. Saves new search term.
+   * Does not start search.
+   * @param {Event} event - The event object
+   */
+  const handleSearchTermChange = (event) => {
+    console.log(`handleSearchTermChange() called by ${event.target}
+       with value ${event.target.value}.`);
+    saveNewSearchTerm(event.target.value);
+  }
 
   /** All projects */
   const [projects, dispatchProjects] = useReducer(projectsReducer,
@@ -211,10 +213,25 @@ const App = () => {
 
 
   /** 
-   * Effect hook to fetch initial projects data on component mount
+   * Remove a project from the projects list. 
+  */
+  const handleRemoveProject = (projectItem) => {
+    dispatchProjects({
+      type: ProjectsActions.REMOVE_PROJECT,
+      payload: projectItem
+    });
+  }
+
+  /**
+   * Fetch search results from the API. Sends the results to the reducer.
+   * @returns {void}
    */
-  useEffect(() => {
-    
+  const fetchSearchResults = () => {
+    if (!searchTerm) {
+      console.warn(`fetchSearchResults() was wrongly called while no search term available. Not fetching.`);
+      return;
+    }
+
     dispatchProjects({
       type: ProjectsActions.FETCH_INIT,
     });
@@ -232,20 +249,17 @@ const App = () => {
         dispatchProjects({
           type: ProjectsActions.FETCH_FAILURE,
         });
-      })
-  }, [searchTerm]);
+      });
+  };
 
-
-  /** 
-   * Remove a project from the projects list. 
-  */
-  const handleRemoveProject = (projectItem) => {
-    dispatchProjects({
-      type: ProjectsActions.REMOVE_PROJECT,
-      payload: projectItem
-    });
+  /**
+     * Handle search button click.
+     * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
+     */
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    fetchSearchResults();
   }
-
 
   /**
    * Get filtered projects based on search term.
@@ -266,6 +280,9 @@ const App = () => {
         <section>
           {/* Example of adding a callback function as a prop */}
           <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+
+          {/*  */}
+          <button disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
         </section>
 
         <section>

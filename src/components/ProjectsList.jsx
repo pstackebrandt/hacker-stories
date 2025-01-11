@@ -27,6 +27,7 @@ ProjectsList.propTypes = {
             title: PropTypes.string.isRequired,
             url: PropTypes.string,
             author: PropTypes.string.isRequired,
+            // eslint-disable-next-line camelcase
             num_comments: PropTypes.number.isRequired,
             points: PropTypes.number.isRequired,
             objectID: PropTypes.oneOfType([

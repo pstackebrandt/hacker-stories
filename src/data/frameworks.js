@@ -3,6 +3,7 @@
  * @property {string} title - Name of the framework/library
  * @property {string} url - Official website URL
  * @property {string} author - Creator(s) of the framework/library
+ * // eslint-disable-next-line camelcase
  * @property {number} num_comments - Number of comments
  * @property {number} points - Rating points
  * @property {number} objectID - Unique identifier
@@ -17,8 +18,8 @@ export const frameworksAndLibs = Object.freeze([
   {
     title: 'React',
     url: 'https://reactjs.org/',
-    author: 'Jordan Walke', 
-    num_comments: 3,
+    author: 'Jordan Walke',
+    numComments: 3,
     points: 4,
     objectID: 0,
   },
@@ -26,7 +27,7 @@ export const frameworksAndLibs = Object.freeze([
     title: 'Redux',
     url: 'https://redux.js.org/',
     author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2, 
+    numComments: 2,
     points: 5,
     objectID: 1,
   },
@@ -34,15 +35,15 @@ export const frameworksAndLibs = Object.freeze([
     title: 'Vue.js',
     url: 'https://vuejs.org/',
     author: 'Evan You',
-    num_comments: 4,
+    numComments: 4,
     points: 3,
     objectID: 2,
   },
   {
-    title: 'Svelte', 
+    title: 'Svelte',
     url: 'https://svelte.dev/',
     author: 'Rich Harris',
-    num_comments: 5,
+    numComments: 5,
     points: 5,
     objectID: 3,
   },

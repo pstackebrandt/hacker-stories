@@ -33,6 +33,15 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'no-unused-vars': 'error',
+      'no-undef': 'error',
+      'no-shadow': 'error',
+      'no-use-before-define': 'error',
+      'camelcase': 'error',
+      'dot-notation': 'error',
+      'consistent-return': 'error',
+      'no-unused-expressions': 'error',
+      'no-prototype-builtins': 'error'
     },
   },
 ]

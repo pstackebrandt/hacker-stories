@@ -21,6 +21,9 @@ import ProjectsList from './components/ProjectsList';
 // Import styles
 import './App.css';
 
+// Import page description
+import { pageDescription } from './config/pageDescription';
+
 /**
  * Action types for the projects reducer
  * @readonly
@@ -55,40 +58,6 @@ const ProjectsActions = Object.freeze({
  * @property {keyof typeof ProjectsActions} type - The action type
  * @property {Project | Project[] | undefined} [payload] - The action payload
  */
-
-/**
- * @typedef {Object} PageDescription
- * @property {string} purpose - The purpose of the page
- * @property {string[]} content - Array of content descriptions
- */
-
-/**
- * Describes the React training purpose of this page.
- * @returns {PageDescription} - Object with page purpose and content.
- */
-const pageDescription = () => ({
-  purpose: "Demonstrates the use of function components, event handlers, props, useState, and custom hooks in a React application.",
-  content: [
-    "Use of listed objects as component input",
-    "Create JSX from lists using map()",
-    "Use props to pass data and callback functions to components",
-    "Use state to manage data",
-    "Use event handlers to handle user interactions",
-    "Destructure props",
-    "Filter data based on search term",
-    "Lift state up to manage shared state",
-    "Encapsulate logic in functions for cleaner JSX",
-    "Implement custom hooks for state management",
-    "Handle side effects with useEffect",
-    "Use of PropTypes for type checking",
-    "Persist state in localStorage",
-    "Use of conditional rendering",
-    "Use of callback functions to handle events",
-    "Handle loading states with useState",
-    "Handle error states with useState",
-  ]
-})
-
 
 /**
    * Reducer for projects state.
@@ -312,7 +281,7 @@ const App = () => {
 
       <aside>
         <hr />
-        <h2>Page purpose</h2>
+        <h2>Learning Objectives</h2>
         <p>{pageDescription().purpose}</p>
         <ul>{pageDescription().content.map((part, index) =>
           <li key={index}>{part}</li>

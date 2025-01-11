@@ -132,25 +132,35 @@ const projectsReducer = (state, action) => {
         isLoadingData: false,
         isLoadError: false
       }
-      
+
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
 }
 
 
-/**
- * API endpoint for fetching projects.
- * @type {string}
- */
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
-
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search';
+const SEARCH_QUERY_TEMPLATE = query => `query=${query}`;
+const PAGE_SIZE_TEMPLATE = size => `hitsPerPage=${size}`;
 const HITS_PER_PAGE = 5;
 
 // real hacker news API endpoint: 
 // hacker news github repo: https://github.com/HackerNews/API
 
 // curl -X GET "https://hn.algolia.com/api/v1/search?query=React&tags=story&hitsPerPage=3" -H "Accept: application/json" | ConvertFrom-Json | ForEach-Object { $_.hits | ForEach-Object { $_.title } }
+
+/**
+ * Builds a URL for searching projects.
+ * @param {string} searchTerm - The search term to use in the URL.
+ * @param {number} hitsPerPage - The number of hits per page to use in the URL.
+ * @returns {string} - The URL for searching projects.
+ */
+const buildSearchUrl = (searchTerm, hitsPerPage = HITS_PER_PAGE) => {
+  const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
+  const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
+
+  return `${API_ENDPOINT}?${searchQuery}&${hitsPerPageQuery}`;
+};
 
 /**
  * Main App component.
@@ -234,12 +244,13 @@ const App = () => {
   /** 
    * Effect hook to fetch initial projects data on component mount
    */
-  useEffect(function fetchInitialProjects() {
+  useEffect(() => {
+    
     dispatchProjects({
       type: ProjectsActions.FETCH_INIT,
     });
 
-    fetch(`${API_ENDPOINT}${searchTerm}&hitsPerPage=5`)//&tags=story&hitsPerPage=5`
+    fetch(buildSearchUrl(searchTerm))
       .then(response => response.json())
       .then(result => {
         dispatchProjects({

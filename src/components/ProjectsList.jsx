@@ -25,11 +25,14 @@ ProjectsList.propTypes = {
     projects: PropTypes.arrayOf(
         PropTypes.shape({
             title: PropTypes.string.isRequired,
-            url: PropTypes.string.isRequired,
+            url: PropTypes.string,
             author: PropTypes.string.isRequired,
             num_comments: PropTypes.number.isRequired,
             points: PropTypes.number.isRequired,
-            objectID: PropTypes.number.isRequired,
+            objectID: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number
+            ]).isRequired,
         })
     ).isRequired,
     onRemoveProject: PropTypes.func.isRequired

@@ -13,7 +13,7 @@ import { useState, useEffect, useReducer } from 'react';
 import { welcomeData } from './config/welcome';
 
 // Import base data
-import { frameworksAndLibs as initialProjects } from './data/frameworks';
+//import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
 import SearchTermInput from './components/SearchTermInput';
 import ProjectsList from './components/ProjectsList';
@@ -40,7 +40,7 @@ const ProjectsActions = Object.freeze({
  * @property {string} author - The author of the project
  * @property {number} num_comments - Number of comments
  * @property {number} points - Number of points
- * @property {number} objectID - Unique identifier
+ * @property {(string | number)} objectID - Unique identifier
  */
 
 /**
@@ -89,22 +89,6 @@ const pageDescription = () => ({
   ]
 })
 
-/**
-   * Gets projects from the data source asynchronously.
-   * @returns {Promise<{data: {projects: Project[]}}>} - Promise that resolves to an object with projects.
-   */
-// This is a intermediate solution. Current data source is static.
-const getAsyncProjects = () => {
-
-  return new Promise((resolve) => {
-    setTimeout( // Simulate delay of async operation
-      () => {
-        resolve({ data: { projects: initialProjects } });
-      }, 2000
-    );
-  });
-}
-
 
 /**
    * Reducer for projects state.
@@ -143,7 +127,7 @@ const projectsReducer = (state, action) => {
       return {
         ...state,
         data: state.data.filter(
-          project => project.objectID !== action.payload.objectID
+          project => project.objectID.toString() !== action.payload.objectID.toString()
         ),
         isLoadingData: false,
         isLoadError: false
@@ -153,6 +137,20 @@ const projectsReducer = (state, action) => {
       throw new Error(`Unknown action type: ${action.type}`);
   }
 }
+
+
+/**
+ * API endpoint for fetching projects.
+ * @type {string}
+ */
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+
+const HITS_PER_PAGE = 5;
+
+// real hacker news API endpoint: 
+// hacker news github repo: https://github.com/HackerNews/API
+
+// curl -X GET "https://hn.algolia.com/api/v1/search?query=React&tags=story&hitsPerPage=3" -H "Accept: application/json" | ConvertFrom-Json | ForEach-Object { $_.hits | ForEach-Object { $_.title } }
 
 /**
  * Main App component.
@@ -182,8 +180,10 @@ const App = () => {
       }
     });
 
-    // Save search term to localStorage automatically when search term changed
-    useEffect(() => {
+    /**
+     * Effect hook to save state to localStorage.
+     */
+    useEffect(function saveStateToLocalStorage() {
       try {
         localStorage.setItem(stateName, state);
       } catch (error) {
@@ -211,7 +211,7 @@ const App = () => {
    * @param {string} newSearchTerm - Candidate for search term value.
    * @returns {void}
    */
-  const saveNewSearchTerm = (newSearchTerm) => {
+  const saveNewSearchTerm = (newSearchTerm = '') => {
 
     if (newSearchTerm !== searchTerm) { // Shall not ignore the case.
       // Set new search term
@@ -231,19 +231,20 @@ const App = () => {
   );
 
 
-  /**
-   * Load projects from the data source.
+  /** 
+   * Effect hook to fetch initial projects data on component mount
    */
-  useEffect(() => {
+  useEffect(function fetchInitialProjects() {
     dispatchProjects({
       type: ProjectsActions.FETCH_INIT,
     });
 
-    getAsyncProjects()
+    fetch(`${API_ENDPOINT}${searchTerm}&hitsPerPage=5`)//&tags=story&hitsPerPage=5`
+      .then(response => response.json())
       .then(result => {
         dispatchProjects({
           type: ProjectsActions.FETCH_SUCCESS,
-          payload: result.data.projects
+          payload: result.hits
         });
       })
       .catch(error => {
@@ -252,7 +253,7 @@ const App = () => {
           type: ProjectsActions.FETCH_FAILURE,
         });
       })
-  }, []);
+  }, [searchTerm]);
 
 
   /** 
@@ -271,7 +272,7 @@ const App = () => {
    * @returns {Array} - Array of filtered projects
    */
   const searchedProjects = projects.data.filter(
-    project => searchTerm &&
+    project => project && project.title && searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (

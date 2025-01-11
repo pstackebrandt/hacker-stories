@@ -15,9 +15,11 @@ const ProjectItem = ({ project, onRemoveProject }) => // Example of using props 
         <h3 className="project-item-title">{project.title}</h3>
         {/* Link and authors */}
         <div>
-            <span>
-                <a href={project.url}>{project.url}</a>
-            </span>
+            {project.url ? (
+                <a href={project.url}>{project.title}</a>
+            ) : (
+                <span>{project.title}</span>
+            )}
             <span className="by-label">by</span>
             <span>
                 {project.author}
@@ -44,12 +46,15 @@ const ProjectItem = ({ project, onRemoveProject }) => // Example of using props 
 
 ProjectItem.propTypes = {
     project: PropTypes.shape({
+        url: PropTypes.string,
         title: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
         author: PropTypes.string.isRequired,
         num_comments: PropTypes.number.isRequired,
         points: PropTypes.number.isRequired,
-        objectID: PropTypes.number.isRequired,
+        objectID: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]).isRequired,
     }).isRequired,
     onRemoveProject: PropTypes.func.isRequired
 };

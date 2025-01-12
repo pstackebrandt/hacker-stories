@@ -11,23 +11,51 @@ todo Project item has currently different names.
     margin-top: 0.4rem;
 }
 
-.comment-container {
-    display: flex;
-    align-items: center;
-    /* Vertically centers the content */
-}
-
-.star-level {
-    font-size: 1.5rem;
-    color: orange;
-    font-weight: bold;
-    margin-left: 1rem;
-    margin-top: 0.4rem;
-}
-
+/* Author */
 .by-label {
     margin: 0 0.5rem;
 }
+
+.author {
+    color: blue;
+    font-weight: bold;
+}
+
+/* Likes and number of comments */
+.comment-container {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    margin: 0.4rem 0;
+    padding-left: 1rem;
+}
+
+.comments {
+    color: blue;
+    font-weight: bold;
+    padding: 0 0.25rem;
+}
+
+.remove-post-button {
+    background-color: rgba(0, 0, 255, 0.59);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    margin-left: 1rem;
+}
+
+.likes {
+    color: rgb(165, 39, 1);
+    font-weight: bold;
+    padding: 0 0.25rem;
+}
+
+.comment-container .text {
+    padding-left: 0.25rem;
+    padding-right: .5rem;
+}
+
 
 .data-loading-view {
     color: blue;

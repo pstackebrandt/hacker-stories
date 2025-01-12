@@ -12,35 +12,53 @@ import PropTypes from 'prop-types';
  */
 const ProjectItem = ({ project, onRemoveProject }) => // Example of using props with destructuring.
     <li className='project-item'>
-        <h3 className="project-item-title">{project.title}</h3>
-        {/* Link and authors */}
-        <div>
+
+        {/* Link as title or title */}
+        <h3 className="project-item-title">
             {project.url ? (
                 <a href={project.url}>{project.title}</a>
             ) : (
                 <span>{project.title}</span>
             )}
-            <span className="by-label">by</span>
+        </h3>
+
+        {/* Author */}
+        <div>
             <span>
-                {project.author}
+                <span className="by-label">by</span>
+                <span className="author">
+                    {project.author}
+                </span>
             </span>
-            {/* Number of comments and star level */}
-            <div className="comment-container">
-                <span>
-                    {project.num_comments} comments
-                </span>
-                <span className="star-level">
-                    {'*'.repeat(project.points)}
-                </span>
-            </div>
-            <div>
-                <button
+            <span>
+                <button className='remove-post-button'
                     type="button"
                     onClick={() => onRemoveProject(project)}
                 >
                     Remove
                 </button>
-            </div>
+            </span>
+
+        </div>
+
+        {/* Likes and number comments */}
+        <div className="comment-container">
+            <span>
+                <span className="likes">
+                    {project.points}
+                </span>
+                <span className="text">
+                    likes
+                </span>
+            </span>
+            <span>
+                <span className="comments">
+                    {project.num_comments}
+                </span>
+                <span className="text">
+                    comments
+                </span>
+            </span>
         </div>
     </li>
 

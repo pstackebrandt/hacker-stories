@@ -10,13 +10,14 @@
 import { useState, useEffect, useReducer } from 'react';
 
 // Import config data
-import { welcomeData } from './config/welcome';
+import { titleData } from './config/pageTitle';
 
 // Import base data
 //import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
 import SearchTermInput from './components/SearchTermInput';
 import ProjectsList from './components/ProjectsList';
+import PageTitle from './components/PageTitle';
 
 // Import styles
 import './App.css';
@@ -58,6 +59,7 @@ const ProjectsActions = Object.freeze({
  * @typedef {Object} ProjectsAction
  * @property {keyof typeof ProjectsActions} type - The action type
  * @property {Project | Project[] | undefined} [payload] - The action payload
+ * @property {string} [searchTerm] - The search term for FETCH_SUCCESS action
  */
 
 /**
@@ -82,7 +84,8 @@ const projectsReducer = (state, action) => {
         ...state,
         data: action.payload,
         isLoading: false,
-        isLoadError: false
+        isLoadError: false,
+        activeSearchTerm: action.activeSearchTerm
       }
 
     case ProjectsActions.FETCH_FAILURE:
@@ -208,7 +211,7 @@ const App = () => {
 
   /** All projects */
   const [projects, dispatchProjects] = useReducer(projectsReducer,
-    { data: [], isLoadingData: false, isLoadError: false }
+    { data: [], isLoadingData: false, isLoadError: false, activeSearchTerm: '' }
   );
 
 
@@ -241,7 +244,8 @@ const App = () => {
       .then(result => {
         dispatchProjects({
           type: ProjectsActions.FETCH_SUCCESS,
-          payload: result.hits
+          payload: result.hits,
+          activeSearchTerm: searchTerm
         });
       })
       .catch(error => {
@@ -272,8 +276,7 @@ const App = () => {
   return (
     <div>
       <header>
-        {/* Example of using config data from a separate file */}
-        <h1>{welcomeData.greeting} {welcomeData.title}</h1>
+        <PageTitle title={titleData.title} greeting={titleData.greeting} />
       </header>
 
       <main>
@@ -287,10 +290,10 @@ const App = () => {
 
         <section>
           <hr />
-          <h2>Frameworks and Libraries for JavaScript</h2>
+          <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
 
           <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
-          {/* Using conditional rendering to display loading and error messages */}
+
           {projects.isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
           {projects.isLoadError && <p className='data-load-error-view'>Error loading data.</p>}
         </section>

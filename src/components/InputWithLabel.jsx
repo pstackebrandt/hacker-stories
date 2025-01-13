@@ -19,6 +19,7 @@ const InputWithLabel = ({
     value = '',
     isFocused = true,
     onInputChange,
+    placeholderText = 'Insert here...',
     children
 }) => {
 
@@ -43,6 +44,7 @@ const InputWithLabel = ({
                 id={finalId}
                 value={value}
                 type={inputType}
+                placeholder={placeholderText}
                 autoFocus={isFocused}
                 onChange={onInputChange}>
             </input>
@@ -56,6 +58,7 @@ InputWithLabel.propTypes = {
     inputType: PropTypes.string,
     isFocused: PropTypes.bool,
     onInputChange: PropTypes.func.isRequired,
+    placeholderText: PropTypes.string,
     children: PropTypes.node.isRequired
 };
 

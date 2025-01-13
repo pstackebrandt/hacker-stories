@@ -44,6 +44,7 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
       <InputWithLabel
         id="searchTermInput"
         value={searchTerm}
+        placeholderText="Insert search term here..."
         onInputChange={validateAndHandleChange}>
         <strong>Search: </strong>
       </InputWithLabel>
@@ -51,8 +52,9 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
       {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
 
       <p>
-        Searching for {searchTerm ? <strong>{searchTerm}</strong>
-          : "no specific value"}.
+        {searchTerm?.length >= 2 && (
+          <span>Press button to search for {searchTerm}</span>
+        )}
       </p>
     </>
   )

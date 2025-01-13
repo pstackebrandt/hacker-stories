@@ -16,7 +16,7 @@ const ProjectItem = ({ project, onRemoveProject }) => // Example of using props 
         {/* Link as title or title */}
         <h3 className="project-item-title">
             {project.url ? (
-                <a href={project.url}>{project.title}</a>
+                <a href={project.url} target="_blank" rel="noopener noreferrer">{project.title}</a>
             ) : (
                 <span>{project.title}</span>
             )}

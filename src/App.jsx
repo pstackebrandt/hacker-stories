@@ -274,7 +274,7 @@ const App = () => {
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div>
+    <div className='container'>
       <header>
         <PageTitle title={titleData.title} greeting={titleData.greeting} />
       </header>

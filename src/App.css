@@ -2,6 +2,17 @@
 todo Project item has currently different names.
  deprecated: tool-item, new: project-item
 */
+
+.container {
+    height: 100vh;
+    padding: 20px;
+
+    background: #83a4d4;
+
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .project-item {
     margin-bottom: 1rem;
 }

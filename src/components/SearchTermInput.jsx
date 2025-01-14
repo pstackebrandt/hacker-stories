@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import InputWithLabel from './InputWithLabel';
 import * as yup from 'yup';
 import { useState } from 'react';
+import styles from './SearchTermInput.module.scss';
 
 // Define validation schema
 const searchSchema = yup.object().shape({
@@ -49,7 +50,7 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
         <strong>Search: </strong>
       </InputWithLabel>
 
-      {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
 
       <p>
         {searchTerm?.length >= 2 && (

@@ -11,6 +11,7 @@ import { useState, useEffect, useReducer } from 'react';
 
 // Import config data
 import { titleData } from './config/pageTitle';
+import { pageDescription } from './config/pageDescription';
 
 // Import base data
 //import { frameworksAndLibs as initialProjects } from './data/frameworks';
@@ -22,10 +23,6 @@ import PageTitle from './components/PageTitle';
 // Import styles
 import './App.scss';
 import './styles/components/_app.scss';
-
-// Import page description
-import { pageDescription } from './config/pageDescription';
-
 /**
  * Action types for the projects reducer
  * @readonly
@@ -276,8 +273,8 @@ const App = () => {
 
   return (
     <div className='container'>
-      <header>
-        <PageTitle title={titleData.title} greeting={titleData.greeting} />
+      <header className='header'>
+        <PageTitle title={titleData.title} subtitle={titleData.subtitle} />
       </header>
 
       <main>

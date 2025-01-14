@@ -1,6 +1,7 @@
 // PageTitle.jsx
 
 import PropTypes from 'prop-types';
+import styles from './PageTitle.module.scss';
 
 /**
  * PageTitle component that displays a title and subtitle.
@@ -12,9 +13,9 @@ import PropTypes from 'prop-types';
  */
 const PageTitle = ({ title, subtitle }) => {
     return (
-        <div className="page-title">
-            <h1>{title}</h1>
-            {subtitle && <p>{subtitle}</p>}
+        <div className={styles.pageTitle}>
+            <h1 className={styles.title}>{title}</h1>
+            {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </div>
     );
 };

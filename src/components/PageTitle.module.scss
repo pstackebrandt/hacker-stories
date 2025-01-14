@@ -1,0 +1,23 @@
+/* PageTitle.module.scss */
+@import '../styles/_variables.scss';
+
+// todo rename PageTitle.jsx to PageTitles.js
+
+.pageTitle {
+    // todo rename to pageTitles
+    margin: $spacing-xs;
+    padding: $spacing-xs;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin: $spacing-xs;
+    color: $color-title;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: $color-subtitle;
+    margin: $spacing-xs;
+}

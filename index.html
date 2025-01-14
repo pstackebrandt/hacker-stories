@@ -1,15 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/src/index.scss">
   <title>Hacker Stories by PS</title>
+  <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 
 <body>
   <div id="root"></div>
+  <div class="js-disabled-message">
+    This application requires JavaScript to be enabled for full functionality.
+    Please enable JavaScript in your browser settings.
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

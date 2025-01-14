@@ -1,0 +1,22 @@
+/* Critical styles that should work without JavaScript */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+}
+
+/* Fallback message when JavaScript is disabled */
+.js-disabled-message {
+    display: none;
+}
+
+/* Show message only when JavaScript is disabled */
+.no-js .js-disabled-message {
+    display: block;
+    padding: 20px;
+    text-align: center;
+    background: #ffebee;
+    color: #721c24;
+}

@@ -1,3 +1,6 @@
+//import './styles/main.scss';
+@import './styles/_variables.scss';
+
 /* Project item
 todo Project item has currently different names.
  deprecated: tool-item, new: project-item
@@ -6,9 +9,7 @@ todo Project item has currently different names.
 .container {
     height: 100vh;
     padding: 20px;
-
-    background: #83a4d4;
-
+    //background: $color-primary;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -60,27 +61,4 @@ todo Project item has currently different names.
     color: rgb(165, 39, 1);
     font-weight: bold;
     padding: 0 0.25rem;
-}
-
-.comment-container .text {
-    padding-left: 0.25rem;
-    padding-right: .5rem;
-}
-
-
-.data-loading-view {
-    color: blue;
-    border: 1px solid blue;
-    display: inline-block;
-    padding: 4px 8px;
-    margin: 0.5rem;
-}
-
-.data-load-error-view {
-    border: 1px solid red;
-    color: red;
-    padding: 4px 8px;
-    margin: 0;
-    display: inline-block;
-    margin: 0.5rem;
 }

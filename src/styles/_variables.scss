@@ -1,11 +1,28 @@
-// Colors
+// Brand Colors
+// These are the main colors that define your application's visual identity.
+// Changing these colors should affect the overall theme of your application.
 $color-primary: #83a4d4;
+$color-secondary: #83a4d4; // Currently same as primary, can be changed later
+
+// Utility Colors
+// Basic, common colors used throughout the application.
+// These are standard colors that aren't specific to your brand.
 $color-blue: blue;
-$color-blue-transparent: rgba(0, 0, 255, 0.59);
-$color-likes: rgb(165, 39, 1);
 $color-white: white;
+$color-blue-faded: #bfc7d5; // Temporary color for faded blue elements
+$color-light-blue: #83a4d4; // #83a4d4 Light blue color for buttons and other UI elements
+
+// Semantic Colors
+// These variables define how colors are used in specific contexts.
+// They can be derived from either brand or utility colors.
+$color-background: red;
+$color-text-author: $color-blue;
+$color-text-comments: $color-blue;
+$color-button-bg: rgba($color-blue, 0.59);
+$color-likes: rgb(165, 39, 1);
 
 // Spacing
+// Common spacing values used for margins, padding, and gaps
 $spacing-xs: 0.25rem;
 $spacing-sm: 0.3rem;
 $spacing-md: 0.5rem;

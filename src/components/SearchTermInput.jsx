@@ -40,7 +40,7 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
   };
 
   return (
-    <>
+    <div className={styles.searchTermInput}>
       {/* Search term input field */}
       <InputWithLabel
         id="searchTermInput"
@@ -57,7 +57,7 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
           <span>Press button to search for {searchTerm}</span>
         )}
       </p>
-    </>
+    </div>
   )
 }
 

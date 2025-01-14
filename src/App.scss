@@ -1,25 +1,74 @@
 //import './styles/main.scss';
 @import './styles/_variables.scss';
 
-
-
 /* Container of the page */
 .container {
     height: auto;
     min-height: 100vh;
     padding: $spacing-lg;
-    background: $color-background;
+    background: white;//$color-bg-light-m;
     max-width: 800px;
     margin: 0 auto;
 }
 
 /* Header of the page */
 .header {
-    background-color: $color-page-header;
+    background-color: $color-bg-header;
     text-align: center;
-    border-radius: 1rem;
+    border-radius: $border-radius-md;
     margin-bottom: .5rem;
     padding: .5rem;
+}
+
+/* Main section */
+.main {
+    //background-color: $color-background;
+    text-align: left;
+    //border-radius: $border-radius-md;
+    //margin: $spacing-md;
+    //padding: $spacing-md;
+}
+
+/* Search input section */
+.search-input-section {
+    background-color: $color-bg-light-l;
+
+    border-radius: $border-radius-md;
+    margin: $spacing-xs;
+    padding: $spacing-xs;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.submitButton {
+    background-color: $color-bg-light-s;
+    color: $color-text-dark;
+
+    padding: $spacing-xs;
+    margin: $spacing-xs;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    border: 1px solid $color-text-dark;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-bg-mid;
+        color: $color-text-light;
+    }
+
+
+}
+
+/* Search results section */
+.search-results-section {
+    background-color: $color-bg-light-s;
+    text-align: left;
+    border-radius: $border-radius-md;
+    margin: $spacing-xs;
+    padding: $spacing-xs;
 }
 
 /* Project item

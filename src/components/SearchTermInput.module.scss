@@ -1,4 +1,19 @@
+@import '../styles/_variables.scss';
+
+.searchTermInput {
+    margin: $spacing-sm;
+    padding: $spacing-sm;
+    background-color: $color-bg-light-l;
+    color: $color-text-light;
+    font-size: $font-size-md;   
+}
+
 .errorMessage {
-    color: red;
-    font-size: 0.8rem;
+    color: $color-text-light;
+    //background-color: $color-bg-light-s;
+    font-size: $font-size-md;
+    font-weight: bold;
+    
+    padding: $spacing-md;
+    margin: $spacing-md;
 }

@@ -9,21 +9,33 @@ $color-secondary: #83a4d4; // Currently same as primary, can be changed later
 // These are standard colors that aren't specific to your brand.
 $color-blue: blue;
 $color-white: white;
-$color-blue-faded: #bfc7d5; // Temporary color for faded blue elements
-$color-light-blue: #83a4d4; // #83a4d4 Light blue color for buttons and other UI elements
+$color-black: black;
+$color-blue-light-s: #ced6e3; // Temporary color for faded blue elements
+$color-blue-light-m: #bfc7d5; // Temporary color for faded blue elements
+$color-blue-light: #83a4d4; // #83a4d4 Light blue color for buttons and other UI elements
+$color-blue-mid: #598ad4;
 $color-orange-faded: #f2ddbe; // Temporary color for faded blue elements
+
 
 // Semantic Colors
 // These variables define how colors are used in specific contexts.
 // They can be derived from either brand or utility colors.
-$color-background: $color-blue-faded;
+$color-bg-light-m: $color-blue-light-m;
+$color-bg-light-s: $color-blue-light-s;
+$color-bg-light-l: $color-blue-light;
+$color-bg-mid: $color-blue-mid;
+$color-bg-header: $color-orange-faded;
+
 $color-title: $color-primary;
 $color-subtitle: $color-title;
+$color-text-light: $color-white;
+$color-text-dark: $color-black;
 $color-text-author: $color-blue;
 $color-text-comments: $color-blue;
 $color-page-header: $color-orange-faded;
 $color-button-bg: rgba($color-blue, 0.59);
 $color-likes: rgb(165, 39, 1);
+$color-error: red;
 
 // Spacing
 // Common spacing values used for margins, padding, and gaps
@@ -31,3 +43,21 @@ $spacing-xs: 0.25rem;
 $spacing-sm: 0.3rem;
 $spacing-md: 0.5rem;
 $spacing-lg: 1rem;
+
+// Border radius
+$border-radius-sm: 0.2rem;
+$border-radius-md: 0.5rem;
+$border-radius-lg: 1rem;
+
+// Font size
+$font-size-sm: 0.8rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.5rem;
+$font-size-xl: 2rem;
+$font-size-xxl: 2.5rem;
+
+// Headings
+h2 {
+    font-size: $font-size-lg;
+    color: $color-title;
+}

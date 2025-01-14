@@ -277,23 +277,25 @@ const App = () => {
         <PageTitle title={titleData.title} subtitle={titleData.subtitle} />
       </header>
 
-      <main>
-        <section>
+      <main className='main'>
+        <section className='search-input-section'>
           {/* Example of adding a callback function as a prop */}
           <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
 
           {/*  */}
-          <button disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
-        </section>
-
-        <section>
-          <hr />
-          <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
-
-          <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
-
+          <button className='submitButton' disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
           {projects.isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
           {projects.isLoadError && <p className='data-load-error-view'>Error loading data.</p>}
+        </section>
+
+        <section className='search-results-section'>
+          {searchedProjects.length > 0 && (
+            <>
+              <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
+              <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+              <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+            </>
+          )}
         </section>
       </main>
 

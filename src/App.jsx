@@ -20,7 +20,7 @@ import ProjectsList from './components/ProjectsList';
 import PageTitle from './components/PageTitle';
 
 // Import styles
-import './App.css';
+import './styles/main.scss';
 
 // Import page description
 import { pageDescription } from './config/pageDescription';

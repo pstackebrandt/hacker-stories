@@ -1,17 +1,9 @@
-// Variables
-$primary-color: #83a4d4;
-$text-color: blue;
-$likes-color: rgb(165, 39, 1);
+@import 'variables';
 
-// Import other SCSS files
-@import 'components/project-item';
-@import 'components/comments';
-
-// Base styles
 .container {
     height: 100vh;
     padding: 20px;
-    background: $primary-color;
+    background: $color-primary;
     max-width: 800px;
     margin: 0 auto;
 }

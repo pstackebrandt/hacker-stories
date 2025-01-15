@@ -12,7 +12,7 @@ import ProjectItem from './ProjectItem';
  * @returns {JSX.Element} Rendered list of projects
  */
 const ProjectsList = ({ projects, onRemoveProject }) =>
-    <ul>
+    <ul className='projects-list'>
         {projects.map((project) =>
             <ProjectItem
                 key={"projectItem" + project.objectID}

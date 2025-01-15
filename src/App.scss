@@ -71,6 +71,12 @@
     padding: $spacing-xs;
 }
 
+.projects-list {
+    list-style-type: none;
+    padding: 0;
+    
+}
+
 /* Project item
 todo Project item has currently different names.
  deprecated: tool-item, new: project-item

@@ -1,0 +1,29 @@
+@import '../_variables.scss';
+
+.search-input-section {
+    background-color: $color-bg-light-l;
+    border-radius: $border-radius-md;
+    margin: $spacing-xs;
+    padding: $spacing-xs;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.submitButton {
+    background-color: $color-bg-light-s;
+    color: $color-text-dark;
+    padding: $spacing-xs $spacing-lg;
+    margin: $spacing-xs;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    border: 1px solid $color-text-dark;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-bg-mid;
+        color: $color-text-light;
+    }
+}

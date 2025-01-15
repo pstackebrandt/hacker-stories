@@ -21,8 +21,7 @@ import ProjectsList from './components/ProjectsList';
 import PageTitle from './components/PageTitle';
 
 // Import styles
-import './App.scss';
-import './styles/components/_app.scss';
+
 /**
  * Action types for the projects reducer
  * @readonly

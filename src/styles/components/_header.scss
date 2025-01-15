@@ -1,0 +1,10 @@
+@import '../_variables.scss';
+
+/* Header of the page */
+.header {
+    background-color: $color-bg-header;
+    text-align: center;
+    border-radius: $border-radius-md;
+    margin-bottom: .5rem;
+    padding: .5rem;
+}

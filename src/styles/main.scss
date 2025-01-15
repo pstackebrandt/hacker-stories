@@ -15,5 +15,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-// Import component styles
+// Import components
 @import 'components/app';
+@import 'components/container';
+@import 'components/header';
+@import 'components/search';
+@import 'components/project';
+@import 'components/status';

@@ -69,12 +69,16 @@
     border-radius: $border-radius-md;
     margin: $spacing-xs;
     padding: $spacing-xs;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .projects-list {
     list-style-type: none;
     padding: 0;
-    
+
 }
 
 /* Project item

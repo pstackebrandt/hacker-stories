@@ -8,6 +8,8 @@
  */
 
 import { useState, useEffect, useReducer } from 'react';
+import styles from './App.module.scss';
+//import styles from './App.module.scss';
 
 // Import config data
 import { titleData } from './config/pageTitle';
@@ -271,23 +273,23 @@ const App = () => {
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className='container'>
-      <header className='header'>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <PageTitle title={titleData.title} subtitle={titleData.subtitle} />
       </header>
 
-      <main className='main'>
-        <section className='search-input-section'>
+      <main className={styles.main}>
+        <section className={styles.searchInputSection}>
           {/* Example of adding a callback function as a prop */}
           <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
 
           {/*  */}
-          <button className='submitButton' disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
-          {projects.isLoadingData && <p className='data-loading-view'>Loading data ...</p>}
-          {projects.isLoadError && <p className='data-load-error-view'>Error loading data.</p>}
+          <button className={styles.submitButton} disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
+          {projects.isLoadingData && <p className={styles.dataLoadingView}>Loading data ...</p>}
+          {projects.isLoadError && <p className={styles.dataLoadErrorView}>Error loading data.</p>}
         </section>
 
-        <section className='search-results-section'>
+        <section className={styles.searchResultsSection}>
           {searchedProjects.length > 0 && (
             <>
               <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
@@ -299,7 +301,6 @@ const App = () => {
       </main>
 
       <aside>
-        <hr />
         <h2>Learning Objectives</h2>
         <p>{pageDescription().purpose}</p>
         <ul>{pageDescription().content.map((part, index) =>

@@ -1,0 +1,75 @@
+@import './styles/_variables.scss';
+@import './styles/base/buttons.scss';
+@import './styles/base/typography.scss';
+
+.container {
+    height: auto;
+    min-height: 100vh;
+    padding: $spacing-lg;
+    background:white;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    background-color: $color-bg-header;
+    text-align: center;
+    border-radius: $border-radius-md;
+    margin-bottom: .5rem;
+    padding: .5rem;
+}
+
+.main {
+    text-align: left;
+}
+
+.searchInputSection {
+    background-color: $color-bg-light-l;
+    border-radius: $border-radius-md;
+    margin: $spacing-xs;
+    padding: $spacing-xs;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+}
+
+.submitButton {
+    @extend .button;
+    @extend .button--secondary;
+    
+    flex-grow: 0.2;
+    padding: $spacing-xs;
+    margin: $spacing-md;
+    border: none;
+} 
+
+.searchResultsSection {
+    background-color: $color-bg-light-s;
+    text-align: left;
+    border-radius: $border-radius-md;
+    margin: $spacing-xs;
+    padding: $spacing-xs;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dataLoadingView {
+    color: $color-blue;
+    border: 1px solid $color-blue;
+    display: inline-block;
+    padding: $spacing-xs $spacing-md;
+    margin: $spacing-md;
+}
+
+.dataLoadErrorView {
+    border: 1px solid $color-error;
+    color: $color-error;
+    padding: $spacing-xs $spacing-md;
+    margin: $spacing-md;
+    display: inline-block;
+}

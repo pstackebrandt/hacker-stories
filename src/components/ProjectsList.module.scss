@@ -1,0 +1,13 @@
+@import '../styles/_variables.scss';
+
+.projectsList {
+  list-style-type: none;
+  padding: 0;
+  margin: $spacing-xs;
+  display: flex;
+  flex-direction: column;
+  //background-color: $color-bg-light-s;
+  //border-radius: $border-radius-md;
+  //padding: $spacing-xs;
+} 
+

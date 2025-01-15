@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types';
 import ProjectItem from './ProjectItem';
+import styles from './ProjectsList.module.scss';
 
 /**
  * Displays a list of projects (frameworks/libraries) with the ability to remove a project.
@@ -12,7 +13,7 @@ import ProjectItem from './ProjectItem';
  * @returns {JSX.Element} Rendered list of projects
  */
 const ProjectsList = ({ projects, onRemoveProject }) =>
-    <ul className='projects-list'>
+    <ul className={styles.projectsList}>
         {projects.map((project) =>
             <ProjectItem
                 key={"projectItem" + project.objectID}

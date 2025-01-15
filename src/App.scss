@@ -10,3 +10,13 @@
     //margin: $spacing-md;
     //padding: $spacing-md;
 }
+
+/* Container of the page */
+.container {
+    height: auto;
+    min-height: 100vh;
+    padding: $spacing-lg;
+    background: red;//white;
+    max-width: 800px;
+    margin: 0 auto;
+}

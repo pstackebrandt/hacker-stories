@@ -47,7 +47,7 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
         value={searchTerm}
         placeholderText="Insert search term here..."
         onInputChange={validateAndHandleChange}>
-        <strong>Search: </strong>
+        <strong style={{paddingRight: '{{ $spacing-md }}'}}>Search for: </strong>
       </InputWithLabel>
 
       {error && <p className={styles.errorMessage}>{error}</p>}

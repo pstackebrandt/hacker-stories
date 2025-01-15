@@ -6,7 +6,7 @@
     height: auto;
     min-height: 100vh;
     padding: $spacing-lg;
-    background: white;//$color-bg-light-m;
+    background: white; //$color-bg-light-m;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -47,7 +47,7 @@
     background-color: $color-bg-light-s;
     color: $color-text-dark;
 
-    padding: $spacing-xs;
+    padding: $spacing-xs $spacing-lg;
     margin: $spacing-xs;
     font-size: $font-size-md;
     border-radius: $border-radius-sm;

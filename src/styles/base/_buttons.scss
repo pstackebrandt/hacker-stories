@@ -1,0 +1,38 @@
+@import '../_variables';
+
+// Base button styles
+.button {
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+
+    // Common button variants
+    &--primary {
+        background-color: $color-button-bg;
+        color: $color-text-dark;
+
+        &:hover {
+            background-color: $color-bg-mid;
+            color: $color-text-light;
+        }
+
+        &:disabled {
+            background-color: $color-bg-light-s;
+            cursor: not-allowed;
+        }
+    }
+
+    &--secondary {
+        background-color: $color-bg-light-s;
+        color: $color-text-dark;
+        border: 1px solid $color-text-dark;
+
+        &:hover {
+            background-color: $color-bg-mid;
+            color: $color-text-light;
+        }
+    }
+} 

@@ -1,8 +1,5 @@
 @import '../styles/_variables.scss';
-
-/**
- * ProjectItem component styles
- */ 
+@import '../styles/base/buttons.scss';
 
 .projectItem {
     margin-bottom: .5rem;
@@ -25,7 +22,7 @@
 }
 
 .author {
-    color: $color-subtitle;
+    //color: $color-subtitle;
     font-weight: bold;
 }
 
@@ -34,26 +31,23 @@
     align-items: center;
     font-size: $font-size-md;
     margin: 0.4rem 0;
-    padding-left: 1rem;
+    padding-left: $spacing-xs;
 }
 
 .comments {
     color: $color-text-comments;
     font-weight: bold;
-    padding: 0 0.25rem;
+    padding: 0 $spacing-xs;
 }
 
 .likes {
     color: $color-likes;
     font-weight: bold;
-    padding: 0 0.25rem;
+    padding: 0 $spacing-xs;
 }
 
 .removePostButton {
-    background-color: $color-button-bg;
-    color: $color-text-light;
-    padding: $spacing-xs $spacing-md;
-    border: none;
-    border-radius: $border-radius-sm;
+    @extend .button;
+    @extend .button--primary;
     margin-left: 1rem;
 } 

@@ -13,7 +13,7 @@ import styles from './PageTitle.module.scss';
  */
 const PageTitle = ({ title, subtitle }) => {
     return (
-        <div className={styles.pageTitle}>
+        <div className={styles.pageTitles}>
             <h1 className={styles.title}>{title}</h1>
             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </div>

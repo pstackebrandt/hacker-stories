@@ -16,8 +16,8 @@ $color-error: red;
 
 // Extended Color Palette
 $color-blue-light: #83a4d4;
-$color-blue-light-s: #ced6e3;
 $color-blue-light-m: #bfc7d5;
+$color-blue-light-s: #ced6e3;
 $color-blue-mid: #598ad4;
 $color-orange-faded: #f2ddbe;
 $color-likes: rgb(165, 39, 1);
@@ -31,7 +31,7 @@ $color-text-muted: #6c757d;
 $color-title: $color-primary;
 $color-subtitle: #666;
 $color-text-author: $color-blue;
-$color-text-comments: $color-blue;
+$color-text-comments: $color-primary;
 
 // Background Colors
 $color-bg-light: #fff;
@@ -69,10 +69,3 @@ $border-radius-lg: 1rem;
 // ==========================================================================
 // These are currently mixed in with general variables but should be 
 // moved to component-specific files if possible
-h2 {
-    font-size: $font-size-lg;
-    color: $color-title;
-    margin: $spacing-md;
-    padding: $spacing-md;
-    text-align: center;
-}

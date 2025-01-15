@@ -1,6 +1,7 @@
 // ProjectItem.jsx
 
 import PropTypes from 'prop-types';
+import styles from './ProjectItem.module.scss';
 
 /**
  * Displays a single framework/library item with its details and a remove button.
@@ -10,41 +11,42 @@ import PropTypes from 'prop-types';
  * @param {(project: import('../data/frameworks').Framework) => void} props.onRemoveProject - Callback to remove the project
  * @returns {JSX.Element} Rendered project item
  */
-const ProjectItem = ({ project, onRemoveProject }) => // Example of using props with destructuring.
-    <li className='project-item'>
-
-        {/* Link as title or title */}
-        <h3 className="project-item-title">
+const ProjectItem = ({ project, onRemoveProject }) =>
+    <li className={styles.projectItem}>
+        <h3 className={styles.projectItemTitle}>
             {project.url ? (
-                <a className='project-item-title-link' href={project.url} target="_blank" rel="noopener noreferrer">{project.title}</a>
+                <a className={styles.projectItemTitleLink}
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {project.title}
+                </a>
             ) : (
                 <span>{project.title}</span>
             )}
         </h3>
-
         {/* Author */}
         <div>
             <span>
-                <span className="by-label">by</span>
-                <span className="author">
+                <span className={styles.byLabel}>by</span>
+                <span className={styles.author}>
                     {project.author}
                 </span>
             </span>
             <span>
-                <button className='remove-post-button'
+                <button className={styles.removePostButton}
                     type="button"
                     onClick={() => onRemoveProject(project)}
                 >
                     Remove
                 </button>
             </span>
-
         </div>
-
         {/* Likes and number comments */}
-        <div className="comment-container">
+        <div className={styles.commentContainer}>
             <span>
-                <span className="likes">
+                <span className={styles.likes}>
                     {project.points}
                 </span>
                 <span className="text">
@@ -52,7 +54,7 @@ const ProjectItem = ({ project, onRemoveProject }) => // Example of using props 
                 </span>
             </span>
             <span>
-                <span className="comments">
+                <span className={styles.comments}>
                     {project.num_comments}
                 </span>
                 <span className="text">

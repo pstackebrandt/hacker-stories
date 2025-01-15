@@ -77,11 +77,18 @@ todo Project item has currently different names.
 */
 .project-item {
     margin-bottom: .5rem;
+    padding: $spacing-xs;
+    //color: red;
 }
 
 .project-item-title {
     margin-bottom: 0.3rem;
     margin-top: 0.4rem;
+    color: $color-subtitle;
+}
+
+.project-item-title-link {
+    color: $color-subtitle;
 }
 
 /* Author */
@@ -90,7 +97,7 @@ todo Project item has currently different names.
 }
 
 .author {
-    color: blue;
+    color: $color-subtitle;
     font-weight: bold;
 }
 

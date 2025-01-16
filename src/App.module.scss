@@ -1,12 +1,13 @@
-@import './styles/_variables.scss';
-@import './styles/base/buttons.scss';
-@import './styles/base/typography.scss';
+@import "./styles/_variables.scss";
+@import "./styles/base/buttons.scss";
+@import "./styles/base/typography.scss";
 
 .container {
     height: auto;
     min-height: 100vh;
     padding: $spacing-lg;
-    background:white;
+    background-color: $color-bg-light-s;
+    //background:$color-bg-header; //white;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -14,9 +15,9 @@
 .header {
     background-color: $color-bg-header;
     text-align: center;
-    border-radius: $border-radius-md;
-    margin-bottom: .5rem;
-    padding: .5rem;
+    //border-radius: $border-radius-md;
+    margin-bottom: 0.5rem;
+    //padding: .5rem;
 }
 
 .main {
@@ -26,25 +27,27 @@
 .searchInputSection {
     background-color: $color-bg-light-l;
     border-radius: $border-radius-md;
+    width: 50%;
     margin: $spacing-xs;
     padding: $spacing-xs;
+
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     gap: $spacing-md;
     flex-wrap: wrap;
 }
 
 .submitButton {
     @extend .button;
-    @extend .button--secondary;
-    
+    @extend .button--primary;
+
     flex-grow: 0.2;
     padding: $spacing-xs;
     margin: $spacing-md;
     border: none;
-} 
+}
 
 .searchResultsSection {
     background-color: $color-bg-light-s;

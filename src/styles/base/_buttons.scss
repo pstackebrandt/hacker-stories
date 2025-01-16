@@ -1,4 +1,4 @@
-@import '../_variables';
+@import "../_variables";
 
 // Base button styles
 .button {
@@ -6,8 +6,28 @@
     border-radius: $border-radius-sm;
     font-size: $font-size-md;
     cursor: pointer;
-    border: none;
+    min-width: 8em;
+    
+
     transition: background-color 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:active {
+        transform: scale(0.95);
+        border: 1px solid $color-text-dark;
+        box-shadow: 0 0 2px rgba(17, 13, 97, 0.2);
+    }
+
+    &:focus {
+        outline: 1px solid $color-text-light;
+    }
+
+    &:disabled {
+        background-color: $color-bg-light-s;
+        //background-color: red;
+        color: $color-text-light;
+        cursor: not-allowed;
+    }
 
     // Common button variants
     &--primary {
@@ -19,9 +39,13 @@
             color: $color-text-light;
         }
 
+        &:active {
+            background-color: $color-bg-light-s;
+        }
+
         &:disabled {
             background-color: $color-bg-light-s;
-            cursor: not-allowed;
+            color: $color-text-light;
         }
     }
 
@@ -34,5 +58,10 @@
             background-color: $color-bg-mid;
             color: $color-text-light;
         }
+
+        &:disabled {
+            background-color: $color-bg-light-s;
+            cursor: not-allowed;
+        }
     }
-} 
+}

@@ -11,8 +11,9 @@ const searchSchema = yup.object().shape({
   searchTerm: yup
     .string()
     .min(2, 'Search term must be at least 2 characters')
-    .max(50, 'Search term must not exceed 50 characters')
-    .matches(/^[a-zA-Z0-9\s]*$/, 'Only alphanumeric characters and spaces are allowed')
+    .max(70, 'Search term must not exceed 70 characters')
+    .matches(/^[a-zA-ZÀ-ÿ0-9\s-']*$/,
+      'Only letters, numbers, spaces, hyphens and apostrophes are allowed')
 });
 
 /** 
@@ -42,22 +43,34 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
   return (
     <div className={styles.searchTermInput}>
       {/* Search term input field */}
+      <label
+        htmlFor="searchTermInput"
+        className={styles.searchTermInputLabel}>
+        Search for
+      </label>
+
       <InputWithLabel
         id="searchTermInput"
+        className={styles.searchTermInputField}
         value={searchTerm}
         placeholderText="Insert search term here..."
-        onInputChange={validateAndHandleChange}>
-        <strong style={{paddingRight: '{{ $spacing-md }}'}}>Search for: </strong>
-      </InputWithLabel>
+        onInputChange={validateAndHandleChange}
+      />
 
-      {error && <p className={styles.errorMessage}>{error}</p>}
+      {error &&
+        <div
+          className={styles.searchTermErrorMessage}>
+          {error}
+        </div>
+      }
 
-      <p>
-        {searchTerm?.length >= 2 && (
-          <span>Press button to search for {searchTerm}</span>
-        )}
-      </p>
-    </div>
+      {!error &&
+        <div
+          className={styles.searchTermInputHelperText}>
+          Press button to search for {searchTerm}
+        </div>
+      }
+    </div >
   )
 }
 

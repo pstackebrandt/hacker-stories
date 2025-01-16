@@ -1,10 +1,12 @@
 // InputWithLabel.JSX
 
 import PropTypes from 'prop-types';
+import styles from './InputWithLabel.module.scss';
 
 /** * InputWithLabel component renders a label and an input field.
  * 
  * @param {Object} props - The properties object.
+ * @param {string} props.className - The class name for the input container.
  * @param {string} props.id- The id for the input element.  * If not provided, a unique id will be generated.
  * @param {string} props.inputType - The (initial) value of the input element.
  * @param {string} props.value- The type of the input element.
@@ -14,6 +16,7 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} The rendered label and input elements.
  */
 const InputWithLabel = ({
+    className,
     id,
     inputType = 'text',
     value = '',
@@ -38,9 +41,11 @@ const InputWithLabel = ({
     const finalId = id || generateUniqueId;
 
     return (
-        <>
-            <label htmlFor={finalId}>{children}</label>
+        <div className={styles.inputContainer}>
+
+            {children && <label htmlFor={finalId}>{children}</label>}
             <input
+                className={`${styles.input} ${className || ''}`}
                 id={finalId}
                 value={value}
                 type={inputType}
@@ -48,18 +53,19 @@ const InputWithLabel = ({
                 autoFocus={isFocused}
                 onChange={onInputChange}>
             </input>
-        </>
+        </div>
     );
 }
 
 InputWithLabel.propTypes = {
+    className: PropTypes.string,
     id: PropTypes.string,
     value: PropTypes.string,
     inputType: PropTypes.string,
     isFocused: PropTypes.bool,
     onInputChange: PropTypes.func.isRequired,
     placeholderText: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node
 };
 
 export default InputWithLabel;

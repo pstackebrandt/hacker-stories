@@ -1,19 +1,25 @@
-@import '../styles/_variables.scss';
+@import "../styles/_variables.scss";
 
 .searchTermInput {
-    margin: $spacing-sm;
-    padding: $spacing-sm;
-    background-color: $color-bg-light-l;
+    display: flex;
+    flex-direction: column;
     color: $color-text-light;
-    font-size: $font-size-md;   
+    background-color: $color-bg-light-l;
+    padding: $spacing-sm;
+    margin: $spacing-sm;
 }
 
-.errorMessage {
+.searchTermInputLabel {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-sm;
+}
+
+.searchTermInputField {
     color: $color-text-light;
-    //background-color: $color-bg-light-s;
-    font-size: $font-size-md;
-    font-weight: bold;
+    margin: $spacing-sm 0;
+}
+
+.searchTermErrorMessage {
+    font-style: italic;
     
-    padding: $spacing-md;
-    margin: $spacing-md;
 }

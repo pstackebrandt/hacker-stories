@@ -1,0 +1,32 @@
+@import "../styles/_variables.scss";
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    width: 100%;
+}
+
+.label {
+    color: $color-text-dark;
+    font-size: $font-size-md;
+    margin-bottom: $spacing-xs;
+}
+
+.input {
+    border: 1px solid $color-primary;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    color: $color-text-dark;
+    background-color: $color-bg-light;
+    //height: $font-size-lg + $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::placeholder {
+        color: $color-text-muted;
+    }
+}

@@ -7,7 +7,7 @@
  * Development status: todo Live state from Search component to App component.
  */
 
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useCallback } from 'react';
 import styles from './App.module.scss';
 //import styles from './App.module.scss';
 
@@ -228,7 +228,12 @@ const App = () => {
    * Fetch search results from the API. Sends the results to the reducer.
    * @returns {void}
    */
-  const fetchSearchResults = () => {
+  const handleFetchBlogEntries = useCallback(() => {
+    // For reasons to use of the useCallback hook see Rtr p. 138.
+    // This creates a memoized version of the function that only changes when its dependencies change.
+    // In this case, the function only changes when the searchTerm changes.
+    // This is important for performance optimization, as it prevents unnecessary re-renders.
+    // The useCallback hook is used to memoize the function, so that it is not recreated on every render.
     if (!searchTerm) {
       console.warn(`fetchSearchResults() was wrongly called while no search term available. Not fetching.`);
       return;
@@ -253,7 +258,18 @@ const App = () => {
           type: ProjectsActions.FETCH_FAILURE,
         });
       });
-  };
+  }, [searchTerm]);
+  // If searchTerm changes, handleFetchBlogEntries is shall becalled again, but we do it in an indirect way:
+  // Because of the dependency on searchTerm the function is recreated when searchTerm has changed. But recreating the function doesn't automatically execute it.To run it, we need to use the useEffect hook below!
+
+  // The implementation with both hooks gives both memoization benefits and automatic execution when the search term changes.We use the memoization to prevent reload of data on each re-render of the component.
+
+  /**
+   * Effect hook to fetch blog entries when the search term changes.
+   */
+  useEffect(() => {
+    handleFetchBlogEntries();
+  }, [handleFetchBlogEntries]);
 
   /**
      * Handle search button click.
@@ -261,7 +277,7 @@ const App = () => {
      */
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    fetchSearchResults();
+    handleFetchBlogEntries();
   }
 
   /**

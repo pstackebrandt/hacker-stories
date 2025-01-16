@@ -22,6 +22,8 @@ import SearchTermInput from './components/SearchTermInput';
 import ProjectsList from './components/ProjectsList';
 import PageTitle from './components/PageTitle';
 
+import { isValidSearchTerm } from './utils/validation';
+
 // Import styles
 
 /**
@@ -122,16 +124,34 @@ const HITS_PER_PAGE = 5;
 // curl -X GET "https://hn.algolia.com/api/v1/search?query=React&tags=story&hitsPerPage=3" -H "Accept: application/json" | ConvertFrom-Json | ForEach-Object { $_.hits | ForEach-Object { $_.title } }
 
 /**
- * Builds a URL for searching projects.
+ * Builds a URL for searching projects if the search term is valid.
  * @param {string} searchTerm - The search term to use in the URL.
  * @param {number} hitsPerPage - The number of hits per page to use in the URL.
  * @returns {string} - The URL for searching projects.
  */
-const buildSearchUrl = (searchTerm, hitsPerPage = HITS_PER_PAGE) => {
-  const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
-  const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
+const buildSearchUrl =
+  (searchTerm,
+    hitsPerPage = HITS_PER_PAGE
+  ) => {
+    if (!isValidSearchTerm(searchTerm)) {
+      console.warn(`buildSearchUrl() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`);
+      return null;
+    }
 
-  return `${API_ENDPOINT}?${searchQuery}&${hitsPerPageQuery}`;
+    console.info(`buildSearchUrl() called with searchTerm: ${searchTerm}. Building URL.`);
+    const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
+    const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
+
+    return `${API_ENDPOINT}?${searchQuery}&${hitsPerPageQuery}`;
+  };
+
+/**
+ * Extracts the search term from a URL's query parameters
+ * @param {string} url - The URL to parse
+ * @returns {string} The search term from the URL's query parameters
+ */
+const extractSearchTerm = (url) => {
+  return new URL(url).searchParams.get('query');
 };
 
 /**
@@ -225,17 +245,21 @@ const App = () => {
   }
 
   /**
+   * URL for fetching blog entries. Should only be set if a new
+   *  valid search term is available.
+   */
+  const [url, setUrl] = useState();
+
+  /**
    * Fetch search results from the API. Sends the results to the reducer.
    * @returns {void}
    */
   const handleFetchBlogEntries = useCallback(() => {
-    // For reasons to use of the useCallback hook see Rtr p. 138.
-    // This creates a memoized version of the function that only changes when its dependencies change.
-    // In this case, the function only changes when the searchTerm changes.
-    // This is important for performance optimization, as it prevents unnecessary re-renders.
-    // The useCallback hook is used to memoize the function, so that it is not recreated on every render.
-    if (!searchTerm) {
-      console.warn(`fetchSearchResults() was wrongly called while no search term available. Not fetching.`);
+    /* This creates a memoized version of the function that only changes when its dependencies change. In this case, the function only changes when the url changes.
+     This is important for performance optimization, as it prevents unnecessary re-renders. We extract the search term directly from the URL instead of depending on the searchTerm state.
+     */
+    if (!url) {
+      console.warn(`handleFetchBlogEntries() was wrongly called while no search term available. Not fetching.`);
       return;
     }
 
@@ -243,13 +267,13 @@ const App = () => {
       type: ProjectsActions.FETCH_INIT,
     });
 
-    fetch(buildSearchUrl(searchTerm))
+    fetch(url)
       .then(response => response.json())
       .then(result => {
         dispatchProjects({
           type: ProjectsActions.FETCH_SUCCESS,
           payload: result.hits,
-          activeSearchTerm: searchTerm
+          activeSearchTerm: extractSearchTerm(url)
         });
       })
       .catch(error => {
@@ -258,11 +282,19 @@ const App = () => {
           type: ProjectsActions.FETCH_FAILURE,
         });
       });
-  }, [searchTerm]);
-  // If searchTerm changes, handleFetchBlogEntries is shall becalled again, but we do it in an indirect way:
-  // Because of the dependency on searchTerm the function is recreated when searchTerm has changed. But recreating the function doesn't automatically execute it.To run it, we need to use the useEffect hook below!
+  }, [url]);
 
-  // The implementation with both hooks gives both memoization benefits and automatic execution when the search term changes.We use the memoization to prevent reload of data on each re-render of the component.
+  /* When the URL changes, handleFetchBlogEntries is called again through useEffect:
+   * 
+   * The function is memoized with useCallback and only recreated when the URL changes.
+   * However, recreating the function doesn't automatically execute it.
+   * To trigger the actual data fetch when the URL changes, we use the useEffect hook below.
+   * 
+   * This two-hook implementation provides:
+   * 1. Memoization to prevent unnecessary recreation of the fetch function
+   * 2. Automatic execution when the URL is updated
+   * 3. Prevention of unnecessary data reloads on component re-renders
+   */
 
   /**
    * Effect hook to fetch blog entries when the search term changes.
@@ -272,12 +304,23 @@ const App = () => {
   }, [handleFetchBlogEntries]);
 
   /**
-     * Handle search button click.
+     * Handle search submitbutton click.
      * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
+     * @returns {void}     * 
      */
   const handleSearchSubmit = (event) => {
+    console.log(`handleSearchSubmit() called by ${event.target} with value ${event.target.value}.`);
     event.preventDefault();
-    handleFetchBlogEntries();
+
+    if (!isValidSearchTerm(searchTerm)) {
+      console.error(`handleSearchSubmit() was wrongly called while searchTerm is not valid: ${searchTerm}. Not building URL. (Submit button should be disabled.)`);
+      return;
+    }
+
+    const newUrl = buildSearchUrl(searchTerm);
+    if (newUrl) {
+      setUrl(newUrl);
+    }
   }
 
   /**
@@ -299,10 +342,21 @@ const App = () => {
           {/* Example of adding a callback function as a prop */}
           <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
 
-          {/*  */}
-          <button className={styles.submitButton} disabled={!searchTerm} onClick={handleSearchSubmit}>Search</button>
-          {projects.isLoadingData && <p className={styles.dataLoadingView}>Loading data ...</p>}
-          {projects.isLoadError && <p className={styles.dataLoadErrorView}>Error loading data.</p>}
+          {/* Button to start search. Disabled if search term is not valid. */}
+          <button
+            className={styles.submitButton}
+            disabled={!isValidSearchTerm(searchTerm)}
+            onClick={handleSearchSubmit}>
+            Search
+          </button>
+
+          {projects.isLoadingData &&
+            <p className={styles.dataLoadingView}>Loading data ...</p>
+          }
+
+          {projects.isLoadError &&
+            <p className={styles.dataLoadErrorView}>Error loading data.</p>
+          }
         </section>
 
         <section className={styles.searchResultsSection}>

@@ -47,7 +47,8 @@ $color-button-bg: $color-blue-light-s;
 // Font Sizes
 $font-size-sm: 0.8rem; // 12.8px
 $font-size-md: 1rem; // 16px
-$font-size-lg: 1.5rem; // 24px
+$font-size-md-plus: 1.2rem; // 19.2px
+$font-size-lg: 1.8rem; // 24px
 $font-size-xl: 2rem; // 32px
 $font-size-xxl: 2.5rem; // 40px
 
@@ -67,5 +68,5 @@ $border-radius-lg: 1rem;
 // ==========================================================================
 // Component Specific
 // ==========================================================================
-// These are currently mixed in with general variables but should be 
+// These are currently mixed in with general variables but should be
 // moved to component-specific files if possible

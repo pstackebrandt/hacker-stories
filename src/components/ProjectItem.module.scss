@@ -1,16 +1,17 @@
-@import '../styles/_variables.scss';
-@import '../styles/base/buttons.scss';
+@import "../styles/_variables.scss";
+@import "../styles/base/buttons.scss";
 
 .projectItem {
-    margin-bottom: .5rem;
-    padding: $spacing-xs;
+    margin-bottom: $spacing-md;
+    padding: $spacing-md;
+    font-size: $font-size-sm;
     //border: 1px solid red;
 
     &Title {
         margin-bottom: $spacing-xs;
         margin-top: $spacing-xs;
         color: $color-title;
-
+        font-size: $font-size-md-plus;
         &Link {
             color: $color-title;
         }
@@ -22,15 +23,14 @@
 }
 
 .author {
-    //color: $color-subtitle;
     font-weight: bold;
+    font-size: $font-size-sm;
 }
 
 .commentContainer {
     display: flex;
     align-items: center;
-    font-size: $font-size-md;
-    margin: 0.4rem 0;
+    margin: 0.2rem 0;
     padding-left: $spacing-xs;
 }
 
@@ -50,4 +50,6 @@
     @extend .button;
     @extend .button--primary;
     margin-left: 1rem;
-} 
+    font-size: $font-size-sm;
+    padding: $spacing-xs;
+}

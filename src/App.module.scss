@@ -6,35 +6,43 @@
     height: auto;
     min-height: 100vh;
     padding: $spacing-lg;
-    background-color: $color-bg-light-s;
+    //background-color: $color-bg-light-s;
     //background:$color-bg-header; //white;
     max-width: 800px;
     margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .header {
     background-color: $color-bg-header;
     text-align: center;
-    //border-radius: $border-radius-md;
-    margin-bottom: 0.5rem;
-    //padding: .5rem;
+    //margin-bottom: 0.125rem;
+    padding: 0.5rem;
 }
 
 .main {
+    background-color: $color-bg-light-s;
     text-align: left;
 }
 
 .searchInputSection {
     background-color: $color-bg-light-l;
     border-radius: $border-radius-md;
-    width: 50%;
+    width: min-content;
+    min-width: 40%;
     margin: $spacing-xs;
-    padding: $spacing-xs;
+    margin-top: $spacing-lg;
+    margin-left: $spacing-lg;
+    margin-bottom: $spacing-md;
+    padding: $spacing-md;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: left;
     gap: $spacing-md;
     flex-wrap: wrap;
 }
@@ -47,6 +55,7 @@
     padding: $spacing-xs;
     margin: $spacing-md;
     border: none;
+    align-self: flex-end;
 }
 
 .searchResultsSection {
@@ -54,6 +63,7 @@
     text-align: left;
     border-radius: $border-radius-md;
     margin: $spacing-xs;
+    margin-top: $spacing-lg;
     padding: $spacing-xs;
     display: flex;
     flex-direction: column;
@@ -75,4 +85,8 @@
     padding: $spacing-xs $spacing-md;
     margin: $spacing-md;
     display: inline-block;
+}
+
+.learningObjectivesSection {
+    background-color: $color-bg-light-s;
 }

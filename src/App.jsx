@@ -370,7 +370,7 @@ const App = () => {
         </section>
       </main>
 
-      <aside>
+      <aside className={styles.learningObjectivesSection}>
         <h2>Learning Objectives</h2>
         <p>{pageDescription().purpose}</p>
         <ul>{pageDescription().content.map((part, index) =>

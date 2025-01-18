@@ -51,7 +51,6 @@ const SearchTermInput = ({ searchTerm, handleSearchTermChange }) => {
 
       <InputWithLabel
         id="searchTermInput"
-        className={styles.searchTermInputField}
         value={searchTerm}
         placeholderText="Insert search term here..."
         onInputChange={validateAndHandleChange}

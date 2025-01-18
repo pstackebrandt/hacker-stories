@@ -154,6 +154,8 @@ const extractSearchTerm = (url) => {
   return new URL(url).searchParams.get('query');
 };
 
+
+
 /**
  * Main App component.
  * @returns {JSX.Element} The rendered component
@@ -259,7 +261,7 @@ const App = () => {
      This is important for performance optimization, as it prevents unnecessary re-renders. We extract the search term directly from the URL instead of depending on the searchTerm state.
      */
     if (!url) {
-      console.warn(`handleFetchBlogEntries() was wrongly called while no search term available. Not fetching.`);
+      console.info(`handleFetchBlogEntries() was called while no url available. Not fetching.`);
       return;
     }
 
@@ -303,24 +305,41 @@ const App = () => {
     handleFetchBlogEntries();
   }, [handleFetchBlogEntries]);
 
-  /**
-     * Handle search submitbutton click.
-     * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
-     * @returns {void}     * 
-     */
-  const handleSearchSubmit = (event) => {
-    console.log(`handleSearchSubmit() called by ${event.target} with value ${event.target.value}.`);
-    event.preventDefault();
 
+  /**
+   * Builds and sets a new search URL if the search term is valid
+   * @returns {void}
+   */
+  const buildAndSetSearchUrl = useCallback(() => {
     if (!isValidSearchTerm(searchTerm)) {
-      console.error(`handleSearchSubmit() was wrongly called while searchTerm is not valid: ${searchTerm}. Not building URL. (Submit button should be disabled.)`);
+      console.error(`buildAndSetSearchUrl() was called with invalid searchTerm: ${searchTerm}`);
       return;
     }
 
     const newUrl = buildSearchUrl(searchTerm);
     if (newUrl) {
       setUrl(newUrl);
+      console.info(`buildAndSetSearchUrl() set new url ${newUrl}.`);
     }
+  }, [searchTerm]);
+
+  /**
+     * Effect hook to set initial search URL when component mounts
+     * and searchTerm is loaded from localStorage
+     */
+  useEffect(() => {
+    buildAndSetSearchUrl();
+  }, [buildAndSetSearchUrl]);
+
+  /**
+     * Handle search submitbutton click.
+     * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
+     * @returns {void}     * 
+     */
+  const handleSearchSubmit = (event) => {
+    console.info(`handleSearchSubmit() called by ${event.target}.`);
+    event.preventDefault();
+    //buildAndSetSearchUrl(searchTerm);
   }
 
   /**

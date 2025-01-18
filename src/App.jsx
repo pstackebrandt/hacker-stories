@@ -116,7 +116,7 @@ const projectsReducer = (state, action) => {
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search';
 const SEARCH_QUERY_TEMPLATE = query => `query=${query}`;
 const PAGE_SIZE_TEMPLATE = size => `hitsPerPage=${size}`;
-const HITS_PER_PAGE = 5;
+const HITS_PER_PAGE = 1;
 
 // real hacker news API endpoint: 
 // hacker news github repo: https://github.com/HackerNews/API
@@ -154,23 +154,36 @@ const extractSearchTerm = (url) => {
   return new URL(url).searchParams.get('query');
 };
 
-
-
 /**
  * Main App component.
  * @returns {JSX.Element} The rendered component
  */
 const App = () => {
 
-  /** 
-   * @summary Custom hook for management of the state of a date (a data unit).
-   * Gets the dates value from localStorage if it exists or uses a given default value.
-   * Saves current value to localStorage automatically.
-   * @template T
-   * @param {string} stateName - Name of the data unit. Used as key in localStorage.
-   * @param {T} initialValue - Default value for the data unit.
-   * @returns {[T, (value: T) => void]} - Array with state value and setter function.
+
+
+  /**
+   * URL object for fetching blog entries.
+   * @typedef {Object} UrlConfig
+   * @property {string} url - The complete URL string for the API endpoint
+   * @property {boolean} shouldFetch - Flag indicating whether this URL change should trigger a fetch operation
+   * 
+   * Format example:
+   * {
+   *   url: "https://hn.algolia.com/api/v1/search?query=react&hitsPerPage=5",
+   *   shouldFetch: true
+   * }
    */
+  const [url, setUrl] = useState();
+  /** 
+     * @summary Custom hook for management of the state of a date (a data unit).
+     * Gets the dates value from localStorage if it exists or uses a given default value.
+     * Saves current value to localStorage automatically.
+     * @template T
+     * @param {string} stateName - Name of the data unit. Used as key in localStorage.
+     * @param {T} initialValue - Default value for the data unit.
+     * @returns {[T, (value: T) => void]} - Array with state value and setter function.
+     */
   const useStoredState = (stateName, initialValue) => {
     // Load search term, use default value if saved value found
     // TODO: Rename to useLocalStorageState
@@ -211,13 +224,31 @@ const App = () => {
     if (newSearchTerm !== searchTerm) { // Shall not ignore the case.
       // Set new search term
       console.log(`handleSearchTermChange() sets new searchTerm. old \n
-        ${searchTerm}, new: ${newSearchTerm}.`);
+      ${searchTerm}, new: ${newSearchTerm}.`);
       setSearchTerm(newSearchTerm);
     } else {
       console.log(`saveSearchTerm(): "new" value (${newSearchTerm}
-        ) was not saved because it is equal to current value (${searchTerm}).`);
+      ) was not saved because it is equal to current value (${searchTerm}).`);
     }
   }
+
+  /**
+   * Builds and sets a new search URL if the search term is valid
+   * @param {boolean} shouldTriggerFetch - Whether this URL change should trigger a fetch
+   * @returns {void}
+   */
+  const buildAndSetSearchUrl = useCallback((shouldTriggerFetch = false) => {
+    if (!isValidSearchTerm(searchTerm)) {
+      console.error(`buildAndSetSearchUrl() was called with invalid searchTerm: ${searchTerm}`);
+      return;
+    }
+
+    const newUrl = buildSearchUrl(searchTerm);
+    if (newUrl) {
+      setUrl({ url: newUrl, shouldFetch: shouldTriggerFetch });
+      console.info(`buildAndSetSearchUrl() set new url ${newUrl}.`);
+    }
+  }, [searchTerm]);
 
   /**
    * Handle search term change. Saves new search term.
@@ -226,8 +257,9 @@ const App = () => {
    */
   const handleSearchTermChange = (event) => {
     console.log(`handleSearchTermChange() called by ${event.target}
-       with value ${event.target.value}.`);
+     with value ${event.target.value}.`);
     saveNewSearchTerm(event.target.value);
+    buildAndSetSearchUrl(false); // Pass false to prevent automatic fetch
   }
 
   /** All projects */
@@ -247,12 +279,6 @@ const App = () => {
   }
 
   /**
-   * URL for fetching blog entries. Should only be set if a new
-   *  valid search term is available.
-   */
-  const [url, setUrl] = useState();
-
-  /**
    * Fetch search results from the API. Sends the results to the reducer.
    * @returns {void}
    */
@@ -269,20 +295,30 @@ const App = () => {
       type: ProjectsActions.FETCH_INIT,
     });
 
-    fetch(url)
-      .then(response => response.json())
+    fetch(url.url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(result => {
         dispatchProjects({
           type: ProjectsActions.FETCH_SUCCESS,
           payload: result.hits,
-          activeSearchTerm: extractSearchTerm(url)
+          activeSearchTerm: extractSearchTerm(url.url)
         });
+        // Reset the shouldFetch flag after successful fetch
+        setUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
+        // prevUrl is by convention the previous state of the url object.
       })
       .catch(error => {
         console.error(`Error loading projects: ${error.message}`);
         dispatchProjects({
           type: ProjectsActions.FETCH_FAILURE,
         });
+        // Reset the shouldFetch flag even if there's an error
+        setUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
       });
   }, [url]);
 
@@ -299,47 +335,33 @@ const App = () => {
    */
 
   /**
-   * Effect hook to fetch blog entries when the search term changes.
+   * Effect hook to fetch blog entries when it's allowed to fetch with 
+   * the current URL.
    */
   useEffect(() => {
-    handleFetchBlogEntries();
-  }, [handleFetchBlogEntries]);
+    if (url?.shouldFetch) {
+      handleFetchBlogEntries();
+    }
+  }, [handleFetchBlogEntries, url]);
 
 
   /**
-   * Builds and sets a new search URL if the search term is valid
-   * @returns {void}
+   * Effect hook to set initial search URL when component mounts
+   * and searchTerm is loaded from localStorage
    */
-  const buildAndSetSearchUrl = useCallback(() => {
-    if (!isValidSearchTerm(searchTerm)) {
-      console.error(`buildAndSetSearchUrl() was called with invalid searchTerm: ${searchTerm}`);
-      return;
-    }
-
-    const newUrl = buildSearchUrl(searchTerm);
-    if (newUrl) {
-      setUrl(newUrl);
-      console.info(`buildAndSetSearchUrl() set new url ${newUrl}.`);
-    }
-  }, [searchTerm]);
-
-  /**
-     * Effect hook to set initial search URL when component mounts
-     * and searchTerm is loaded from localStorage
-     */
   useEffect(() => {
-    buildAndSetSearchUrl();
+    buildAndSetSearchUrl(true); // Pass true to trigger initial fetch
   }, [buildAndSetSearchUrl]);
 
   /**
-     * Handle search submitbutton click.
-     * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
-     * @returns {void}     * 
-     */
+   * Handle search submitbutton click.
+   * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
+   * @returns {void}     * 
+   */
   const handleSearchSubmit = (event) => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
     event.preventDefault();
-    //buildAndSetSearchUrl(searchTerm);
+    buildAndSetSearchUrl(true); // Pass true to trigger fetch on submit
   }
 
   /**

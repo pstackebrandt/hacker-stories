@@ -405,7 +405,6 @@ const App = () => {
             <>
               <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
               <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
-              <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
             </>
           )}
         </section>

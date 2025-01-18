@@ -116,7 +116,7 @@ const projectsReducer = (state, action) => {
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search';
 const SEARCH_QUERY_TEMPLATE = query => `query=${query}`;
 const PAGE_SIZE_TEMPLATE = size => `hitsPerPage=${size}`;
-const HITS_PER_PAGE = 1;
+const HITS_PER_PAGE = 5;
 
 // real hacker news API endpoint: 
 // hacker news github repo: https://github.com/HackerNews/API

@@ -239,7 +239,7 @@ const App = () => {
    */
   const buildAndSetSearchUrl = useCallback((shouldTriggerFetch = false) => {
     if (!isValidSearchTerm(searchTerm)) {
-      console.error(`buildAndSetSearchUrl() was called with invalid searchTerm: ${searchTerm}`);
+      console.info(`buildAndSetSearchUrl() was called with invalid searchTerm: '${searchTerm}'`);
       return;
     }
 

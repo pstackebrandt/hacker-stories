@@ -134,11 +134,11 @@ const buildSearchUrl =
     hitsPerPage = HITS_PER_PAGE
   ) => {
     if (!isValidSearchTerm(searchTerm)) {
-      console.warn(`buildSearchUrl() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`);
+      console.warn(`${buildSearchUrl.name}() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`);
       return null;
     }
 
-    console.info(`buildSearchUrl() called with searchTerm: ${searchTerm}. Building URL.`);
+    console.info(`${buildSearchUrl.name}() called with searchTerm: ${searchTerm}. Building URL.`);
     const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
     const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
 
@@ -220,14 +220,12 @@ const App = () => {
    * @returns {void}
    */
   const saveNewSearchTerm = (newSearchTerm = '') => {
-
     if (newSearchTerm !== searchTerm) { // Shall not ignore the case.
-      // Set new search term
-      console.log(`handleSearchTermChange() sets new searchTerm. old \n
+      console.info(`saveNewSearchTerm() sets new searchTerm. old \n
       ${searchTerm}, new: ${newSearchTerm}.`);
       setSearchTerm(newSearchTerm);
     } else {
-      console.log(`saveSearchTerm(): "new" value (${newSearchTerm}
+      console.info(`saveNewSearchTerm(): "new" value (${newSearchTerm}
       ) was not saved because it is equal to current value (${searchTerm}).`);
     }
   }
@@ -256,7 +254,7 @@ const App = () => {
    * @param {Event} event - The event object
    */
   const handleSearchTermChange = (event) => {
-    console.log(`handleSearchTermChange() called by ${event.target}
+    console.info(`handleSearchTermChange() called by ${event.target}
      with value ${event.target.value}.`);
     saveNewSearchTerm(event.target.value);
     buildAndSetSearchUrl(false); // Pass false to prevent automatic fetch
@@ -287,7 +285,7 @@ const App = () => {
      This is important for performance optimization, as it prevents unnecessary re-renders. We extract the search term directly from the URL instead of depending on the searchTerm state.
      */
     if (!url) {
-      console.info(`handleFetchBlogEntries() was called while no url available. Not fetching.`);
+      console.info('handleFetchBlogEntries() was called while no url available. Not fetching.');
       return;
     }
 

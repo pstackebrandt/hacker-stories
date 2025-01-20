@@ -24,8 +24,6 @@ import PageTitle from './components/PageTitle';
 
 import { isValidSearchTerm } from './utils/validation';
 
-// Import styles
-
 /**
  * Action types for the projects reducer
  * @readonly
@@ -164,8 +162,8 @@ const App = () => {
 
   /**
    * URL object for fetching blog entries.
-   * @typedef {Object} UrlConfig
-   * @property {string} url - The complete URL string for the API endpoint
+   * @typedef {Object} SearchUrlConfig
+   * @property {string} searchUrl - The complete URL string for the API endpoint
    * @property {boolean} shouldFetch - Flag indicating whether this URL change should trigger a fetch operation
    * 
    * Format example:
@@ -174,7 +172,13 @@ const App = () => {
    *   shouldFetch: true
    * }
    */
-  const [url, setUrl] = useState();
+  const [searchUrl, setSearchUrl] = useState();
+
+  /**
+   * Flag indicating whether this search URL change should trigger a fetch operation
+   */
+  const [shouldFetch, setShouldFetch] = useState(false);
+
   /** 
      * @summary Custom hook for management of the state of a date (a data unit).
      * Gets the dates value from localStorage if it exists or uses a given default value.
@@ -232,19 +236,20 @@ const App = () => {
 
   /**
    * Builds and sets a new search URL if the search term is valid
-   * @param {boolean} shouldTriggerFetch - Whether this URL change should trigger a fetch
    * @returns {void}
    */
-  const buildAndSetSearchUrl = useCallback((shouldTriggerFetch = false) => {
+  const buildAndSetSearchUrl = useCallback(() => {
+    // TODO: Think about that 'build' in the name might be redundant.
     if (!isValidSearchTerm(searchTerm)) {
+      // It is not an error if the search term is not valid.
       console.info(`buildAndSetSearchUrl() was called with invalid searchTerm: '${searchTerm}'`);
       return;
     }
 
     const newUrl = buildSearchUrl(searchTerm);
     if (newUrl) {
-      setUrl({ url: newUrl, shouldFetch: shouldTriggerFetch });
-      console.info(`buildAndSetSearchUrl() set new url ${newUrl}.`);
+      setSearchUrl({ url: newUrl });
+      console.info(`buildAndSetSearchUrl() set new url '${newUrl}'`);
     }
   }, [searchTerm]);
 
@@ -257,7 +262,6 @@ const App = () => {
     console.info(`handleSearchTermChange() called by ${event.target}
      with value ${event.target.value}.`);
     saveNewSearchTerm(event.target.value);
-    buildAndSetSearchUrl(false); // Pass false to prevent automatic fetch
   }
 
   /** All projects */
@@ -284,7 +288,7 @@ const App = () => {
     /* This creates a memoized version of the function that only changes when its dependencies change. In this case, the function only changes when the url changes.
      This is important for performance optimization, as it prevents unnecessary re-renders. We extract the search term directly from the URL instead of depending on the searchTerm state.
      */
-    if (!url) {
+    if (!searchUrl) {
       console.info('handleFetchBlogEntries() was called while no url available. Not fetching.');
       return;
     }
@@ -293,7 +297,7 @@ const App = () => {
       type: ProjectsActions.FETCH_INIT,
     });
 
-    fetch(url.url)
+    fetch(searchUrl.url)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -304,10 +308,10 @@ const App = () => {
         dispatchProjects({
           type: ProjectsActions.FETCH_SUCCESS,
           payload: result.hits,
-          activeSearchTerm: extractSearchTerm(url.url)
+          activeSearchTerm: extractSearchTerm(searchUrl.url)
         });
         // Reset the shouldFetch flag after successful fetch
-        setUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
+        setSearchUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
         // prevUrl is by convention the previous state of the url object.
       })
       .catch(error => {
@@ -316,9 +320,9 @@ const App = () => {
           type: ProjectsActions.FETCH_FAILURE,
         });
         // Reset the shouldFetch flag even if there's an error
-        setUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
+        setSearchUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
       });
-  }, [url]);
+  }, [searchUrl]);
 
   /* When the URL changes, handleFetchBlogEntries is called again through useEffect:
    * 
@@ -333,23 +337,27 @@ const App = () => {
    */
 
   /**
-   * Effect hook to fetch blog entries when it's allowed to fetch with 
-   * the current URL.
+   * Effect hook to fetch blog entries when it's allowed.
    */
   useEffect(() => {
-    if (url?.shouldFetch) {
+    if (shouldFetch && searchUrl) {
       handleFetchBlogEntries();
+      setShouldFetch(false); // Reset after triggering fetch
     }
-  }, [handleFetchBlogEntries, url]);
+  }, [shouldFetch, searchUrl, handleFetchBlogEntries]);
 
 
   /**
-   * Effect hook to set initial search URL when component mounts
-   * and searchTerm is loaded from localStorage
+   * Effect hook to allow initial fetch of blog entries when component mounts
+   * (and searchTerm may be loadable from localStorage)
    */
   useEffect(() => {
-    buildAndSetSearchUrl(true); // Pass true to trigger initial fetch
-  }, [buildAndSetSearchUrl]);
+    setShouldFetch(true); // Pass true to trigger initial fetch
+    // TODO: Think about that a fetch without an initial searchTerm should not be allowed.
+    // It would (could) lead to an automatic fetch after the user has entered 2 characters.
+    // This would be an unexpected behaviour of the app.
+    console.info(`useEffect() called once at mount set 'shouldFetch' to true`);
+  }, []);
 
   /**
    * Handle search submitbutton click.
@@ -359,14 +367,14 @@ const App = () => {
   const handleSearchSubmit = (event) => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
     event.preventDefault();
-     /* Remember: 
-     Submit button is enabled if search term is valid.
-     If search term has changed and is valid, the url will be updated
-     automatically.
-     So a rebuild of the url is not needed. We only need to set the the 
-     fetch flag of the url true to trigger the fetch.
-     */
-    setUrl(prevUrl => ({ ...prevUrl, shouldFetch: true }));
+    /* Remember: 
+    Submit button is enabled if search term is valid.
+    If search term has changed and is valid, the url will be updated
+    automatically.
+    So a rebuild of the url is not needed. We only need to set the the 
+    fetch flag of the url true to trigger the fetch.
+    */
+    setShouldFetch(true);
   }
 
   /**
@@ -376,6 +384,12 @@ const App = () => {
   const searchedProjects = projects.data.filter(
     project => project && project.title && searchTerm &&
       project.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  useEffect(() => {
+    if (searchTerm) {
+      buildAndSetSearchUrl();
+    }
+  }, [searchTerm, buildAndSetSearchUrl]);
 
   return (
     <div className={styles.container}>

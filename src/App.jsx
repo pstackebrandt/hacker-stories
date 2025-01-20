@@ -359,15 +359,14 @@ const App = () => {
   const handleSearchSubmit = (event) => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
     event.preventDefault();
-    buildAndSetSearchUrl(true); // Pass true to trigger fetch on submit
-    /* Remember: We have a inconsistency here. 
-     Submit button is disabled if search term is not valid.
-     If search term hast changed and is valid, the url will be updated
+     /* Remember: 
+     Submit button is enabled if search term is valid.
+     If search term has changed and is valid, the url will be updated
      automatically.
      So a rebuild of the url is not needed. We only need to set the the 
      fetch flag of the url true to trigger the fetch.
      */
-    //setUrl(prevUrl => ({ ...prevUrl, shouldFetch: true }));
+    setUrl(prevUrl => ({ ...prevUrl, shouldFetch: true }));
   }
 
   /**

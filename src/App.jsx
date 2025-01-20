@@ -360,6 +360,14 @@ const App = () => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
     event.preventDefault();
     buildAndSetSearchUrl(true); // Pass true to trigger fetch on submit
+    /* Remember: We have a inconsistency here. 
+     Submit button is disabled if search term is not valid.
+     If search term hast changed and is valid, the url will be updated
+     automatically.
+     So a rebuild of the url is not needed. We only need to set the the 
+     fetch flag of the url true to trigger the fetch.
+     */
+    //setUrl(prevUrl => ({ ...prevUrl, shouldFetch: true }));
   }
 
   /**
@@ -377,15 +385,22 @@ const App = () => {
       </header>
 
       <main className={styles.main}>
-        <section className={styles.searchInputSection}>
-          {/* Example of adding a callback function as a prop */}
-          <SearchTermInput searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+
+        <form
+          onSubmit={handleSearchSubmit}
+          className={styles.searchInputSection}>
+
+          <SearchTermInput
+            searchTerm={searchTerm}
+            handleSearchTermChange={handleSearchTermChange}
+          />
 
           {/* Button to start search. Disabled if search term is not valid. */}
           <button
             className={styles.submitButton}
             disabled={!isValidSearchTerm(searchTerm)}
-            onClick={handleSearchSubmit}>
+            type="submit"
+          >
             Search
           </button>
 
@@ -396,7 +411,7 @@ const App = () => {
           {projects.isLoadError &&
             <p className={styles.dataLoadErrorView}>Error loading data.</p>
           }
-        </section>
+        </form>
 
         <section className={styles.searchResultsSection}>
           {searchedProjects.length > 0 && (

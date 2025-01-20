@@ -1,0 +1,13 @@
+// additional code for the state diagram
+
+state URLUpdated {
+    url: string
+    shouldFetch: false
+}
+
+state FetchingData {
+    url: string
+    shouldFetch: true
+    isLoading: true
+}
+

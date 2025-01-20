@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "mermaid-examples": "for %f in (docs/diagram-examples/*.mmd) do mmdc -i docs/diagram-examples/%f -o docs/diagram-examples/%~nf.png",
+    "mermaid-search-form": "for %f in (docs/parts/search-form/*.mmd) do mmdc -i docs/parts/search-form/%f -o docs/parts/search-form/%~nf.png"
   },
   "dependencies": {
     "mermaid": "^11.4.1",

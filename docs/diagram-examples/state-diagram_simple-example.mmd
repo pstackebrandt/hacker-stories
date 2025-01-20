@@ -1,0 +1,15 @@
+stateDiagram
+    [*] --> Initial
+    Initial --> SearchReady
+    SearchReady --> Fetching
+    Fetching --> SearchReady
+
+    state Initial {
+        url = null
+        shouldFetch = false
+    }
+    
+    state SearchReady {
+        url = "valid"
+        shouldFetch = false
+    }

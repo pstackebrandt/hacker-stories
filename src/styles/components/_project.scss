@@ -1,4 +1,4 @@
-@import '../_variables.scss';
+@use "../variables" as *;
 
 .search-results-section {
     background-color: $color-bg-light-s;
@@ -11,8 +11,6 @@
     justify-content: center;
     align-items: center;
 }
-
-
 
 .data-loading-view {
     color: $color-blue;

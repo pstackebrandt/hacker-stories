@@ -1,5 +1,5 @@
 /* PageTitle.module.scss */
-@import '../styles/_variables.scss';
+@use "../styles/variables" as *;
 
 // todo rename PageTitle.jsx to PageTitles.js
 

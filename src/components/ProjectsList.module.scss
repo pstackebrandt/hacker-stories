@@ -1,4 +1,4 @@
-@import '../styles/_variables.scss';
+@use "../styles/variables" as *;
 
 .projectsList {
   list-style-type: none;
@@ -9,5 +9,4 @@
   //background-color: $color-bg-light-s;
   //border-radius: $border-radius-md;
   //padding: $spacing-xs;
-} 
-
+}

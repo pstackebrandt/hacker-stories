@@ -1,6 +1,6 @@
-@import 'variables';
-@import 'base/typography';
-@import 'base/buttons';
+@use 'variables' as *;
+@use 'base/typography';
+@use 'base/buttons';
 
 // Reset and base styles
 * {
@@ -17,9 +17,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-// Import components
-@import 'components/app';
-@import 'components/header';
-@import 'components/search';
-@import 'components/project';
-@import 'components/status';
+// Components
+@use 'components/app';
+@use 'components/header';
+@use 'components/search';
+@use 'components/project';
+@use 'components/status';

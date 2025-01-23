@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 // Global heading styles
 h1 {
     font-size: $font-size-xxl;
@@ -26,4 +28,4 @@ h4 {
     font-size: $font-size-sm;
     color: $color-subtitle;
     margin-bottom: $spacing-xs;
-} 
+}

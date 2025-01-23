@@ -1,6 +1,6 @@
-@import "./styles/_variables.scss";
-@import "./styles/base/buttons.scss";
-@import "./styles/base/typography.scss";
+@use "./styles/variables" as *;
+@use "./styles/base/buttons";
+@use "./styles/base/typography";
 
 .container {
     height: auto;

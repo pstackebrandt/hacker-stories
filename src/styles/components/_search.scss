@@ -1,4 +1,4 @@
-@import '../_variables.scss';
+@use "../variables" as *;
 
 .search-input-section {
     background-color: $color-bg-light-l;
@@ -10,7 +10,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 .submitButton {
     background-color: $color-bg-light-s;

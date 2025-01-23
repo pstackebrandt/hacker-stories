@@ -1,5 +1,5 @@
-@import "../styles/_variables.scss";
-@import "../styles/base/buttons.scss";
+@use "../styles/variables" as *;
+@use "../styles/base/buttons";
 
 .projectItem {
     margin-bottom: $spacing-md;

@@ -38,7 +38,16 @@ To start the app for development, follow these steps:
     npm run preview
     ```
 
-These steps will help you set up and run the app in a development environment using Vite and React.
+## TypeScript Support
+
+This project supports both JavaScript (.js/.jsx) and TypeScript (.ts/.tsx) files. While it currently contains a mix of both, there is an ongoing effort to migrate the codebase to TypeScript for better type safety and developer experience.
+
+Key points:
+
+- Both JS and TS files can coexist
+- ESLint is configured to handle both languages appropriately
+- New features are encouraged to be written in TypeScript
+- Existing JavaScript files will be gradually migrated to TypeScript
 
 ## Used project template React + Vite
 

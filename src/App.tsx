@@ -72,7 +72,7 @@ const projectsReducer = (
     case ProjectsActions.fetchInit:
       return {
         ...state,
-        isLoading: true,
+        isLoadingData: true,
         isLoadError: false,
       };
 
@@ -80,7 +80,7 @@ const projectsReducer = (
       return {
         ...state,
         data: action.payload,
-        isLoading: false,
+        isLoadingData: false,
         isLoadError: false,
         activeSearchTerm: action.activeSearchTerm,
       };
@@ -89,7 +89,7 @@ const projectsReducer = (
       return {
         ...state,
         // We dont want change the projects list.
-        isLoading: false,
+        isLoadingData: false,
         isLoadError: true,
       };
 

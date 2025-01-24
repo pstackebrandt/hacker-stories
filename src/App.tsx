@@ -30,10 +30,10 @@ import { isValidSearchTerm } from './utils/validation';
  * @enum {string}
  */
 const ProjectsActions = Object.freeze({
-  FETCH_INIT: 'FETCH_INIT',
-  FETCH_SUCCESS: 'FETCH_SUCCESS',
-  FETCH_FAILURE: 'FETCH_FAILURE',
-  REMOVE_PROJECT: 'REMOVE_PROJECT'
+  fetchInit: 'FETCH_INIT',
+  fetchSuccess: 'FETCH_SUCCESS',
+  fetchFailure: 'FETCH_FAILURE',
+  removeProject: 'REMOVE_PROJECT'
 });
 
 /**
@@ -71,14 +71,14 @@ const projectsReducer = (state, action) => {
 
   switch (action.type) {
 
-    case ProjectsActions.FETCH_INIT:
+    case ProjectsActions.fetchInit:
       return {
         ...state,
         isLoading: true,
         isLoadError: false
       };
 
-    case ProjectsActions.FETCH_SUCCESS:
+    case ProjectsActions.fetchSuccess:
       return {
         ...state,
         data: action.payload,
@@ -87,7 +87,7 @@ const projectsReducer = (state, action) => {
         activeSearchTerm: action.activeSearchTerm
       }
 
-    case ProjectsActions.FETCH_FAILURE:
+    case ProjectsActions.fetchFailure:
       return {
         ...state,
         // We dont want change the projects list.
@@ -95,7 +95,7 @@ const projectsReducer = (state, action) => {
         isLoadError: true,
       }
 
-    case ProjectsActions.REMOVE_PROJECT:
+    case ProjectsActions.removeProject:
       return {
         ...state,
         data: state.data.filter(
@@ -275,7 +275,7 @@ const App = () => {
   */
   const handleRemoveProject = (projectItem) => {
     dispatchProjects({
-      type: ProjectsActions.REMOVE_PROJECT,
+      type: ProjectsActions.removeProject,
       payload: projectItem
     });
   }
@@ -294,7 +294,7 @@ const App = () => {
     }
 
     dispatchProjects({
-      type: ProjectsActions.FETCH_INIT,
+      type: ProjectsActions.fetchInit,
     });
 
     fetch(searchUrl.url)
@@ -306,7 +306,7 @@ const App = () => {
       })
       .then(result => {
         dispatchProjects({
-          type: ProjectsActions.FETCH_SUCCESS,
+          type: ProjectsActions.fetchSuccess,
           payload: result.hits,
           activeSearchTerm: extractSearchTerm(searchUrl.url)
         });
@@ -317,7 +317,7 @@ const App = () => {
       .catch(error => {
         console.error(`Error loading projects: ${error.message}`);
         dispatchProjects({
-          type: ProjectsActions.FETCH_FAILURE,
+          type: ProjectsActions.fetchFailure,
         });
         // Reset the shouldFetch flag even if there's an error
         setSearchUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));

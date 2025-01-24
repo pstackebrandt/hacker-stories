@@ -101,7 +101,8 @@ const projectsReducer = (
         ...state,
         data: state.data.filter(
           (project) =>
-            project.objectID.toString() !== action.payload.objectID.toString()
+            project.objectID.toString() !==
+            (action.payload as Project).objectID.toString()
         ),
         isLoadingData: false,
         isLoadError: false,

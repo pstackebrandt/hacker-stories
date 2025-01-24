@@ -82,7 +82,7 @@ const projectsReducer = (
     case ProjectsActions.fetchSuccess:
       return {
         ...state,
-        data: action.payload,
+        data: action.payload as Project[],
         isLoadingData: false,
         isLoadError: false,
         activeSearchTerm: action.activeSearchTerm,

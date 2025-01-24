@@ -29,12 +29,12 @@ import { isValidSearchTerm } from "./utils/validation";
  * @readonly
  * @enum {string}
  */
-const ProjectsActions = Object.freeze({
-  fetchInit: "FETCH_INIT",
-  fetchSuccess: "FETCH_SUCCESS",
-  fetchFailure: "FETCH_FAILURE",
-  removeProject: "REMOVE_PROJECT",
-});
+const ProjectsActions = {
+  fetchInit: "fetchInit",
+  fetchSuccess: "fetchSuccess",
+  fetchFailure: "fetchFailure",
+  removeProject: "removeProject",
+} as const;
 
 interface Project {
   title: string;

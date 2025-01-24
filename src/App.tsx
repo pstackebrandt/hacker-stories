@@ -129,7 +129,10 @@ const HITS_PER_PAGE = 5;
  * @param {number} hitsPerPage - The number of hits per page to use in the URL.
  * @returns {string} - The URL for searching projects.
  */
-const buildSearchUrl = (searchTerm, hitsPerPage = HITS_PER_PAGE) => {
+const buildSearchUrl = (
+  searchTerm: string,
+  hitsPerPage: number = HITS_PER_PAGE
+) => {
   if (!isValidSearchTerm(searchTerm)) {
     console.warn(
       `${buildSearchUrl.name}() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`
@@ -151,7 +154,7 @@ const buildSearchUrl = (searchTerm, hitsPerPage = HITS_PER_PAGE) => {
  * @param {string} url - The URL to parse
  * @returns {string} The search term from the URL's query parameters
  */
-const extractSearchTerm = (url) => {
+const extractSearchTerm = (url: string) => {
   return new URL(url).searchParams.get("query");
 };
 

@@ -191,16 +191,22 @@ const App = () => {
    * @param {T} initialValue - Default value for the data unit.
    * @returns {[T, (value: T) => void]} - Array with state value and setter function.
    */
-  const useStoredState = (stateName, initialValue) => {
+  const useStoredState = <T,>(
+    stateName: string,
+    initialValue: T
+  ): [T, (value: T) => void] => {
     // Load search term, use default value if saved value found
     // TODO: Rename to useLocalStorageState
 
-    const [state, setState] = useState(() => {
+    const [state, setState] = useState<T>(() => {
       try {
-        return localStorage.getItem(stateName) || initialValue;
+        const storedValue = localStorage.getItem(stateName);
+        return storedValue ? (storedValue as unknown as T) : initialValue;
       } catch (error) {
         console.error(
-          `Error reading ${stateName} from localStorage: ${error.message}`
+          `Error reading ${stateName} from localStorage: ${
+            (error as Error).message
+          }`
         );
         return initialValue;
       }
@@ -212,10 +218,12 @@ const App = () => {
     useEffect(
       function saveStateToLocalStorage() {
         try {
-          localStorage.setItem(stateName, state);
+          localStorage.setItem(stateName, String(state));
         } catch (error) {
           console.error(
-            `Error saving ${stateName} with value ${state} to localStorage: ${error.message}`
+            `Error saving ${stateName} with value ${state} to localStorage: ${
+              (error as Error).message
+            }`
           );
         }
       },

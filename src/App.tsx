@@ -1,28 +1,28 @@
 /**
  * Main component for the application.
- * 
+ *
  * This component displays a header, a search component, a list of frameworks/libraries,
  * and an aside with page purpose and content.
- * 
+ *
  * Development status: todo Live state from Search component to App component.
  */
 
-import { useState, useEffect, useReducer, useCallback } from 'react';
-import styles from './App.module.scss';
+import { useState, useEffect, useReducer, useCallback } from "react";
+import styles from "./App.module.scss";
 //import styles from './App.module.scss';
 
 // Import config data
-import { titleData } from './config/pageTitle';
-import { pageDescription } from './config/pageDescription';
+import { titleData } from "./config/pageTitle";
+import { pageDescription } from "./config/pageDescription";
 
 // Import base data
 //import { frameworksAndLibs as initialProjects } from './data/frameworks';
 
-import SearchTermInput from './components/SearchTermInput';
-import ProjectsList from './components/ProjectsList';
-import PageTitle from './components/PageTitle';
+import SearchTermInput from "./components/SearchTermInput";
+import ProjectsList from "./components/ProjectsList";
+import PageTitle from "./components/PageTitle";
 
-import { isValidSearchTerm } from './utils/validation';
+import { isValidSearchTerm } from "./utils/validation";
 
 /**
  * Action types for the projects reducer
@@ -30,52 +30,50 @@ import { isValidSearchTerm } from './utils/validation';
  * @enum {string}
  */
 const ProjectsActions = Object.freeze({
-  fetchInit: 'FETCH_INIT',
-  fetchSuccess: 'FETCH_SUCCESS',
-  fetchFailure: 'FETCH_FAILURE',
-  removeProject: 'REMOVE_PROJECT'
+  fetchInit: "FETCH_INIT",
+  fetchSuccess: "FETCH_SUCCESS",
+  fetchFailure: "FETCH_FAILURE",
+  removeProject: "REMOVE_PROJECT",
 });
 
+interface Project {
+  title: string;
+  url: string;
+  author: string;
+  num_comments: number;
+  points: number;
+  objectID: string | number;
+}
+
+interface ProjectsState {
+  data: Project[];
+  isLoadingData: boolean;
+  isLoadError: boolean;
+  activeSearchTerm?: string;
+}
+
+interface ProjectsAction {
+  type: keyof typeof ProjectsActions;
+  payload?: Project | Project[];
+  activeSearchTerm?: string;
+}
+
 /**
- * @typedef {Object} Project
- * @property {string} title - The title of the project
- * @property {string} url - The URL of the project
- * @property {string} author - The author of the project
- * // eslint-disable-next-line camelcase
- * @property {number} num_comments - Number of comments
- * @property {number} points - Number of points
- * @property {(string | number)} objectID - Unique identifier
+ * Reducer for projects state.
+ * @param {ProjectsState} state - Current state of projects.
+ * @param {ProjectsAction} action - Action object with type and payload.
+ * @returns {ProjectsState} - New state of projects.
  */
-
-/**
- * @typedef {Object} ProjectsState
- * @property {Project[]} data - Array of projects
- * @property {boolean} isLoadingData - Loading state flag
- * @property {boolean} isLoadError - Error state flag
- */
-
-/**
- * @typedef {Object} ProjectsAction
- * @property {keyof typeof ProjectsActions} type - The action type
- * @property {Project | Project[] | undefined} [payload] - The action payload
- * @property {string} [searchTerm] - The search term for FETCH_SUCCESS action
- */
-
-/**
-   * Reducer for projects state.
-   * @param {ProjectsState} state - Current state of projects.
-   * @param {ProjectsAction} action - Action object with type and payload.
-   * @returns {ProjectsState} - New state of projects.
-   */
-const projectsReducer = (state, action) => {
-
+const projectsReducer = (
+  state: ProjectsState,
+  action: ProjectsAction
+): ProjectsState => {
   switch (action.type) {
-
     case ProjectsActions.fetchInit:
       return {
         ...state,
         isLoading: true,
-        isLoadError: false
+        isLoadError: false,
       };
 
     case ProjectsActions.fetchSuccess:
@@ -84,8 +82,8 @@ const projectsReducer = (state, action) => {
         data: action.payload,
         isLoading: false,
         isLoadError: false,
-        activeSearchTerm: action.activeSearchTerm
-      }
+        activeSearchTerm: action.activeSearchTerm,
+      };
 
     case ProjectsActions.fetchFailure:
       return {
@@ -93,30 +91,30 @@ const projectsReducer = (state, action) => {
         // We dont want change the projects list.
         isLoading: false,
         isLoadError: true,
-      }
+      };
 
     case ProjectsActions.removeProject:
       return {
         ...state,
         data: state.data.filter(
-          project => project.objectID.toString() !== action.payload.objectID.toString()
+          (project) =>
+            project.objectID.toString() !== action.payload.objectID.toString()
         ),
         isLoadingData: false,
-        isLoadError: false
-      }
+        isLoadError: false,
+      };
 
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
-}
+};
 
-
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search';
-const SEARCH_QUERY_TEMPLATE = query => `query=${query}`;
-const PAGE_SIZE_TEMPLATE = size => `hitsPerPage=${size}`;
+const API_ENDPOINT = "https://hn.algolia.com/api/v1/search";
+const SEARCH_QUERY_TEMPLATE = (query) => `query=${query}`;
+const PAGE_SIZE_TEMPLATE = (size) => `hitsPerPage=${size}`;
 const HITS_PER_PAGE = 5;
 
-// real hacker news API endpoint: 
+// real hacker news API endpoint:
 // hacker news github repo: https://github.com/HackerNews/API
 
 // curl -X GET "https://hn.algolia.com/api/v1/search?query=React&tags=story&hitsPerPage=3" -H "Accept: application/json" | ConvertFrom-Json | ForEach-Object { $_.hits | ForEach-Object { $_.title } }
@@ -127,21 +125,22 @@ const HITS_PER_PAGE = 5;
  * @param {number} hitsPerPage - The number of hits per page to use in the URL.
  * @returns {string} - The URL for searching projects.
  */
-const buildSearchUrl =
-  (searchTerm,
-    hitsPerPage = HITS_PER_PAGE
-  ) => {
-    if (!isValidSearchTerm(searchTerm)) {
-      console.warn(`${buildSearchUrl.name}() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`);
-      return null;
-    }
+const buildSearchUrl = (searchTerm, hitsPerPage = HITS_PER_PAGE) => {
+  if (!isValidSearchTerm(searchTerm)) {
+    console.warn(
+      `${buildSearchUrl.name}() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`
+    );
+    return null;
+  }
 
-    console.info(`${buildSearchUrl.name}() called with searchTerm: ${searchTerm}. Building URL.`);
-    const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
-    const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
+  console.info(
+    `${buildSearchUrl.name}() called with searchTerm: ${searchTerm}. Building URL.`
+  );
+  const searchQuery = SEARCH_QUERY_TEMPLATE(searchTerm);
+  const hitsPerPageQuery = PAGE_SIZE_TEMPLATE(hitsPerPage);
 
-    return `${API_ENDPOINT}?${searchQuery}&${hitsPerPageQuery}`;
-  };
+  return `${API_ENDPOINT}?${searchQuery}&${hitsPerPageQuery}`;
+};
 
 /**
  * Extracts the search term from a URL's query parameters
@@ -149,7 +148,7 @@ const buildSearchUrl =
  * @returns {string} The search term from the URL's query parameters
  */
 const extractSearchTerm = (url) => {
-  return new URL(url).searchParams.get('query');
+  return new URL(url).searchParams.get("query");
 };
 
 /**
@@ -157,15 +156,12 @@ const extractSearchTerm = (url) => {
  * @returns {JSX.Element} The rendered component
  */
 const App = () => {
-
-
-
   /**
    * URL object for fetching blog entries.
    * @typedef {Object} SearchUrlConfig
    * @property {string} searchUrl - The complete URL string for the API endpoint
    * @property {boolean} shouldFetch - Flag indicating whether this URL change should trigger a fetch operation
-   * 
+   *
    * Format example:
    * {
    *   url: "https://hn.algolia.com/api/v1/search?query=react&hitsPerPage=5",
@@ -179,15 +175,15 @@ const App = () => {
    */
   const [shouldFetch, setShouldFetch] = useState(false);
 
-  /** 
-     * @summary Custom hook for management of the state of a date (a data unit).
-     * Gets the dates value from localStorage if it exists or uses a given default value.
-     * Saves current value to localStorage automatically.
-     * @template T
-     * @param {string} stateName - Name of the data unit. Used as key in localStorage.
-     * @param {T} initialValue - Default value for the data unit.
-     * @returns {[T, (value: T) => void]} - Array with state value and setter function.
-     */
+  /**
+   * @summary Custom hook for management of the state of a date (a data unit).
+   * Gets the dates value from localStorage if it exists or uses a given default value.
+   * Saves current value to localStorage automatically.
+   * @template T
+   * @param {string} stateName - Name of the data unit. Used as key in localStorage.
+   * @param {T} initialValue - Default value for the data unit.
+   * @returns {[T, (value: T) => void]} - Array with state value and setter function.
+   */
   const useStoredState = (stateName, initialValue) => {
     // Load search term, use default value if saved value found
     // TODO: Rename to useLocalStorageState
@@ -196,7 +192,9 @@ const App = () => {
       try {
         return localStorage.getItem(stateName) || initialValue;
       } catch (error) {
-        console.error(`Error reading ${stateName} from localStorage: ${error.message}`);
+        console.error(
+          `Error reading ${stateName} from localStorage: ${error.message}`
+        );
         return initialValue;
       }
     });
@@ -204,27 +202,33 @@ const App = () => {
     /**
      * Effect hook to save state to localStorage.
      */
-    useEffect(function saveStateToLocalStorage() {
-      try {
-        localStorage.setItem(stateName, state);
-      } catch (error) {
-        console.error(`Error saving ${stateName} with value ${state} to localStorage: ${error.message}`);
-      }
-    }, [stateName, state]);
+    useEffect(
+      function saveStateToLocalStorage() {
+        try {
+          localStorage.setItem(stateName, state);
+        } catch (error) {
+          console.error(
+            `Error saving ${stateName} with value ${state} to localStorage: ${error.message}`
+          );
+        }
+      },
+      [stateName, state]
+    );
 
     return [state, setState];
   };
 
   /** State for search term */
-  const [searchTerm, setSearchTerm] = useStoredState('searchTerm', 'Re');
+  const [searchTerm, setSearchTerm] = useStoredState("searchTerm", "Re");
 
   /**
    * Save @param newSearchTerm to state if it's newer than active search term.
    * @param {string} newSearchTerm - Candidate for search term value.
    * @returns {void}
    */
-  const saveNewSearchTerm = (newSearchTerm = '') => {
-    if (newSearchTerm !== searchTerm) { // Shall not ignore the case.
+  const saveNewSearchTerm = (newSearchTerm = "") => {
+    if (newSearchTerm !== searchTerm) {
+      // Shall not ignore the case.
       console.info(`saveNewSearchTerm() sets new searchTerm. old \n
       ${searchTerm}, new: ${newSearchTerm}.`);
       setSearchTerm(newSearchTerm);
@@ -232,7 +236,7 @@ const App = () => {
       console.info(`saveNewSearchTerm(): "new" value (${newSearchTerm}
       ) was not saved because it is equal to current value (${searchTerm}).`);
     }
-  }
+  };
 
   /**
    * Builds and sets a new search URL if the search term is valid
@@ -242,7 +246,9 @@ const App = () => {
     // TODO: Think about that 'build' in the name might be redundant.
     if (!isValidSearchTerm(searchTerm)) {
       // It is not an error if the search term is not valid.
-      console.info(`buildAndSetSearchUrl() was called with invalid searchTerm: '${searchTerm}'`);
+      console.info(
+        `buildAndSetSearchUrl() was called with invalid searchTerm: '${searchTerm}'`
+      );
       return;
     }
 
@@ -262,23 +268,25 @@ const App = () => {
     console.info(`handleSearchTermChange() called by ${event.target}
      with value ${event.target.value}.`);
     saveNewSearchTerm(event.target.value);
-  }
+  };
 
   /** All projects */
-  const [projects, dispatchProjects] = useReducer(projectsReducer,
-    { data: [], isLoadingData: false, isLoadError: false, activeSearchTerm: '' }
-  );
+  const [projects, dispatchProjects] = useReducer(projectsReducer, {
+    data: [],
+    isLoadingData: false,
+    isLoadError: false,
+    activeSearchTerm: "",
+  });
 
-
-  /** 
-   * Remove a project from the projects list. 
-  */
+  /**
+   * Remove a project from the projects list.
+   */
   const handleRemoveProject = (projectItem) => {
     dispatchProjects({
       type: ProjectsActions.removeProject,
-      payload: projectItem
+      payload: projectItem,
     });
-  }
+  };
 
   /**
    * Fetch search results from the API. Sends the results to the reducer.
@@ -289,7 +297,9 @@ const App = () => {
      This is important for performance optimization, as it prevents unnecessary re-renders. We extract the search term directly from the URL instead of depending on the searchTerm state.
      */
     if (!searchUrl) {
-      console.info('handleFetchBlogEntries() was called while no url available. Not fetching.');
+      console.info(
+        "handleFetchBlogEntries() was called while no url available. Not fetching."
+      );
       return;
     }
 
@@ -298,38 +308,38 @@ const App = () => {
     });
 
     fetch(searchUrl.url)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-      .then(result => {
+      .then((result) => {
         dispatchProjects({
           type: ProjectsActions.fetchSuccess,
           payload: result.hits,
-          activeSearchTerm: extractSearchTerm(searchUrl.url)
+          activeSearchTerm: extractSearchTerm(searchUrl.url),
         });
         // Reset the shouldFetch flag after successful fetch
-        setSearchUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
+        setSearchUrl((prevUrl) => ({ ...prevUrl, shouldFetch: false }));
         // prevUrl is by convention the previous state of the url object.
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(`Error loading projects: ${error.message}`);
         dispatchProjects({
           type: ProjectsActions.fetchFailure,
         });
         // Reset the shouldFetch flag even if there's an error
-        setSearchUrl(prevUrl => ({ ...prevUrl, shouldFetch: false }));
+        setSearchUrl((prevUrl) => ({ ...prevUrl, shouldFetch: false }));
       });
   }, [searchUrl]);
 
   /* When the URL changes, handleFetchBlogEntries is called again through useEffect:
-   * 
+   *
    * The function is memoized with useCallback and only recreated when the URL changes.
    * However, recreating the function doesn't automatically execute it.
    * To trigger the actual data fetch when the URL changes, we use the useEffect hook below.
-   * 
+   *
    * This two-hook implementation provides:
    * 1. Memoization to prevent unnecessary recreation of the fetch function
    * 2. Automatic execution when the URL is updated
@@ -346,7 +356,6 @@ const App = () => {
     }
   }, [shouldFetch, searchUrl, handleFetchBlogEntries]);
 
-
   /**
    * Effect hook to allow initial fetch of blog entries when component mounts
    * (and searchTerm may be loadable from localStorage)
@@ -362,7 +371,7 @@ const App = () => {
   /**
    * Handle search submitbutton click.
    * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
-   * @returns {void}     * 
+   * @returns {void}     *
    */
   const handleSearchSubmit = (event) => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
@@ -375,15 +384,19 @@ const App = () => {
     fetch flag of the url true to trigger the fetch.
     */
     setShouldFetch(true);
-  }
+  };
 
   /**
    * Get filtered projects based on search term.
    * @returns {Array} - Array of filtered projects
    */
   const searchedProjects = projects.data.filter(
-    project => project && project.title && searchTerm &&
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    (project) =>
+      project &&
+      project.title &&
+      searchTerm &&
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     if (searchTerm) {
@@ -398,11 +411,10 @@ const App = () => {
       </header>
 
       <main className={styles.main}>
-
         <form
           onSubmit={handleSearchSubmit}
-          className={styles.searchInputSection}>
-
+          className={styles.searchInputSection}
+        >
           <SearchTermInput
             searchTerm={searchTerm}
             handleSearchTermChange={handleSearchTermChange}
@@ -417,20 +429,28 @@ const App = () => {
             Search
           </button>
 
-          {projects.isLoadingData &&
+          {projects.isLoadingData && (
             <p className={styles.dataLoadingView}>Loading data ...</p>
-          }
+          )}
 
-          {projects.isLoadError &&
+          {projects.isLoadError && (
             <p className={styles.dataLoadErrorView}>Error loading data.</p>
-          }
+          )}
         </form>
 
         <section className={styles.searchResultsSection}>
           {searchedProjects.length > 0 && (
             <>
-              <h2>Your News {projects.activeSearchTerm ? `about ${projects.activeSearchTerm}` : ''}</h2>
-              <ProjectsList projects={searchedProjects} onRemoveProject={handleRemoveProject} />
+              <h2>
+                Your News{" "}
+                {projects.activeSearchTerm
+                  ? `about ${projects.activeSearchTerm}`
+                  : ""}
+              </h2>
+              <ProjectsList
+                projects={searchedProjects}
+                onRemoveProject={handleRemoveProject}
+              />
             </>
           )}
         </section>
@@ -439,13 +459,14 @@ const App = () => {
       <aside className={styles.learningObjectivesSection}>
         <h2>Learning Objectives</h2>
         <p>{pageDescription().purpose}</p>
-        <ul>{pageDescription().content.map((part, index) =>
-          <li key={index}>{part}</li>
-        )}
+        <ul>
+          {pageDescription().content.map((part, index) => (
+            <li key={index}>{part}</li>
+          ))}
         </ul>
       </aside>
     </div>
-  )
-}
+  );
+};
 
 export default App;

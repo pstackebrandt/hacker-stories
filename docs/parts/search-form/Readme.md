@@ -1,5 +1,10 @@
 # Using diagram files
 
+## State of the diagrams
+
+The diagrams were used before change to TypeScript and adhering refactorings!
+They will be misleading currently!
+
 ## How to use and update the diagrams
 
 ### md files

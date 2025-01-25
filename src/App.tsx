@@ -1,10 +1,8 @@
 /**
  * Main component for the application.
  *
- * This component displays a header, a search component, a list of frameworks/libraries,
- * and an aside with page purpose and content.
- *
- * Development status: todo Live state from Search component to App component.
+ * This component displays a header, a search component, a list of
+ * blog entries ("projects") and an aside with page purpose and content.
  */
 
 import { useState, useEffect, useReducer, useCallback } from "react";
@@ -135,10 +133,10 @@ const buildSearchUrl = (
 
 /**
  * Extracts the search term from a URL's query parameters
- * @param {string} url - The URL to parse
- * @returns {string} The search term from the URL's query parameters
+ * @param url - The URL to parse
+ * @returns The search term from the URL's query parameters or null if not found
  */
-const extractSearchTerm = (url: string) => {
+const extractSearchTerm = (url: string): string | null => {
   return new URL(url).searchParams.get("query");
 };
 
@@ -210,11 +208,10 @@ const App = (): React.ReactNode => {
   const [searchTerm, setSearchTerm] = useStoredState("searchTerm", "Re");
 
   /**
-   * Save @param newSearchTerm to state if it's newer than active search term.
+   * Save new search term to state if it's newer than active search term.
    * @param {string} newSearchTerm - Candidate for search term value.
-   * @returns {void}
    */
-  const saveNewSearchTerm = (newSearchTerm = "") => {
+  const saveNewSearchTerm = (newSearchTerm: string = ""): void => {
     if (newSearchTerm !== searchTerm) {
       // Shall not ignore the case.
       console.info(`saveNewSearchTerm() sets new searchTerm. old \n

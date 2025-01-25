@@ -164,21 +164,12 @@ const extractSearchTerm = (url: string) => {
  */
 const App = () => {
   /**
-   * URL object for fetching blog entries.
-   * @typedef {Object} SearchUrlConfig
-   * @property {string} searchUrl - The complete URL string for the API endpoint
-   * @property {boolean} shouldFetch - Flag indicating whether this URL change should trigger a fetch operation
-   *
-   * Format example:
-   * {
-   *   url: "https://hn.algolia.com/api/v1/search?query=react&hitsPerPage=5",
-   *   shouldFetch: true
-   * }
+   * URL string for fetching blog entries.
    */
-  const [searchUrl, setSearchUrl] = useState();
+  const [searchUrl, setSearchUrl] = useState<string>();
 
   /**
-   * Flag indicating whether this search URL change should trigger a fetch operation
+   * Flag indicating whether to trigger a fetch operation
    */
   const [shouldFetch, setShouldFetch] = useState(false);
 
@@ -269,7 +260,7 @@ const App = () => {
 
     const newUrl = buildSearchUrl(searchTerm);
     if (newUrl) {
-      setSearchUrl({ url: newUrl });
+      setSearchUrl(newUrl);
       console.info(`buildAndSetSearchUrl() set new url '${newUrl}'`);
     }
   }, [searchTerm]);
@@ -322,7 +313,7 @@ const App = () => {
       type: ProjectsActions.fetchInit,
     });
 
-    fetch(searchUrl.url)
+    fetch(searchUrl)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -333,11 +324,10 @@ const App = () => {
         dispatchProjects({
           type: ProjectsActions.fetchSuccess,
           payload: result.hits,
-          activeSearchTerm: extractSearchTerm(searchUrl.url),
+          activeSearchTerm: extractSearchTerm(searchUrl),
         });
         // Reset the shouldFetch flag after successful fetch
-        setSearchUrl((prevUrl) => ({ ...prevUrl, shouldFetch: false }));
-        // prevUrl is by convention the previous state of the url object.
+        setShouldFetch(false);
       })
       .catch((error) => {
         console.error(`Error loading projects: ${error.message}`);
@@ -345,7 +335,7 @@ const App = () => {
           type: ProjectsActions.fetchFailure,
         });
         // Reset the shouldFetch flag even if there's an error
-        setSearchUrl((prevUrl) => ({ ...prevUrl, shouldFetch: false }));
+        setShouldFetch(false);
       });
   }, [searchUrl]);
 
@@ -395,8 +385,8 @@ const App = () => {
     Submit button is enabled if search term is valid.
     If search term has changed and is valid, the url will be updated
     automatically.
-    So a rebuild of the url is not needed. We only need to set the the 
-    fetch flag of the url true to trigger the fetch.
+    So a rebuild of the url is not needed. We only need to set 
+    shouldFetch to true to trigger the fetch.
     */
     setShouldFetch(true);
   };

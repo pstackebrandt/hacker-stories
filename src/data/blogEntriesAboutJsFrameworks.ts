@@ -1,25 +1,18 @@
-/**
- * @typedef {Object} Framework
- * @property {string} title - Name of the framework/library
- * @property {string} url - Official website URL
- * @property {string} author - Creator(s) of the framework/library
- * // eslint-disable-next-line camelcase
- * @property {number} num_comments - Number of comments
- * @property {number} points - Rating points
- * @property {number} objectID - Unique identifier
- */
+import { Project } from "../types/Project";
 
 /**
  * List of JavaScript frameworks and libraries.
  * The list is frozen to prevent modifications.
- * @type {Framework[]}
+ * This data was used as mock data for the project.
+ * I hold it now in the project as example data.
  */
-export const frameworksAndLibs = Object.freeze([
+export const blogEntriesAboutJsFrameworks: readonly Project[] = Object.freeze([
   {
     title: 'React',
     url: 'https://reactjs.org/',
     author: 'Jordan Walke',
-    numComments: 3,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    num_comments: 3,
     points: 4,
     objectID: 0,
   },
@@ -27,7 +20,8 @@ export const frameworksAndLibs = Object.freeze([
     title: 'Redux',
     url: 'https://redux.js.org/',
     author: 'Dan Abramov, Andrew Clark',
-    numComments: 2,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    num_comments: 2,
     points: 5,
     objectID: 1,
   },
@@ -35,7 +29,8 @@ export const frameworksAndLibs = Object.freeze([
     title: 'Vue.js',
     url: 'https://vuejs.org/',
     author: 'Evan You',
-    numComments: 4,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    num_comments: 4,
     points: 3,
     objectID: 2,
   },
@@ -43,7 +38,8 @@ export const frameworksAndLibs = Object.freeze([
     title: 'Svelte',
     url: 'https://svelte.dev/',
     author: 'Rich Harris',
-    numComments: 5,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    num_comments: 5,
     points: 5,
     objectID: 3,
   },

@@ -109,14 +109,14 @@ const HITS_PER_PAGE = 5;
 
 /**
  * Builds a URL for searching projects if the search term is valid.
- * @param {string} searchTerm - The search term to use in the URL.
- * @param {number} hitsPerPage - The number of hits per page to use in the URL.
- * @returns {string} - The URL for searching projects.
+ * @param searchTerm The search term to use in the URL.
+ * @param hitsPerPage The number of hits per page to use in the URL.
+ * @returns The URL for searching projects.
  */
 const buildSearchUrl = (
   searchTerm: string,
   hitsPerPage: number = HITS_PER_PAGE
-) => {
+): string | null => {
   if (!isValidSearchTerm(searchTerm)) {
     console.warn(
       `${buildSearchUrl.name}() was wrongly called with searchTerm: ${searchTerm}. Not building URL.`
@@ -144,12 +144,10 @@ const extractSearchTerm = (url: string) => {
 
 /**
  * Main App component.
- * @returns {JSX.Element} The rendered component
+ * @returns The rendered component
  */
-const App = () => {
-  /**
-   * URL string for fetching blog entries.
-   */
+const App = (): React.ReactNode => {
+  /** URL for fetching blog entries */
   const [searchUrl, setSearchUrl] = useState<string>();
 
   /**

@@ -9,21 +9,17 @@
 
 import { useState, useEffect, useReducer, useCallback } from "react";
 import styles from "./App.module.scss";
-//import styles from './App.module.scss';
 
 // Import config data
 import { titleData } from "./config/pageTitle";
 import { pageDescription } from "./config/pageDescription";
 
-// Import base data
-//import { frameworksAndLibs as initialProjects } from './data/frameworks';
-
-import SearchTermInput from "./components/SearchTermInput";
-import ProjectsList from "./components/ProjectsList";
-import { Project } from "./types/Project";
+// Import components
 import PageTitle from "./components/PageTitle";
-
+import SearchTermInput from "./components/SearchTermInput";
 import { isValidSearchTerm } from "./utils/validation";
+import { Project } from "./types/Project";
+import ProjectsList from "./components/ProjectsList";
 
 /**
  * Action types for the projects reducer
@@ -109,7 +105,6 @@ const HITS_PER_PAGE = 5;
 
 // real hacker news API endpoint:
 // hacker news github repo: https://github.com/HackerNews/API
-
 // curl -X GET "https://hn.algolia.com/api/v1/search?query=React&tags=story&hitsPerPage=3" -H "Accept: application/json" | ConvertFrom-Json | ForEach-Object { $_.hits | ForEach-Object { $_.title } }
 
 /**

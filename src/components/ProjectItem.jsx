@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import styles from './ProjectItem.module.scss';
 
 /**
- * Displays a single framework/library item with its details and a remove button.
+ * Displays a single project item with its details and a remove button.
  * 
  * @param {Object} props - Component props
- * @param {import('../data/frameworks').Framework} props.project - The project to display
- * @param {(project: import('../data/frameworks').Framework) => void} props.onRemoveProject - Callback to remove the project
+ * @param {import('../types/Project').Project} props.project - The project to display
+ * @param {(project: import('../types/Project').Project) => void} 
+ * props.onRemoveProject - Callback to remove the project
  * @returns {JSX.Element} Rendered project item
  */
 const ProjectItem = ({ project, onRemoveProject }) =>

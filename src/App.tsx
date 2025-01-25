@@ -20,6 +20,7 @@ import { pageDescription } from "./config/pageDescription";
 
 import SearchTermInput from "./components/SearchTermInput";
 import ProjectsList from "./components/ProjectsList";
+import { Project } from "./types/Project";
 import PageTitle from "./components/PageTitle";
 
 import { isValidSearchTerm } from "./utils/validation";
@@ -35,18 +36,6 @@ const ProjectsActions = {
   fetchFailure: "fetchFailure",
   removeProject: "removeProject",
 } as const;
-
-interface Project {
-  title: string;
-  url: string;
-  author: string;
-  // Property name matches external API response format
-  // Probably won't fix such issues in this project.
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  num_comments: number;
-  points: number;
-  objectID: string | number;
-}
 
 interface ProjectsState {
   data: Project[];
@@ -270,7 +259,9 @@ const App = () => {
    * Does not start search.
    * @param {Event} event - The event object
    */
-  const handleSearchTermChange = (event) => {
+  const handleSearchTermChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     console.info(`handleSearchTermChange() called by ${event.target}
      with value ${event.target.value}.`);
     saveNewSearchTerm(event.target.value);
@@ -287,7 +278,7 @@ const App = () => {
   /**
    * Remove a project from the projects list.
    */
-  const handleRemoveProject = (projectItem) => {
+  const handleRemoveProject = (projectItem: Project) => {
     dispatchProjects({
       type: ProjectsActions.removeProject,
       payload: projectItem,
@@ -324,7 +315,7 @@ const App = () => {
         dispatchProjects({
           type: ProjectsActions.fetchSuccess,
           payload: result.hits,
-          activeSearchTerm: extractSearchTerm(searchUrl),
+          activeSearchTerm: extractSearchTerm(searchUrl) ?? undefined,
         });
         // Reset the shouldFetch flag after successful fetch
         setShouldFetch(false);
@@ -378,7 +369,9 @@ const App = () => {
    * @param {React.MouseEvent<HTMLButtonElement>} event - The click event
    * @returns {void}     *
    */
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = (
+    event: React.FormEvent<HTMLFormElement>
+  ): void => {
     console.info(`handleSearchSubmit() called by ${event.target}.`);
     event.preventDefault();
     /* Remember: 
